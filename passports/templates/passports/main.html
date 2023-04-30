@@ -1,0 +1,23 @@
+{% extends 'passports/base.html' %}
+
+{% block main %}
+    <table>
+        <thead>
+        <tr>
+            <th>Продукт</th>
+            <th>Кол-во</th>
+            <th>За 1 шт.</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for passport in passport_list %}
+            <tr>
+                <td>{{ passport.title }}</td>
+                <td>{{ passport.count }}</td>
+                <td>{{ passport.ruble_cost }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

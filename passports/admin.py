@@ -1,7 +1,8 @@
 from django.contrib import admin
 
-from passports.models import Passports, Country
+from passports.models import Passport, Country
 
-# Register your models here.
-admin.site.register(Passports)
-admin.site.register(Country)
+
+@admin.register(Passport, Country)
+class PassportAdmin(admin.ModelAdmin):
+    pass
