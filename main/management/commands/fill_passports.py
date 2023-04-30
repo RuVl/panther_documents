@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 
 from ._utils import load_from_json
-from passports.models import Passport, Country
+from main.models import Passport, Country
 
 
 class Command(BaseCommand):

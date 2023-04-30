@@ -1,6 +1,6 @@
 from django.views.generic import ListView
 
-from passports.models import Passport, Country
+from main.models import Passport, Country
 
 '''
 ListView - данные о каждой записи модели
@@ -11,7 +11,7 @@ CreateView - создание записи с помощью формы
 
 class BookListView(ListView):
     model = Passport
-    template_name = 'passports/test.html'
+    template_name = 'main/main.html'
     # context_object_name = 'countries'  # Переменная в шаблоне для модели
 
     def get_context_data(self, *, object_list=None, **kwargs):

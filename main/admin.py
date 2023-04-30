@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from passports.models import Passport, Country
+from main.models import Passport, Country
 
 
 @admin.register(Passport, Country)
