@@ -1,8 +1,13 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="{{ lang }}">
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'main/css/base.css' %}">
+    {% block link_css %}
+    {% endblock %}
 </head>
 <body>
 <header>
@@ -17,5 +22,7 @@
     {% block footer %}
     {% endblock %}
 </footer>
+{% block scripts %}
+{% endblock %}
 </body>
 </html>

@@ -15,7 +15,7 @@ class Passport(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['country', 'title']
+        ordering = ['country']
         verbose_name = 'Passport'
         verbose_name_plural = 'Passports'
 
@@ -27,6 +27,7 @@ class Country(models.Model):
         return self.title
 
     class Meta:
+        # ordering = ['title']
         verbose_name = 'Country'
         verbose_name_plural = 'Countries'
 

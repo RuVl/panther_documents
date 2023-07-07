@@ -1,0 +1,49 @@
+header nav.menu {
+  display: flex;
+  justify-content: center;
+  height: 100px;
+}
+header nav.menu .inner {
+  display: flex;
+  background-color: #000;
+  width: 100%;
+}
+
+main {
+  background: url("../img/bg.jpg") no-repeat fixed;
+  background-size: cover;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+main .products-table {
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  padding: 0 5px;
+  width: 1000px;
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono", "Droid Sans Mono", monospace, monospace;
+  font-size: 17px;
+}
+main .products-table tbody {
+  text-align: center;
+}
+main .products-table tbody .country-tr > td {
+  background-color: rgba(11, 86, 152, 0.49);
+  color: #fff;
+  padding: 5px;
+}
+main .products-table tbody .product-title {
+  width: auto;
+  text-align: left;
+}
+main .products-table tbody .product-count {
+  width: 7%;
+}
+main .products-table tbody .product-cost {
+  width: 10%;
+}
+main .products-table tbody .product-buy {
+  width: 10%;
+}
+
+/*# sourceMappingURL=products.css.map */

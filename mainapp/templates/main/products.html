@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block link_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/products.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/fontawesome.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/duotone.css' %}">
+{% endblock %}
+
+{% block header %}
+<nav class="menu">
+    <div class="inner">
+{#        <a href="{% url 'login' %}"></a>#}
+    </div>
+</nav>
+{% endblock %}
+
+{% block main %}
+    <table class="products-table">
+        <thead>
+        <tr>
+            <th>{% trans "Product" %}</th>
+            <th>Кол-во</th>
+            <th>За 1 шт.</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for country in country_list %}
+            {# Don't show empty categories #}
+            {% if country.passport_set.values.exists %}
+                <tr class="country-tr">
+                    <td colspan="10">{{ country.title }}</td>
+                </tr>
+                {% for passport in country.passport_set.values %}
+                    <tr class="product-tr">
+                        <td class="product-title">{{ passport.title }}</td>
+                        <td class="product-count">{{ passport.count }}</td>
+                        <td class="product-cost">{{ passport.ruble_cost }}</td>
+                        <td class="product-buy">
+                            <i class="fa-duotone fa-cart-shopping"></i>
+                            Buy
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
