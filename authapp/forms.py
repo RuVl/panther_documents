@@ -14,7 +14,7 @@ class ShopUserRegisterForm(UserCreationForm):
     def save(self, **kwargs):
         user = super(ShopUserRegisterForm, self).save(kwargs)
         user.is_active = False
-        salt = hashlib.sha256(str(random.random()).encode('utf8')).hexdigest()[:6]
+        salt = hashlib.sha256(str(random.random()).encode('utf8')).hexdigest()
         user.activation_key = hashlib.sha256((user.email + salt).encode('utf8')).hexdigest()
         user.save()
         return user

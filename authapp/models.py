@@ -6,6 +6,8 @@ from django.utils.timezone import now
 
 
 class ShopUser(AbstractUser):
+    REQUIRED_FIELDS = ['email', 'username']
+
     is_deleted = models.BooleanField(default=False)
     activation_key = models.CharField(max_length=128, blank=True)
     activation_key_expires = models.DateTimeField(default=now() + timedelta(hours=48))
