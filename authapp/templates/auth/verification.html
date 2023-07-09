@@ -1,0 +1,17 @@
+{% if activate_status == "wait" %}
+    Check your email, please.
+{% endif %}
+
+{% if activate_status == "fail" %}
+    Wrong activation code!
+{% endif %}
+
+{% if activate_status == "success" %}
+    Success!
+    <a href="{% url 'auth:office' %}">Office</a>
+{% endif %}
+
+{% if activate_status == "already" %}
+    Already activated.
+    <a href="{% url 'auth:office' %}">Office</a>
+{% endif %}
