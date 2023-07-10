@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Union
 
 
-JSON_PATH = Path('passports/management/jsons')
+JSON_PATH = Path('mainapp/management/jsons')
 
 
 def load_from_json(file_name: Union[str, Path]) -> dict:

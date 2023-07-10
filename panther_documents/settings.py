@@ -10,30 +10,34 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+# noinspection PyPackageRequirements
+import environ
 from pathlib import Path
 # from django.utils.translation import gettext_lazy as _
+
+env = environ.Env(
+    DEBUG=(bool, False)  # set casting, default value
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+environ.Env.read_env(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # noinspection SpellCheckingInspection
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-u7_%#%f%9_rivq)i-c^2jn%u$(kp*m2=5vc$k2))8(76_ha&5s'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-# admin
-# Ad12344321
 ALLOWED_HOSTS = [
-    '127.0.0.1'
+    '127.0.0.1',
     # '192.168.0.142'
 ]
-
 
 # Application definition
 INSTALLED_APPS = [
@@ -86,24 +90,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'panther_documents.wsgi.application'
 
-# noinspection SpellCheckingInspection
-
 # Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+# noinspection SpellCheckingInspection
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'panther_documents',
-        'USER': 'postgres',
-        'PASSWORD': 'Lovlade13',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
+    'default': env.db()
 }
 
-
 # Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -119,30 +112,41 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Custom login
 AUTH_USER_MODEL = 'authapp.ShopUser'
+# LOGIN_URL = '/login/'
 
+# Email config
+EMAIL_CONFIG = env.email()
+
+EMAIL_HOST_USER = EMAIL_CONFIG['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = EMAIL_CONFIG['EMAIL_HOST_PASSWORD']
+
+EMAIL_HOST = EMAIL_CONFIG['EMAIL_HOST']
+EMAIL_PORT = EMAIL_CONFIG['EMAIL_PORT']
+
+DEFAULT_FROM_EMAIL = env.get_value('DEFAULT_FROM_EMAIL', default=EMAIL_HOST_USER)
+
+EMAIL_BACKEND = EMAIL_CONFIG['EMAIL_BACKEND']
+EMAIL_USE_TLS = EMAIL_CONFIG.get('EMAIL_USE_TLS', False)
+EMAIL_USE_SSL = EMAIL_CONFIG.get('EMAIL_USE_SSL', False)
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
+USE_I18N = True
 LANGUAGE_CODE = 'ru'
 # LANGUAGES = (
 #     ('en-us', _('English')),
 #     ('ru', _('Russian')),
 # )
 
+# Time settings
+USE_TZ = True
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
-
-USE_TZ = True
-
-
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / STATIC_URL
 STATICFILES_DIRS = []  # Список нестандартных путей
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

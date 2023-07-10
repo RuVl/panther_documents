@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'main/base.html' %}
 
-</body>
-</html>
+{% block main %}
+    {% if user.is_authenticated %}
+        <p> Welcome '{{ user.username }}'</p>
+        {% if user.is_staff %}
+            <a href="{% url 'admin:index' %}">Admin panel</a>
+            <br>
+        {% endif %}
+    {% else %}
+        <a href="{% url 'auth:login' %}">Login</a>
+    {% endif %}
+    <a href="{% url 'auth:logout' %}">Logout</a>
+{% endblock %}
