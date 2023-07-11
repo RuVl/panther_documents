@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 # noinspection PyPackageRequirements
 import environ
+import os
 from pathlib import Path
 # from django.utils.translation import gettext_lazy as _
 
@@ -75,7 +76,7 @@ ROOT_URLCONF = 'panther_documents.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,8 +146,10 @@ TIME_ZONE = 'UTC'
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / STATIC_URL
-STATICFILES_DIRS = []  # Список нестандартных путей
+# STATIC_ROOT = BASE_DIR / STATIC_URL
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]  # Список нестандартных путей
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -9,19 +9,24 @@
 {% endblock %}
 
 {% block header %}
-<nav class="menu">
-    <div class="inner">
-        <a href="{% url 'auth:login' %}">Login</a>
-        <a href="{% url 'auth:register' %}">Register</a>
-    </div>
-</nav>
+<div class="container">
+    <nav class="menu">
+        <div class="header_title">
+            <h2>PantherDoc</h2>
+        </div>
+        <div class="header_content">
+            <a href="{% url 'auth:login' %}">Вход</a>
+            <a href="{% url 'auth:register' %}">Регистрация</a>
+        </div>
+    </nav>
+</div>
 {% endblock %}
 
 {% block main %}
     <table class="products-table">
         <thead>
-        <tr>
-            <th>{% trans "Product" %}</th>
+        <tr class="table_head">
+            <th class="th1">{% trans "Product" %}</th>
             <th>Кол-во</th>
             <th>За 1 шт.</th>
             <th></th>
@@ -40,8 +45,11 @@
                         <td class="product-count">{{ passport.count }}</td>
                         <td class="product-cost">{{ passport.ruble_cost }}</td>
                         <td class="product-buy">
-                            <i class="fa-duotone fa-cart-shopping"></i>
-                            Buy
+                            
+                            <a href="/" class="product-buy-a">
+                                <i class="fa-duotone fa-cart-shopping"></i>
+                                Купить
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}

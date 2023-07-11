@@ -5,14 +5,15 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'global.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'header.css' %}">
     <link type="text/css" rel="stylesheet" href="{% static 'main/css/base.css' %}">
     {% block link_css %}
     {% endblock %}
 </head>
 <body>
 <header>
-    {% block header %}
-    {% endblock %}
+    {% include 'components/header.html' %}
 </header>
 <main>
     {% block main %}
