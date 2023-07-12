@@ -1,0 +1,32 @@
+.main_wrap {
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 101px);
+}
+.left_menu {
+    max-width: 200px;
+    background-color: #C4DFDF;
+}
+.menu_content {
+
+}
+
+.menu_ul {
+    list-style-type: none;
+    padding-inline-start: 0;
+}
+.menu_li {
+    text-align: left;
+    transition: 0.3s;
+}
+.menu_li:hover {
+    background-color: #afd3d3;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.menu_li a {
+    display: block;
+    padding: 15px 50px;
+    text-decoration: none;
+    color: #000;
+}
