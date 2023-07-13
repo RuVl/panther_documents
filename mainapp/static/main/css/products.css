@@ -90,3 +90,13 @@ main .products-table tbody .product-buy {
 .product-buy-a {
   text-decoration: none;
 }
+
+.footer_wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0;
+}
+footer {
+  border-top: 1px solid #7895cb;
+}
