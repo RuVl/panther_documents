@@ -1,5 +1,5 @@
 from django.views.generic import ListView
-
+from django.shortcuts import render
 from mainapp.models import Passport, Country
 
 '''
@@ -19,3 +19,7 @@ class BookListView(ListView):
         context['lang'] = 'ru'
         context['title'] = 'PantherDoc'
         return context
+
+
+def error_404_view(request, exception):
+    return render(request, '404.html')
