@@ -21,5 +21,9 @@ class BookListView(ListView):
         return context
 
 
+def cart_page(request):
+    return render(request, 'main/cart_page.html')
+
+
 def error_404_view(request, exception):
     return render(request, '404.html')
