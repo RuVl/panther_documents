@@ -1,7 +1,6 @@
-from django.views.generic import ListView, TemplateView
-from django.shortcuts import render
-from mainapp.models import Passport, Country
 from django.http import FileResponse, HttpRequest
+from django.shortcuts import render
+from django.views.generic import ListView, TemplateView
 
 from authapp.models import Transaction
 from mainapp.models import Country
@@ -27,6 +26,11 @@ class BookListView(ListView):
 
 def cart_page(request):
     return render(request, 'main/cart_page.html')
+
+
+# noinspection PyUnusedLocal
+def page_not_found(request, exception):
+    return render(request, '404.html', status=404)
 
 
 # Test view

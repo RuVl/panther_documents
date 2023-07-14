@@ -1,6 +1,7 @@
 from django.urls import path
 
 from authapp.views import ShopUserRegisterView, ShopUserLoginView, office, ShopUserLogoutView, VerifyView
+from mainapp.views import page_not_found
 
 app_name = 'auth'
 

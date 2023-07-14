@@ -71,15 +71,15 @@
         <tbody>
         {% for country in country_list %}
             {# Don't show empty categories #}
-            {% if country.passport_set.values.exists %}
+            {% if country.product_set.values.exists %}
                 <tr class="country-tr">
                     <td colspan="10">{{ country.title }}</td>
                 </tr>
-                {% for passport in country.passport_set.values %}
+                {% for product in country.product_set.values %}
                     <tr class="product-tr">
-                        <td class="product-title">{{ passport.title }}</td>
-                        <td class="product-count">{{ passport.count }}</td>
-                        <td class="product-cost">{{ passport.ruble_cost }}</td>
+                        <td class="product-title">{{ product.title }}</td>
+                        <td class="product-count">{{ product.count }}</td>
+                        <td class="product-cost">{{ product.rub_cost }}</td>
                         <td class="product-buy">
                             
                             <a href="" class="product-buy-a popup_open">
