@@ -100,3 +100,88 @@ main .products-table tbody .product-buy {
 footer {
   border-top: 1px solid #7895cb;
 }
+
+
+/* POPUP STYLES */
+.body_popup {
+  overflow: hidden;
+}
+.cart_popup {
+  width: 100vw;
+  height: 100vh;
+  /* background-color: #7895cb; */
+  display: none;
+  position: fixed;
+  z-index: 101;
+  top: 0;
+  left: 0;
+}
+.cart_popup.active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.cart_popup_content {
+  background-color: #fff;
+  padding: 30px 50px;
+  min-width: 250px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.popup_close {
+  cursor: pointer;
+}
+.form_content {
+  display: flex;
+  flex-direction: column;
+}
+.cart_add_btn, .pay_btn {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #96c0d9;
+  border-radius: 5px;
+  display: block;
+  height: min-content;
+  padding: 7px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+.cart_add_btn:hover, .pay_btn:hover {
+  cursor: pointer;
+  background-color: #7895cb;
+  transition: 0.2s;
+}
+.email_input {
+  padding: 10px;
+  margin: 3px 0;
+  outline: none;
+  box-shadow: none;
+  border-radius: 5px;
+  border: 2px solid #e9ebed;
+  background-color: #fff;
+}
+.email_input:focus {
+  border-color: #96c0d9;
+}
+.email_input_l {
+  margin-top: 30px;
+}
+
+.popup_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.popup_header h2 {
+  margin: 0;
+}
+.or {
+  text-align: center;
+  margin: 5px 0;
+}
+.price span {
+  color: #e56b7d;
+  font-weight: bold;
+}

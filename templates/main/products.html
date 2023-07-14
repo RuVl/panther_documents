@@ -8,6 +8,10 @@
     <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/duotone.css' %}">
 {% endblock %}
 
+{% block scripts %}
+    <script src="{% static 'main/js/cart.js' %}"></script>
+{% endblock %}
+
 {% block header %}
 <div class="container">
     <nav class="menu">
@@ -26,6 +30,35 @@
 <div class="container">
     <div class="footer_wrap">
         <p>PantherDoc 2023</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block cart_popup %}
+<div class="cart_popup">
+    <div class="cart_popup_content">
+        <div class="popup_header">
+            <h2>Купить товар</h2>
+            <i class="fa-duotone fa-xmark fa-xl popup_close"></i>
+
+            <!-- <button class="popup_close">
+            </button> -->
+        </div>
+
+        <form method="post">
+            <div class="form_content">
+                <p class="product_name">Some product name</p>
+
+                <label for="email" class="email_input_l">Введите email</label>
+                <input type="email" name="email" class="email_input" placeholder="Email">
+
+                <p class="price">К оплате: <span class="price_span"></span> рублей.</p>
+
+                <input type="button" class="cart_add_btn" value="Добавить в корзину">
+                <p class="or">или</p>
+                <input type="button" class="pay_btn" value="Перейти к оплате">
+           </div>
+        </form>
     </div>
 </div>
 {% endblock %}
@@ -55,7 +88,7 @@
                         <td class="product-cost">{{ passport.ruble_cost }}</td>
                         <td class="product-buy">
                             
-                            <a href="/" class="product-buy-a">
+                            <a href="" class="product-buy-a popup_open">
                                 <i class="fa-duotone fa-cart-shopping"></i>
                                 Купить
                             </a>
