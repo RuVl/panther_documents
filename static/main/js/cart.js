@@ -4,6 +4,9 @@ let popup_close = document.querySelector('.popup_close');
 
 let html_body = document.getElementsByTagName('body')[0];
 
+let cart_counter = document.querySelector('.cart_counter');
+
+
 function close_popup() {
     cart_popup.classList.remove('active');
     html_body.classList.remove('body_popup');
@@ -49,6 +52,9 @@ document.querySelector('.cart_add_btn').addEventListener('click', (e) => {
         'cost': cost
     };
     localStorage.setItem('cart', JSON.stringify(cart_object));
+
+    cart_counter.innerText = 
+        Object.keys(cart_object).length;
 
     close_popup();
 });

@@ -8,10 +8,20 @@
             <div class="header_content">
                 <a href="{% url 'auth:login' %}">Вход</a>
                 <a href="{% url 'auth:register' %}">Регистрация</a>
+                <a href="/cart" class="header_cart">
+                    Корзина
+                    <i class="fa-duotone fa-cart-shopping"></i>
+                    <span class="cart_counter">0</span>
+                </a>
             </div>
         {% else %}
             <div class="header_content">
                 <a href="{% url 'auth:office' %}">Личный кабинет</a>
+                <a href="/cart" class="header_cart">
+                    Корзина
+                    <i class="fa-duotone fa-cart-shopping"></i>
+                    <span class="cart_counter">0</span>
+                </a>
             </div>
         {% endif %}
     </nav>

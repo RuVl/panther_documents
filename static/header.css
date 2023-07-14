@@ -42,3 +42,7 @@ header {
   /* background-color: #fff; */
   /* z-index: 100; */
 }
+
+.header_content a.header_cart {
+  margin-left: 10px;
+}

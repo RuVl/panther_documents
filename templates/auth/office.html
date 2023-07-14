@@ -1,4 +1,6 @@
 {% extends 'main/base.html' %}
+{% load static %}
+
 
 {% block main %}
     <div class="main_wrap">
@@ -13,4 +15,8 @@
         </div>
         <div class="menu_content"></div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'header.js' %}"></script>
 {% endblock %}

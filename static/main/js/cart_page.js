@@ -1,4 +1,6 @@
 let product_list_div = document.querySelector('.product_list');
+let cart_counter = document.querySelector('.cart_counter');
+
 
 let cart_object = JSON.parse(
     localStorage.getItem('cart')
@@ -44,13 +46,15 @@ if (cart_object != null) {
             e.preventDefault();
             let product_div = btn.closest('.product_item');
             let product_id = product_div.getElementsByTagName('span')[0].id;
-            console.log(product_id)
             delete cart_object[product_id];
             localStorage.setItem(
                 'cart',
                 JSON.stringify(cart_object)
             );
             btn.closest('.product_item').remove();
+
+            cart_counter.innerText =
+                Object.keys(cart_object).length;
         });
     });
 };
