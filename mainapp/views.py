@@ -1,6 +1,10 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 from django.shortcuts import render
 from mainapp.models import Passport, Country
+from django.http import FileResponse, HttpRequest
+
+from authapp.models import Transaction
+from mainapp.models import Country
 
 '''
 ListView - данные о каждой записи модели
@@ -25,5 +29,12 @@ def cart_page(request):
     return render(request, 'main/cart_page.html')
 
 
-def error_404_view(request, exception):
-    return render(request, '404.html')
+# Test view
+class GetFiles(TemplateView):
+    template_name = 'main/get_files.html'
+
+    def post(self, request: HttpRequest, *args, **kwargs):
+        # Находим транзакции с этим емэйлом и высылаем на почту
+        email = request.POST['email']
+        transaction = Transaction.objects.get(email=email)
+        return FileResponse(open(transaction.file, 'rb'))

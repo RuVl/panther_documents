@@ -1,14 +1,16 @@
 from django.db import models
 
 
-# Create your models here.
-class Passport(models.Model):
+class Product(models.Model):
     title = models.CharField(max_length=255)
     count = models.IntegerField()
 
-    ruble_cost = models.FloatField()
-    dollar_cost = models.FloatField()
+    rub_cost = models.FloatField()
+    usd_cost = models.FloatField()
 
+    file = models.FileField(upload_to='products/')
+
+    # Many to one
     country = models.ForeignKey('Country', on_delete=models.PROTECT)
 
     def __str__(self):
@@ -16,8 +18,6 @@ class Passport(models.Model):
 
     class Meta:
         ordering = ['country']
-        verbose_name = 'Passport'
-        verbose_name_plural = 'Passports'
 
 
 class Country(models.Model):
@@ -27,7 +27,5 @@ class Country(models.Model):
         return self.title
 
     class Meta:
-        # ordering = ['title']
         verbose_name = 'Country'
         verbose_name_plural = 'Countries'
-
