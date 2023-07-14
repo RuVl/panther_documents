@@ -4,19 +4,46 @@ from django.db import models
 from datetime import timedelta
 from django.utils.timezone import now
 
-from django.utils.translation import gettext_lazy as _
+from panther_documents import settings
 
 
-def activation_time():
+def in_24_hours():
     return now() + timedelta(hours=24)
 
 
 class ShopUser(AbstractUser):
-    email = models.EmailField(_("email address"), unique=True, blank=True)
+    email = models.EmailField(unique=True, blank=True)
 
     is_deleted = models.BooleanField(default=False)
     activation_key = models.CharField(max_length=128, blank=True)
-    activation_key_expires = models.DateTimeField(default=activation_key)
+    activation_key_expires = models.DateTimeField(default=in_24_hours)
 
     def is_activation_key_expired(self):
         return self.activation_key_expires <= now() and not self.is_deleted
+
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
+
+class Transaction(models.Model):
+    # What was sold
+    title = models.CharField(max_length=255)
+    file = models.FilePathField(path=settings.MEDIA_ROOT.absolute())
+
+    # Who bought
+    email = models.EmailField()
+    user = models.ForeignKey(ShopUser, on_delete=models.SET_NULL, blank=True, null=True)
+
+    usd_cost = models.FloatField()  # Cost
+    date = models.DateTimeField()  # When was sold
+
+    # For email sending
+    security_code = models.CharField(max_length=128, blank=True)
+    security_code_expires = models.DateTimeField(default=in_24_hours)
+
+    def is_security_code_expired(self):
+        return self.security_code_expires <= now()
+
+    class Meta:
+        ordering = ['date']

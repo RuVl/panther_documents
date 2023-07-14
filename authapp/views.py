@@ -18,6 +18,13 @@ class ShopUserRegisterView(CreateView):
     template_name = 'auth/register.html'
     success_url = reverse_lazy('auth:wait_verify')
 
+    def get(self, request, *args, **kwargs):
+        # If already authorised - go to office
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('auth:office'))
+
+        return super().get(request, args, kwargs)
+
     def form_valid(self, form: ShopUserRegisterForm):
         response = super().form_valid(form)
 

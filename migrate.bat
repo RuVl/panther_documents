@@ -1,3 +1,8 @@
-.\venv\Scripts\activate.bat && python manage.py makemigrations authapp && python manage.py makemigrations && python manage.py migrate
+call .\venv\Scripts\activate.bat
 
-pause
+python manage.py makemigrations authapp && ^
+python manage.py makemigrations mainapp && ^
+python manage.py makemigrations && ^
+python manage.py migrate
+
+deactivate
