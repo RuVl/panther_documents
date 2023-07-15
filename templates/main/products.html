@@ -32,25 +32,31 @@
 <div class="cart_popup">
     <div class="cart_popup_content">
         <div class="popup_header">
-            <h2>Купить товар</h2>
+            <!-- <h2>Купить товар</h2> -->
             <i class="fa-duotone fa-xmark fa-xl popup_close"></i>
-
-            <!-- <button class="popup_close">
-            </button> -->
         </div>
 
-        <form method="post">
+        <form method="post" class="popup_form">
             <div class="form_content">
-                <p class="product_name">Some product name</p>
+                <div class="product_name_div">
+                    <p class="product_name">Some product name</p>
+                </div>
+                <!-- <div class="quantity_div">
+                    <p class="quantity">Количество:</p>
+                    <input type="number" name="" class="quantity_inp" value="1" min="1">
+                </div> -->
 
-                <label for="email" class="email_input_l">Введите email</label>
-                <input type="email" name="email" class="email_input" placeholder="Email">
-
-                <p class="price">К оплате: <span class="price_span"></span> рублей.</p>
-
-                <input type="button" class="cart_add_btn" value="Добавить в корзину">
-                <p class="or">или</p>
-                <input type="button" class="pay_btn" value="Перейти к оплате">
+                <!-- <label for="email" class="email_input_l">Введите email</label>
+                <input type="email" name="email" class="email_input" placeholder="Email"> -->
+                <div class="price_div">
+                    <p class="price"><span class="price_span"></span> рублей.</p>
+                </div>
+                
+                <div class="form_content_btns">
+                    <input type="button" class="cart_add_btn" value="Добавить в корзину">
+                    <p class="or">или</p>
+                    <input type="button" class="pay_btn" value="Перейти к оплате">
+                </div>
            </div>
         </form>
     </div>
