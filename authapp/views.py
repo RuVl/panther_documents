@@ -89,6 +89,6 @@ class ShopUserLogoutView(LogoutView):
     next_page = reverse_lazy('main:home')
 
 
-@login_required(login_url='/login/')
+@login_required()
 def office(request):
     return render(request, 'auth/office.html')

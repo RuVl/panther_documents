@@ -22,3 +22,17 @@ How to localize text in django
 > 'django.middleware.locale.LocaleMiddleware',
 > ```
 ---
+How to make files private
+---
+> Django is not http server. \
+> Web server give files to user when DEBUG = False in settings.py. \
+> For this feature check django-sendfile2 repository.
+> [StackOverflow](https://stackoverflow.com/a/28167298/15470970)
+---
+How to add reCAPTCHA
+---
+> Create site on [reCAPTCHA](https://www.google.com/recaptcha/admin/create). \
+> Install django-recaptcha and add 'captcha' to INSTALLED_APPS settings. \
+> Add to .env private and public keys. \
+> Use field or widget in forms. \
+---

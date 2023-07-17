@@ -14,8 +14,7 @@
         }
         .form_wrap p {
             font-size: 22px;
-            margin: 0;
-            margin-bottom: 15px;
+            margin: 0 0 15px;
         }
         .form_wrap a {
             font-size: 22px;
@@ -30,7 +29,7 @@
         <div class="form_wrap">
             <h1>404</h1>
             <p>Страница не найдена!</p>
-            <a href="/">PantherDoc</a>
+            <a href="{% url 'main:home' %}">PantherDoc</a>
         </div>
     </div>
 </body>

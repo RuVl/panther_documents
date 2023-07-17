@@ -1,9 +1,14 @@
-from django.http import FileResponse, HttpRequest
-from django.shortcuts import render
-from django.views.generic import ListView, TemplateView
+import logging
 
-from authapp.models import Transaction
-from mainapp.models import Country
+from django.core.mail import send_mail
+from django.http import FileResponse, HttpRequest, HttpResponseNotFound, HttpResponseForbidden
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views import View
+from django.views.generic import ListView, TemplateView, FormView
+
+from mainapp.forms import SendLinksForm
+from mainapp.models import Country, Transaction
 
 '''
 ListView - данные о каждой записи модели
@@ -24,8 +29,8 @@ class BookListView(ListView):
         return context
 
 
-def cart_page(request):
-    return render(request, 'main/cart_page.html')
+class CartView(TemplateView):
+    template_name = 'main/cart_page.html'
 
 
 # noinspection PyUnusedLocal
@@ -33,7 +38,29 @@ def page_not_found(request, exception):
     return render(request, '404.html', status=404)
 
 
-# Test view
+class SendLinksFormView(FormView):
+    form_class = SendLinksForm
+    template_name = 'main/get_files.html'
+    success_url = reverse_lazy('main:home')
+
+    def form_valid(self, form):
+        domain = self.request.META["HTTP_HOST"]
+        email = form.cleaned_data['email']
+        transactions = Transaction.objects.filter(email=email).all()
+
+        title = f'Купленные товары на сайте {domain}'
+        message = 'Наименование товара - ссылка на скачивание\n'
+
+        for t in transactions:
+            message += f'{t.title} - {domain}{t.get_download_url()}\n'
+
+        if not send_mail(title, message, None, [email], fail_silently=False):
+            logging.warning("Can't send email!")
+            # TODO page email wasn't sent
+
+        return super().form_valid(form)
+
+
 class GetFiles(TemplateView):
     template_name = 'main/get_files.html'
 
@@ -41,4 +68,20 @@ class GetFiles(TemplateView):
         # Находим транзакции с этим емэйлом и высылаем на почту
         email = request.POST['email']
         transaction = Transaction.objects.get(email=email)
+        return FileResponse(open(transaction.file, 'rb'))
+
+
+class DownloadLinksView(View):
+    def get(self, request, *args, **kwargs):
+        email = self.kwargs.get('email')
+        security_code = self.kwargs.get('security_code')
+
+        if email is None:
+            return HttpResponseNotFound()
+
+        try:
+            transaction = Transaction.objects.get(email=email, security_code=security_code)
+        except Transaction.DoesNotExist:
+            return HttpResponseForbidden()
+
         return FileResponse(open(transaction.file, 'rb'))

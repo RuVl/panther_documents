@@ -1,6 +1,5 @@
-{# Test #}
 <form method="post">
     {% csrf_token %}
-    <input type="email" name="email">
+    {{ form.as_p }}
     <button type="submit">Download</button>
 </form>
