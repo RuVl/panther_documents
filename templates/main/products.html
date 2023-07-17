@@ -41,13 +41,6 @@
                 <div class="product_name_div">
                     <p class="product_name">Some product name</p>
                 </div>
-                <!-- <div class="quantity_div">
-                    <p class="quantity">Количество:</p>
-                    <input type="number" name="" class="quantity_inp" value="1" min="1">
-                </div> -->
-
-                <!-- <label for="email" class="email_input_l">Введите email</label>
-                <input type="email" name="email" class="email_input" placeholder="Email"> -->
                 <div class="price_div">
                     <p class="price"><span class="price_span"></span> рублей.</p>
                 </div>
@@ -82,7 +75,7 @@
                     <td colspan="10">{{ country.title }}</td>
                 </tr>
                 {% for product in country.product_set.values %}
-                    <tr class="product-tr">
+                    <tr class="product-tr" >
                         <td class="product-title">{{ product.title }}</td>
                         <td class="product-count">{{ product.count }}</td>
                         <td class="product-cost">{{ product.rub_cost }}</td>
@@ -93,6 +86,9 @@
                                 Купить
                             </a>
                         </td>
+                        <td class="tooltip_content">
+                            <p>{{ product.title }}</p>
+                        </td> 
                     </tr>
                 {% endfor %}
             {% endif %}
