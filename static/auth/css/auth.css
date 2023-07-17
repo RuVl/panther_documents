@@ -44,3 +44,6 @@ body {
 .alert ul{
   max-width: 500px;
 }
+.g-recaptcha {
+  margin: 7px 0;
+}
