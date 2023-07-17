@@ -72,7 +72,7 @@
             {# Don't show empty categories #}
             {% if country.product_set.values.exists %}
                 <tr class="country-tr">
-                    <td colspan="10">{{ country.title }}</td>
+                    <td>{{ country.title }}</td>
                 </tr>
                 {% for product in country.product_set.values %}
                     <tr class="product-tr" >
