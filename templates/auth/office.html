@@ -6,10 +6,17 @@
     <div class="main_wrap">
         <div class="left_menu">
             <ul class="menu_ul">
+                {% if user.is_staff %}
+                    <li class="menu_li">
+                        <a href="{% url 'admin:index' %}">Admin panel</a>
+                    </li>
+                {% endif %}
                 <li class="menu_li"><a href="">Главная</a></li>
                 <li class="menu_li"><a href="/">Магазин</a></li>
+                
                 <li class="menu_li"><a href="">Покупки</a></li>
-                <li class="menu_li"><a href="">Профиль</a></li>
+                <li class="menu_li"><a href="">Реферальная система</a></li>
+                <li class="menu_li"><a href="">Баланс</a></li>
                 <li class="menu_li"><a href="{% url 'auth:logout' %}">Выход</a></li>
             </ul>
         </div>
