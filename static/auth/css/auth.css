@@ -40,3 +40,7 @@ body {
   cursor: pointer;
 }
 
+
+.alert ul{
+  max-width: 500px;
+}

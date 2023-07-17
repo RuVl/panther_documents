@@ -16,16 +16,22 @@
     </header>
     <div class="page_wrap">
         <div class="form_wrap">
+            <div class="alert">
+                <ul>
+                    {% for field in form %}
+                        {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+                    {% endfor %}
+                </ul>
+                {{form.non_field_errors}}
+            </div>
+             
             <h2>Регистрация</h2>
-            <form action="" method="post" class="reg_form">
+            <form method="post" class="form_inside">
+                {% for field in form %}
+                    {{field}}
+                {% endfor %}
                 {% csrf_token %}
-                <div class="form_inside">
-                    <input type="email" name="email" id="" placeholder="Email">
-                    <input type="text" name="username" id="" placeholder="Username">
-                    <input type="password" name="password" id="" placeholder="Password" autocomplete="new-password">
-                    <input type="password" name="password2" id="" placeholder="Repeat password" autocomplete="new-password">
-                    <input type="submit" value="Регистрация" id="input_submit">
-                </div>
+                <input type="submit" value="Регистрация" id="input_submit">
             </form>
         </div>
     </div>
