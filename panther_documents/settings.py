@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'captcha',
+
     'mainapp.apps.MainConfig',
     'authapp.apps.AuthappConfig'
 ]
@@ -115,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Custom login
 AUTH_USER_MODEL = 'authapp.ShopUser'
-# LOGIN_URL = '/login/'
+LOGIN_URL = '/office/login/'
 
 # Email config
 EMAIL_CONFIG = env.email()
@@ -156,3 +158,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Google reCAPTCHA
+RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')

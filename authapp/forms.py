@@ -1,12 +1,15 @@
 import hashlib
 import random
 
+from captcha.fields import ReCaptchaField
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 from authapp.models import ShopUser
 
 
 class ShopUserRegisterForm(UserCreationForm):
+    captcha = ReCaptchaField()
+
     class Meta:
         model = ShopUser
         fields = ('email', 'username', 'password1', 'password2')
