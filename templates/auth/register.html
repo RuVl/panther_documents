@@ -1,19 +1,23 @@
+{% extends 'main/base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'global.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'header.css' %}">
+{% block link_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'auth/css/auth.css' %}">
-    <title>Регистрация</title>
-</head>
-<body>
-    <header>
-        {% include 'components/header.html' %}
-    </header>
+    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/fontawesome.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/duotone.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/solid.css' %}">
+{% endblock %}
+
+{% block header %}
+    {% include 'components/header.html' %}
+{% endblock %}
+
+
+{% block footer %}
+    {% include 'components/footer.html' %}
+{% endblock %}
+
+{% block main %}
     <div class="page_wrap">
         <div class="form_wrap">
             <div class="alert">
@@ -24,7 +28,7 @@
                 </ul>
                 {{form.non_field_errors}}
             </div>
-             
+            
             <h2>Регистрация</h2>
             <form method="post" class="form_inside">
                 {% for field in form %}
@@ -35,5 +39,9 @@
             </form>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static 'header.js' %}"></script>
+{% endblock %}

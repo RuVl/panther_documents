@@ -13,7 +13,8 @@
 </head>
 <body>
 <header>
-    {% include 'components/header.html' %}
+    {% block header %}
+    {% endblock %}
 </header>
 <main>
     {% block cart_popup %}
@@ -22,7 +23,8 @@
     {% endblock %}
 </main>
 <footer>
-    {% include 'components/footer.html' %}
+    {% block footer %}
+    {% endblock %}
 </footer>
     {% block scripts %}
     {% endblock %}
