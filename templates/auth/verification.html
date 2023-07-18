@@ -1,17 +1,38 @@
-{% if activate_status == "wait" %}
-    Check your email, please.
-{% endif %}
+{% extends 'main/base.html' %}
+{% load static %}
+{% load i18n %}
 
-{% if activate_status == "fail" %}
-    Wrong activation code!
-{% endif %}
+{% block link_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'auth/css/verification.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/fontawesome.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/duotone.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/solid.css' %}">
+{% endblock %}
 
-{% if activate_status == "success" %}
-    Success!
-    <a href="{% url 'auth:office' %}">Office</a>
-{% endif %}
 
-{% if activate_status == "already" %}
-    Already activated.
-    <a href="{% url 'auth:office' %}">Office</a>
-{% endif %}
+
+{% block main %}
+    <div class="content_wrap">
+        {% if activate_status == "wait" %}
+            <p>Check your email, please.</p>
+        {% endif %}
+
+        {% if activate_status == "fail" %}
+            <p>Wrong activation code!</p>
+        {% endif %}
+
+        {% if activate_status == "success" %}
+            <p>Success!</p>
+            <a href="{% url 'auth:office' %}">Office</a>
+        {% endif %}
+
+        {% if activate_status == "already" %}
+            <p>Already activated.</p>
+            <a href="{% url 'auth:office' %}">Office</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'header.js' %}"></script>
+{% endblock %}
