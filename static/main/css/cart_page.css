@@ -6,6 +6,7 @@ main {
     justify-content: center;
     flex-direction: column;
     margin-bottom: 20px;
+    align-items: center;
 }
 .product_item {
     width: 100%;
