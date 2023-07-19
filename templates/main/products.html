@@ -52,7 +52,6 @@
 </div>
 {% endblock %}
 
-
 {% block main %}
     <table class="products-table">
         <thead>
@@ -65,31 +64,28 @@
         </thead>
         <tbody>
         {% for country in country_list %}
-            {# Don't show empty categories #}
-            {% if country.product_set.values.exists %}
-                <tr class="country-tr">
-                    <td colspan="10">{{ country.title }}</td>
+            <tr class="country-tr">
+                <td colspan="10">{{ country.title }}</td>
+            </tr>
+            {% for product in country.product_set.values %}
+                <tr class="product-tr" >
+                    <td class="product-id" style="display: none;">
+                        {{ product.id }}
+                    </td>
+                    <td class="product-title">{{ product.title }}</td>
+                    <td class="product-count">{{ product.count }}</td>
+                    <td class="product-cost">{{ product.rub_cost }}</td>
+                    <td class="product-buy">
+                        <a href="#" class="product-buy-a popup_open">
+                            <i class="fa-duotone fa-cart-shopping"></i>
+                            Купить
+                        </a>
+                    </td>
+                    <td class="tooltip_content">
+                        <p>{{ product.title }}</p>
+                    </td>
                 </tr>
-                {% for product in country.product_set.values %}
-                    <tr class="product-tr" >
-                        <td class="product-id" style="display: none;">
-                            {{ product.id }}
-                        </td>
-                        <td class="product-title">{{ product.title }}</td>
-                        <td class="product-count">{{ product.count }}</td>
-                        <td class="product-cost">{{ product.rub_cost }}</td>
-                        <td class="product-buy">
-                            <a href="#" class="product-buy-a popup_open">
-                                <i class="fa-duotone fa-cart-shopping"></i>
-                                Купить
-                            </a>
-                        </td>
-                        <td class="tooltip_content">
-                            <p>{{ product.title }}</p>
-                        </td> 
-                    </tr>
-                {% endfor %}
-            {% endif %}
+            {% endfor %}
         {% endfor %}
         </tbody>
     </table>
