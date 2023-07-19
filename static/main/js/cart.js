@@ -7,6 +7,7 @@ let html_body = document.getElementsByTagName('body')[0];
 let cart_counter = document.querySelector('.cart_counter');
 let pay_btn = document.querySelector('.pay_btn');
 
+let product_data = {};
 
 function close_popup() {
     cart_popup.classList.remove('active');
@@ -20,17 +21,14 @@ function uuidv4() {
 }
 
 function add_to_cart() {
-    let title = document.querySelector('.product_name').textContent;
-    let cost = document.querySelector('.price_span').textContent;
-
     let cart_object = JSON.parse(
         localStorage.getItem('cart')
     );
     if (cart_object == null) cart_object = {};
 
-    cart_object[uuidv4()] = {
-        'title': title,
-        'cost': cost
+    cart_object[product_data.id] = {
+        'title': product_data.title,
+        'cost': product_data.cost
     };
     localStorage.setItem('cart', JSON.stringify(cart_object));
 
@@ -50,6 +48,12 @@ popup_open_btns.forEach((button) => {
 
         document.querySelector('.product_name').innerText = title;
         document.querySelector('.price_span').innerText = cost;
+
+        product_data.title = title;
+        product_data.cost = cost;
+        product_data.id = parseInt(
+            closest_tr.querySelector('.product-id').textContent
+        );
     })
 });
 
