@@ -15,17 +15,12 @@
 {% endblock %}
 
 {% block header %}
-<div class="container">
-    <nav class="menu">
-        <div class="header_title">
-            <h2>PantherDoc</h2>
-        </div>
-        <div class="header_content">
-            <a href="{% url 'auth:login' %}">Вход</a>
-            <a href="{% url 'auth:register' %}">Регистрация</a>
-        </div>
-    </nav>
-</div>
+    {% include 'components/header.html' %}
+{% endblock %}
+
+
+{% block footer %}
+    {% include 'components/footer.html' %}
 {% endblock %}
 
 {% block cart_popup %}
@@ -41,13 +36,6 @@
                 <div class="product_name_div">
                     <p class="product_name">Some product name</p>
                 </div>
-                <!-- <div class="quantity_div">
-                    <p class="quantity">Количество:</p>
-                    <input type="number" name="" class="quantity_inp" value="1" min="1">
-                </div> -->
-
-                <!-- <label for="email" class="email_input_l">Введите email</label>
-                <input type="email" name="email" class="email_input" placeholder="Email"> -->
                 <div class="price_div">
                     <p class="price"><span class="price_span"></span> рублей.</p>
                 </div>
@@ -79,10 +67,10 @@
             {# Don't show empty categories #}
             {% if country.product_set.values.exists %}
                 <tr class="country-tr">
-                    <td colspan="10">{{ country.title }}</td>
+                    <td>{{ country.title }}</td>
                 </tr>
                 {% for product in country.product_set.values %}
-                    <tr class="product-tr">
+                    <tr class="product-tr" >
                         <td class="product-title">{{ product.title }}</td>
                         <td class="product-count">{{ product.count }}</td>
                         <td class="product-cost">{{ product.rub_cost }}</td>
@@ -93,6 +81,9 @@
                                 Купить
                             </a>
                         </td>
+                        <td class="tooltip_content">
+                            <p>{{ product.title }}</p>
+                        </td> 
                     </tr>
                 {% endfor %}
             {% endif %}

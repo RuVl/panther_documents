@@ -2,11 +2,6 @@ body {
   margin: 0;
   min-height: 100vh;
 }
-/* 
-header {
-  background-color: #f8f9fa;
-}
 main {
-  background-color: #f2f5fa;
-} */
-/*# sourceMappingURL=base.css.map */
+  min-height: calc(100vh - 101px - 121px);
+}

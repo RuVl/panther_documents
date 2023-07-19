@@ -7,17 +7,14 @@
     <title>{{ title }}</title>
     <link type="text/css" rel="stylesheet" href="{% static 'global.css' %}">
     <link type="text/css" rel="stylesheet" href="{% static 'header.css' %}">
-    <link type="text/css" rel="stylesheet" href="{% static 'office.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/fontawesome.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/duotone.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/solid.css' %}">
     <link type="text/css" rel="stylesheet" href="{% static 'main/css/base.css' %}">
     {% block link_css %}
     {% endblock %}
 </head>
 <body>
 <header>
-    {% include 'components/header.html' %}
+    {% block header %}
+    {% endblock %}
 </header>
 <main>
     {% block cart_popup %}
@@ -26,7 +23,8 @@
     {% endblock %}
 </main>
 <footer>
-    {% include 'components/footer.html' %}
+    {% block footer %}
+    {% endblock %}
 </footer>
     {% block scripts %}
     {% endblock %}

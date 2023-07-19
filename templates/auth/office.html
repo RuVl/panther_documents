@@ -1,6 +1,23 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
+{% block link_css %}
+    <link type="text/css" rel="stylesheet" href="{% static 'office.css' %}">
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/fontawesome.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/duotone.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/solid.css' %}">
+{% endblock %}
+
+{% block header %}
+    {% include 'components/header.html' %}
+{% endblock %}
+
+
+{% block footer %}
+    {% include 'components/footer.html' %}
+{% endblock %}
+
 
 {% block main %}
     <div class="main_wrap">

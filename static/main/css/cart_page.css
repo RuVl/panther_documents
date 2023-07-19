@@ -1,11 +1,9 @@
-main {
-    min-height: calc(100vh - 101px - 121px);
-}
 .product_list {
     display: flex;
     justify-content: center;
     flex-direction: column;
     margin-bottom: 20px;
+    align-items: center;
 }
 .product_item {
     width: 100%;
