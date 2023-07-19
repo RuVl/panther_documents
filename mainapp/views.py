@@ -22,6 +22,9 @@ class BookListView(ListView):
     template_name = 'main/products.html'
     context_object_name = 'country_list'  # Переменная в шаблоне для модели
 
+    def get_queryset(self):
+        return Country.objects.filter(product__count__gt=0)
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['lang'] = 'ru'

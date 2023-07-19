@@ -6,11 +6,11 @@ from mainapp.models import Product, Country
 # Create your tests here.
 # noinspection PyMethodMayBeStatic
 class ProductTest(TestCase):
-    def test_files_url(self):
+    def test_country_filter(self):
         c = Country(title='TEST')
         c.save()
 
-        product = Product(count=3, title='test', usd_cost=5, rub_cost=40, country=c, file='products/test.zip')
+        product = Product(count=0, title='test', usd_cost=5, rub_cost=40, country=c, file='products/test.zip')
         product.save()
 
-        print(product.file.url)
+        self.assertEquals(Country.objects.filter(product__count__gt=0).count(), 0)
