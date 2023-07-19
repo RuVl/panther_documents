@@ -36,10 +36,10 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    # '192.168.0.142'
+    '127.0.0.1'
 ]
 
+# noinspection SpellCheckingInspection
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -49,10 +49,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'captcha',
+    'captcha.apps.CaptchaConfig',
 
+    'authapp.apps.AuthappConfig',
     'mainapp.apps.MainConfig',
-    'authapp.apps.AuthappConfig'
+    'cartapp.apps.CartappConfig'
 ]
 
 # Dummy caching (for development)
@@ -162,3 +163,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Google reCAPTCHA
 RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
+
+# Payments
+PLISIO_SECRET_KEY = env('PLISIO_SECRET_KEY')

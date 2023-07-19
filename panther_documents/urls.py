@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+# noinspection SpellCheckingInspection
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', include('mainapp.urls', namespace='main')),
+    path('', include('cartapp.urls', namespace='cart')),
     path('office/', include('authapp.urls', namespace='auth')),
 ]

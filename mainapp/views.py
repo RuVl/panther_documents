@@ -29,10 +29,6 @@ class BookListView(ListView):
         return context
 
 
-class CartView(TemplateView):
-    template_name = 'main/cart_page.html'
-
-
 # noinspection PyUnusedLocal
 def page_not_found(request, exception):
     return render(request, '404.html', status=404)
