@@ -1,4 +1,4 @@
-let cart_popup = document.querySelector('.cart_popup');
+let cart_popup = document.querySelector('.popup');
 let popup_open_btns = document.querySelectorAll('.popup_open');
 let popup_close = document.querySelector('.popup_close');
 
