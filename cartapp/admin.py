@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from cartapp.models import Transaction
+
+
+@admin.register(Transaction)
+class TransactionAdmin(admin.ModelAdmin):
+    fields = ('title', 'file', 'email', 'user', 'usd_cost', 'date')

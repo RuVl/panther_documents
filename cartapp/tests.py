@@ -1,3 +1,10 @@
-from django.test import TestCase
+import plisio
+from django.test import SimpleTestCase
 
-# Create your tests here.
+from panther_documents import settings
+
+
+class PlisioTest(SimpleTestCase):
+    def test_invoice(self):
+        client = plisio.PlisioClient(api_key=settings.PLISIO_SECRET_KEY)
+        # client.invoice()

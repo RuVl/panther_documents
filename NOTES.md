@@ -1,6 +1,7 @@
 How to localize text in django
 ---
-> #### Firstly add in templates header:
+> ### Install [gettext](https://stackoverflow.com/questions/35101850/cant-find-msguniq-make-sure-you-have-gnu-gettext-tools-0-15-or-newer-installed)
+> #### Add in templates header:
 > ```html
 > {% load i18n %}
 > {% trans 'Some text' %}
