@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 
@@ -9,4 +10,9 @@ class CartView(FormView):
     template_name = 'cart/cart_page.html'
     success_url = reverse_lazy('main:home')
 
-
+    def form_invalid(self, form):
+        response_data = {
+            'success': False,
+            'errors': [(k, v) for k, v in form.errors.items()]
+        }
+        return JsonResponse(response_data, json_dumps_params={'ensure_ascii': False})
