@@ -3,14 +3,15 @@
 {% load i18n %}
 
 {% block link_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'main/css/cart_page.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'cart/css/cart_page.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'popup.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/fontawesome.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/duotone.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/solid.css' %}">
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'main/js/cart_page.js' %}"></script>
+    <script src="{% static 'cart/js/cart_page.js' %}"></script>
     <script src="{% static 'header.js' %}"></script>
 {% endblock %}
 
@@ -37,19 +38,42 @@
                 <p>Итого: <span class="final_price">0</span> руб.</p>
             </div>
             <div class="pay_btn_div">
-                <input type="button" class="pay_btn" value="Перейти к оплате">
+                <input type="button" class="cart_pay_btn" value="Перейти к оплате">
             </div>
         </div>
     </div>
-
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Buy</button>
-    </form>
 {% endblock %}
 
 
 {% block popup %}
+    <div class="popup {% if form.errors %}active{% endif %}">
+        <div class="popup_content">
+            <div class="popup_header">
+                <i class="fa-duotone fa-xmark fa-xl popup_close"></i>
+            </div>
 
+            <form method="post" class="popup_form" id="pay_form">
+                <div class="form_content">
+                    <!-- {{user.is_authenticated}} -->
+
+                    <div class="alert">
+                        <ul>
+                            {% for field in form %}
+                                {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+                            {% endfor %}
+                            {{form.non_field_errors}}
+                        </ul>
+                    </div>
+
+                    {% for field in form %}
+                        {{field}}
+                    {% endfor %}
+                    {% csrf_token %}
+                    <div class="form_content_btns">
+                        <input type="button" class="pay_btn" value="Оплатить">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
