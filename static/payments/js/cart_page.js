@@ -51,7 +51,7 @@ function close_popup() {
 }
 // -----------------
 
-if (cart_object != null && Object.keys(cart_object).length != 0) {
+if (cart_object != null && Object.keys(cart_object).length !== 0) {
   cart_page_wrap_div.classList.remove("deactive");
   for (let product_id in cart_object) {
     product_list_div.innerHTML += item_template.format(
@@ -60,7 +60,7 @@ if (cart_object != null && Object.keys(cart_object).length != 0) {
       cart_object[product_id].cost
     );
   }
-  final_price.textContent = evaluatePrice();
+  final_price.textContent = evaluatePrice().toString();
 
   let remove_btns = document.querySelectorAll(".remove_div_a");
   remove_btns.forEach((btn) => {
@@ -74,9 +74,9 @@ if (cart_object != null && Object.keys(cart_object).length != 0) {
 
       cart_counter.innerText = Object.keys(cart_object).length;
 
-      final_price.textContent = evaluatePrice();
+      final_price.textContent = evaluatePrice().toString();
 
-      if (Object.keys(cart_object).length == 0) {
+      if (Object.keys(cart_object).length === 0) {
         cart_page_wrap_div.classList.add("deactive");
         empty_cart_div.classList.remove("deactive");
       }
@@ -114,9 +114,9 @@ function send_pay_form() {
   })
   .then(resp => resp.json())
   .then(data => {
-    console.log(data)
+    console.log(data);
     document.querySelector('.alert > ul').innerHTML = '';
-    if (data.success == false) {
+    if (data.success === false) {
       for (let errors of data.errors) {
         let error_type = errors[0];
         console.log(error_type, errors[1])
@@ -127,7 +127,7 @@ function send_pay_form() {
         }
       }
     }
-    if (data.success == true) {
+    if (data.success === true) {
       localStorage.removeItem('cart');
       window.location.replace(data.success_url);
     }
