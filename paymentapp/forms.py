@@ -9,16 +9,19 @@ from mainapp.models import Product
 
 class BuyProductForm(forms.Form):
     email = forms.EmailField()
-    products = forms.ModelMultipleChoiceField(Product.objects.filter(count__gt=0))
+    products = forms.ModelMultipleChoiceField(
+        Product.objects.filter(count__gt=0)
+    )
 
-    @property
-    def without_products(self):
-        # Don't send any fields
-        fields = dict(**self.fields)
-        fields.pop('products')
+    def __init__(self, *, user_email=None, **kwargs):
+        super().__init__(**kwargs)
 
-        for name in fields:
-            yield self[name]
+        field = self.fields['products']
+        field.widget = field.hidden_widget()
+
+        if user_email is not None:
+            self.fields['email'].widget.attrs.update({'value': user_email})
+            self.fields['email'].widget.attrs.update({'readonly': 'true'})
 
 
 class SendLinksForm(forms.Form):

@@ -15,6 +15,13 @@ class CartView(FormView):
     template_name = 'payment/cart_page.html'
     success_url = reverse_lazy('payment:plisio')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if self.request.user.is_authenticated:
+            kwargs['user_email'] = self.request.user.email
+
+        return kwargs
+
     def form_valid(self, form):
         # Send success code and url as json
         response_data = {

@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block link_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'cart/css/cart_page.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'payments/css/cart_page.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'popup.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/fontawesome.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/duotone.css' %}">
@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'cart/js/cart_page.js' %}"></script>
+    <script src="{% static 'payments/js/cart_page.js' %}"></script>
     <script src="{% static 'header.js' %}"></script>
 {% endblock %}
 
@@ -62,14 +62,17 @@
                         </ul>
                     </div>
 
-                    {% if user.is_authenticated and user.email %}
-                        <input type="email" name="email" value="{{user.email}}" id="auth_user_email">
-                        <!-- TODO iterate by form with template tag -->
-                    {% else %}
-                        {% for field in form.without_products %}
+{#                    {% if user.is_authenticated and user.email %}#}
+{#                        <input type="email" name="email" value="{{user.email}}" id="auth_user_email">#}
+{#                        <!-- TODO iterate by form with template tag -->#}
+{#                    {% else %}#}
+                        {% for field in form %}
                             {{ field }}
                         {% endfor %}
-                    {% endif %}
+{#                        {% for field in form %}#}
+{#                            {{ field }}#}
+{#                        {% endfor %}#}
+{#                    {% endif %}#}
 
                     {% csrf_token %}
                     <div class="form_content_btns" style="margin-bottom: 10px;">
