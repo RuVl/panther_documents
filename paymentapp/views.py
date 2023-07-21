@@ -6,28 +6,34 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView
 
-from cartapp.forms import BuyProductForm, SendLinksForm
-from cartapp.models import Transaction
+from paymentapp.forms import BuyProductForm, SendLinksForm
+from paymentapp.models import Transaction
 
 
 class CartView(FormView):
     form_class = BuyProductForm
-    template_name = 'cart/cart_page.html'
-    success_url = reverse_lazy('main:home')
+    template_name = 'payment/cart_page.html'
+    success_url = reverse_lazy('payment:plisio')
 
     def form_valid(self, form):
+        # Send success code and url as json
         response_data = {
             'success': True,
-            'success_url': self.success_url
+            'success_url': self.get_success_url()
         }
         return JsonResponse(response_data, json_dumps_params={'ensure_ascii': False})
 
     def form_invalid(self, form):
+        # Send only errors in form as json
         response_data = {
             'success': False,
             'errors': form.errors
         }
         return JsonResponse(response_data, json_dumps_params={'ensure_ascii': False})
+
+
+class PlisioView(View):
+    pass
 
 
 class SendLinksFormView(FormView):

@@ -14,7 +14,13 @@ def in_24_hours():
     return now() + timedelta(hours=24)
 
 
+# class PlisioPayment(models.Model):
+#     pass
+
+
 class Transaction(models.Model):
+    is_sold = models.BooleanField(default=False)
+
     # What was sold
     title = models.CharField(max_length=255)
     file = models.FilePathField(path=settings.MEDIA_ROOT / 'products', max_length=255)
@@ -34,13 +40,16 @@ class Transaction(models.Model):
         return not self.security_code or self.security_code_expires <= now()
 
     def get_download_url(self):
+        if not self.is_sold:
+            return None
+
         if self.is_security_code_expired():
             self.security_code_expires = in_24_hours()
             salt = hashlib.sha256(str(random.random()).encode('utf8')).hexdigest()
             self.security_code = hashlib.sha256((self.pk + salt).encode('utf8')).hexdigest()
             self.save()
 
-        return reverse_lazy('cart:download', args=[self.email, self.security_code])
+        return reverse_lazy('payment:download', args=[self.email, self.security_code])
 
     class Meta:
         ordering = ['date']

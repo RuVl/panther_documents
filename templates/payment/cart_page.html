@@ -64,8 +64,7 @@
                             {{form.non_field_errors}}
                         </ul>
                     </div>
-
-                    {% for field in form %}
+                    {% for field in form.without_products %}
                         {{field}}
                     {% endfor %}
                     {% csrf_token %}

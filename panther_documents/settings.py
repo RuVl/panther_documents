@@ -51,9 +51,9 @@ INSTALLED_APPS = [
 
     'captcha.apps.CaptchaConfig',
 
-    'authapp.apps.AuthappConfig',
+    'authapp.apps.AuthConfig',
     'mainapp.apps.MainConfig',
-    'cartapp.apps.CartappConfig'
+    'paymentapp.apps.PaymentConfig'
 ]
 
 # Dummy caching (for development)
