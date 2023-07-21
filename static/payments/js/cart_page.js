@@ -117,12 +117,11 @@ function send_pay_form() {
     console.log(data);
     document.querySelector('.alert > ul').innerHTML = '';
     if (data.success === false) {
-      for (let errors of data.errors) {
-        let error_type = errors[0];
-        console.log(error_type, errors[1])
-        for (let err of errors[1]) {
+      for (let error in data.errors) {
+        console.log(error, data.errors[error])
+        for (let err of data.errors[error]) {
           document.querySelector('.alert > ul').innerHTML += `
-          <li>${error_type} : ${err}</li>
+          <li>${error} : ${err}</li>
           `;
         }
       }
