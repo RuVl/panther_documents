@@ -87,16 +87,19 @@ if (cart_object != null && Object.keys(cart_object).length != 0) {
 }
 
 cart_pay_btn.addEventListener("click", (e) => {
-  pay_popup.classList.add("active");
-  html_body.classList.add("body_popup");
+  if (document.getElementById('auth_user_email')) {
+    send_pay_form();
+  } else {
+    pay_popup.classList.add("active");
+    html_body.classList.add("body_popup");
+  }
 });
 
 popup_close.addEventListener("click", (e) => {
   close_popup();
 });
 
-final_pay_btn.addEventListener("click", (e) => {
-  e.preventDefault();
+function send_pay_form() {
   let cart = JSON.parse(localStorage.getItem("cart"));
   let pay_form = document.getElementById("pay_form");
   let formData = new FormData(pay_form);
@@ -105,23 +108,28 @@ final_pay_btn.addEventListener("click", (e) => {
     formData.append('products', product_id);
   }
 
-  let resp = fetch('/cart/', {
+  fetch('/cart/', {
     body: formData,
     method: 'POST'
+  })
+  .then(resp => resp.json())
+  .then(data => {
+    console.log(data)
+    document.querySelector('.alert > ul').innerHTML = '';
+    if (data.success == false) {
+      for (let errors of data.errors) {
+        let error_type = errors[0];
+        console.log(error_type, errors[1])
+        for (let err of errors[1]) {
+          document.querySelector('.alert > ul').innerHTML += `
+          <li>${error_type} : ${err}</li>
+          `;
+        }
+      }
+    }
+    if (data.success == true) {
+      localStorage.removeItem('cart');
+      window.location.href = data.success_url;
+    }
   });
-
-  console.log(resp);
-  // let list = document.querySelectorAll('#id_products > option');
-  
-  // for (let product_id in cart) {
-  //   for (let elem of list) {
-  //     if (elem.getAttribute('value') == product_id) {
-  //       elem.setAttribute('selected', '');
-  //       continue;
-  //     }
-  //   }
-  // }
-
-  // localStorage.removeItem('cart');
-  // pay_form.submit();
-});
+}
