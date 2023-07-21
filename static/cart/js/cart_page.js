@@ -108,7 +108,7 @@ function send_pay_form() {
     formData.append('products', product_id);
   }
 
-  fetch('/cart/', {
+  fetch(pay_form.action, {
     body: formData,
     method: 'POST'
   })
@@ -129,7 +129,7 @@ function send_pay_form() {
     }
     if (data.success == true) {
       localStorage.removeItem('cart');
-      window.location.href = data.success_url;
+      window.location.replace(data.success_url);
     }
   });
 }
