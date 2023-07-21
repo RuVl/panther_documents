@@ -46,31 +46,29 @@
 
 
 {% block popup %}
-    <div class="popup {% if form.errors %}active{% endif %}">
+    <div class="popup">
         <div class="popup_content">
-            <div class="popup_header">
+            <div class="popup_header" style="justify-content: space-between;">
+                <h3>Введите email</h3>
                 <i class="fa-duotone fa-xmark fa-xl popup_close"></i>
             </div>
 
-            <form method="post" class="popup_form" id="pay_form">
+            <form method="dialog" onsubmit="send_pay_form()" class="popup_form" id="pay_form">
                 <div class="form_content">
-                    <!-- {{user.is_authenticated}} -->
 
                     <div class="alert">
-                        <ul>
-                            {% for field in form %}
-                                {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
-                            {% endfor %}
-                            {{form.non_field_errors}}
-                        </ul>
+                        <ul></ul>
                     </div>
 
-                    {% for field in form %}
-                        {{field}}
-                    {% endfor %}
+                    {% if user.is_authenticated and user.email%}
+                        <input type="email" name="email" value="{{user.email}}" id="auth_user_email">
+                    {% else %}
+                        {{ form.email }}
+                    {% endif %}
+                    
                     {% csrf_token %}
-                    <div class="form_content_btns">
-                        <input type="button" class="pay_btn" value="Оплатить">
+                    <div class="form_content_btns" style="margin-bottom: 10px;">
+                        <input type="submit" class="pay_btn" value="Оплатить">
                     </div>
                 </div>
             </form>
