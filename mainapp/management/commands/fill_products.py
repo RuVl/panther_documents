@@ -14,10 +14,12 @@ class Command(BaseCommand):
             country = Country(title=country_title)
             country.save()
             for passport in passports:
-                Product(
+                p = Product(
                     title=passport['title'],
                     count=int(passport['count']),
                     rub_cost=float(passport['rub_cost']),
                     usd_cost=float(passport['usd_cost']),
                     country=country
-                ).save()
+                )
+                p.file.name = 'products/test.zip'
+                p.save()

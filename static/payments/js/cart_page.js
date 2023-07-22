@@ -11,9 +11,6 @@ let html_body = document.getElementsByTagName("body")[0];
 let popup_close = document.querySelector(".popup_close");
 let cart_pay_btn = document.querySelector(".cart_pay_btn");
 
-let final_pay_btn = document.querySelector(".pay_btn");
-
-
 let cart_object = JSON.parse(localStorage.getItem("cart"));
 
 let item_template = `
@@ -52,7 +49,7 @@ function close_popup() {
 // -----------------
 
 if (cart_object != null && Object.keys(cart_object).length !== 0) {
-  cart_page_wrap_div.classList.remove("deactive");
+  cart_page_wrap_div.classList.remove("inactive");
   for (let product_id in cart_object) {
     product_list_div.innerHTML += item_template.format(
       product_id,
@@ -77,27 +74,21 @@ if (cart_object != null && Object.keys(cart_object).length !== 0) {
       final_price.textContent = evaluatePrice().toString();
 
       if (Object.keys(cart_object).length === 0) {
-        cart_page_wrap_div.classList.add("deactive");
-        empty_cart_div.classList.remove("deactive");
+        cart_page_wrap_div.classList.add("inactive");
+        empty_cart_div.classList.remove("inactive");
       }
     });
   });
 } else {
-  empty_cart_div.classList.remove("deactive");
+  empty_cart_div.classList.remove("inactive");
 }
 
-cart_pay_btn.addEventListener("click", (e) => {
-  if (document.getElementById('auth_user_email')) {
-    send_pay_form();
-  } else {
+cart_pay_btn.onclick = () => {
     pay_popup.classList.add("active");
     html_body.classList.add("body_popup");
-  }
-});
+}
 
-popup_close.addEventListener("click", (e) => {
-  close_popup();
-});
+popup_close.onclick = close_popup;
 
 function send_pay_form() {
   let cart = JSON.parse(localStorage.getItem("cart"));
@@ -116,19 +107,18 @@ function send_pay_form() {
   .then(data => {
     console.log(data);
     document.querySelector('.alert > ul').innerHTML = '';
-    if (data.success === false) {
+    if (!data.success) {
       for (let error in data.errors) {
-        console.log(error, data.errors[error])
+        console.error(error, data.errors[error]);
         for (let err of data.errors[error]) {
           document.querySelector('.alert > ul').innerHTML += `
           <li>${error} : ${err}</li>
           `;
         }
       }
-    }
-    if (data.success === true) {
+    } else {
       localStorage.removeItem('cart');
-      window.location.replace(data.success_url);
+      window.location.replace(data['success_url']);
     }
   });
 }

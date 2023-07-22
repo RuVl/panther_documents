@@ -10,46 +10,83 @@ from authapp.models import ShopUser
 from panther_documents import settings
 
 
-def in_24_hours():
-    return now() + timedelta(hours=24)
+def in_7_days():
+    return now() + timedelta(days=7)
 
 
-# class PlisioPayment(models.Model):
-#     pass
+# noinspection SpellCheckingInspection
+class AllowedCurrencies(models.TextChoices):
+    """ All possible currencies for purchase """
+    ETH = 'ETH', 'Ethereum'
+    BTC = 'BTC', 'Bitcoin'
+    LTC = 'LTC', 'Litecoin'
+    DASH = 'DASH', 'Dash'
+    TZEC = 'TZEC', 'Zcash'
+    DOGE = 'DOGE', 'Dogecoin'
+    BCH = 'BCH', 'Bitcoin Cash'
+    XMR = 'XMR', 'Monero'
+    USDT = 'USDT', 'Tether ERC-20'
+    USDC = 'USDC', 'USD Coin'
+    SHIB = 'SHIB', 'Shiba Inu'
+    BTT = 'BTT', 'BitTorrent TRC-20'
+    USDT_TRX = 'USDT_TRX', 'Tether TRC-20'
+    TRX = 'TRX', 'Tron'
+    BNB = 'BNB', 'BNB Chain'
+    BUSD = 'BUSD', 'Binance USD BEP-20'
+    USDT_BSC = 'USDT_BSC', 'Tether BEP-20'
+
+    USD = 'USD', '$'
+    RUB = 'RUB', '₽'
 
 
 class Transaction(models.Model):
     is_sold = models.BooleanField(default=False)
 
-    # What was sold
-    title = models.CharField(max_length=255)
-    file = models.FilePathField(path=settings.MEDIA_ROOT / 'products', max_length=255)
+    total_cost = models.FloatField(default=-1, blank=True)  # Required
+    currency = models.CharField(choices=AllowedCurrencies.choices, default=AllowedCurrencies.USD)  # Override
 
-    # Who bought
-    email = models.EmailField()
-    user = models.ForeignKey(ShopUser, on_delete=models.SET_NULL, blank=True, null=True)
+    product_files = models.ManyToManyField('ProductFile', through='PurchaseInfo')  # Required
 
-    usd_cost = models.FloatField()  # Cost
-    date = models.DateTimeField()  # When was sold
+    email = models.EmailField()  # Required
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)  # Optional
 
-    # For email sending
-    security_code = models.CharField(max_length=128, blank=True, null=True)
-    security_code_expires = models.DateTimeField(default=in_24_hours, blank=True, null=True)
+    # Must be one of gateways
+    plisio_gateway = models.OneToOneField('PlisioGateway', on_delete=models.SET_NULL, null=True, blank=True)
+
+
+class ProductFile(models.Model):
+    # Might be added info about file (title, country)
+    file = models.FilePathField(path=settings.MEDIA_ROOT / 'products', max_length=255, unique=True)
+
+
+class PurchaseInfo(models.Model):
+    # Required for m2m
+    file = models.ForeignKey(ProductFile, on_delete=models.SET_NULL, null=True)
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
+
+    # Цена на момент покупки
+    cost = models.FloatField()
+    currency = models.CharField(choices=AllowedCurrencies.choices, default=AllowedCurrencies.USD)
+
+    # Для ссылок на скачивание
+    security_code = models.CharField(max_length=128, blank=True)
+    security_code_expire = models.DateTimeField(default=in_7_days)
 
     def is_security_code_expired(self) -> bool:
         return not self.security_code or self.security_code_expires <= now()
 
     def get_download_url(self):
-        if not self.is_sold:
+        if not self.transaction.is_sold:
             return None
 
         if self.is_security_code_expired():
-            self.security_code_expires = in_24_hours()
+            self.security_code_expires = in_7_days()
             salt = hashlib.sha256(str(random.random()).encode('utf8')).hexdigest()
             self.security_code = hashlib.sha256((self.pk + salt).encode('utf8')).hexdigest()
             self.save()
 
-        return reverse_lazy('payment:download', args=[self.email, self.security_code])
+        return reverse_lazy('payment:download', args=[self.transaction.email, self.security_code])
 
-    class Meta:
-        ordering = ['date']
+
+class PlisioGateway(models.Model):
+    pass
