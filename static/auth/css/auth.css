@@ -43,6 +43,8 @@ body {
 
 .alert ul{
   max-width: 500px;
+  /* padding: 0; */
+  list-style-type: disc;
 }
 .g-recaptcha {
   margin: 7px 0;

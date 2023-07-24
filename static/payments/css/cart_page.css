@@ -82,3 +82,13 @@
 .form_content input[type=email] {
     margin-top: 40px;
 }
+
+.quantity_div {
+  display: flex;
+}
+.quantity_div div {
+  padding: 3px;
+}
+.counter_ {
+  cursor: pointer;
+}

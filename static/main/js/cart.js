@@ -28,7 +28,9 @@ function add_to_cart() {
 
     cart_object[product_data.id] = {
         'title': product_data.title,
-        'cost': product_data.cost
+        'cost': product_data.cost,
+        'count': 1,
+        'max_count': product_data.max_count
     };
     localStorage.setItem('cart', JSON.stringify(cart_object));
 
@@ -54,6 +56,9 @@ popup_open_btns.forEach((button) => {
         product_data.id = parseInt(
             closest_tr.querySelector('.product-id').textContent
         );
+        product_data.max_count = parseInt(
+            closest_tr.querySelector('.product-count').textContent
+        )
     })
 });
 

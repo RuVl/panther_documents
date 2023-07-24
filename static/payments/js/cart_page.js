@@ -17,8 +17,12 @@ let item_template = `
 <div class="product_item">
     <span style="display: none" id="{0}"></span>
     <div class="name_div">{1}</div>
-    <div class="quantity_div">1</div>
-    <div class="price_div">{2}</div>
+    <div class="quantity_div">
+      <div class="counter_ co_mi"><i class="fa-solid fa-minus"></i></div>
+      <div class="quantity">{2}</div>
+      <div class="counter_ co_pl"><i class="fa-solid fa-plus"></i></div>
+    </div>
+    <div class="price_div">{3}</div>
     <div class="remove_div">
         <a href class="remove_div_a">Удалить</a>
     </div>
@@ -37,7 +41,9 @@ String.prototype.format = function () {
 function evaluatePrice() {
   let total_price = 0;
   for (let product_id in cart_object) {
-    total_price += parseInt(cart_object[product_id].cost);
+    let cost = parseInt(cart_object[product_id].cost);
+    let count = parseInt(cart_object[product_id].count);
+    total_price += cost * count;
   }
   return total_price;
 }
@@ -54,6 +60,7 @@ if (cart_object != null && Object.keys(cart_object).length !== 0) {
     product_list_div.innerHTML += item_template.format(
       product_id,
       cart_object[product_id].title,
+      cart_object[product_id].count,
       cart_object[product_id].cost
     );
   }
@@ -79,13 +86,63 @@ if (cart_object != null && Object.keys(cart_object).length !== 0) {
       }
     });
   });
+
+  // minus button handler
+  let minus_btns = document.querySelectorAll('.co_mi');
+  minus_btns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      let quantity_div = btn.closest(".quantity_div");
+      let quantity = quantity_div.querySelector('.quantity');
+      let product_div = btn.closest(".product_item");
+      let product_id = product_div.getElementsByTagName("span")[0].id;
+
+      let current_count = parseInt(quantity.textContent);
+      if (current_count <= 1) {
+        current_count = 1;
+      } else {
+        current_count--;
+      }
+      quantity.textContent = current_count;
+
+      cart_object[product_id].count = current_count;
+      localStorage.setItem("cart", JSON.stringify(cart_object));
+
+      final_price.textContent = evaluatePrice().toString();
+    });
+  });
+
+  // plus button handler
+  let plus_btns = document.querySelectorAll('.co_pl');
+  plus_btns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      let quantity_div = btn.closest(".quantity_div");
+      let quantity = quantity_div.querySelector('.quantity');
+      let product_div = btn.closest(".product_item");
+      let product_id = product_div.getElementsByTagName("span")[0].id;
+
+      let current_count = parseInt(quantity.textContent);
+      if (current_count >= cart_object[product_id].max_count) {
+        current_count = cart_object[product_id].max_count;
+        alert(`${current_count} is maximum quantity of this item.`);
+      } else {
+        current_count++;
+      }
+      quantity.textContent = current_count;
+
+      cart_object[product_id].count = current_count;
+      localStorage.setItem("cart", JSON.stringify(cart_object));
+
+      final_price.textContent = evaluatePrice().toString();
+    });
+  });
+
 } else {
   empty_cart_div.classList.remove("inactive");
 }
 
 cart_pay_btn.onclick = () => {
-    pay_popup.classList.add("active");
-    html_body.classList.add("body_popup");
+  pay_popup.classList.add("active");
+  html_body.classList.add("body_popup");
 }
 
 popup_close.onclick = close_popup;
