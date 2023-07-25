@@ -42,10 +42,13 @@ class AllowedCurrencies(models.TextChoices):
 class Transaction(models.Model):
     is_sold = models.BooleanField(default=False)
 
-    total_cost = models.FloatField(default=-1, blank=True)  # Required
+    # Сумма цен всех товаров
+    total_cost = models.FloatField(blank=True, default=-1)  # Required
+    # Цена, которую должны заплатить
+    invoice_total_sum = models.FloatField(blank=True, null=True)
     currency = models.CharField(choices=AllowedCurrencies.choices, default=AllowedCurrencies.USD)  # Override
 
-    product_files = models.ManyToManyField('ProductFile', through='PurchaseInfo')  # Required
+    product_files = models.ManyToManyField('ProductFile', through='ProductInfo')  # Required
 
     email = models.EmailField()  # Required
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)  # Optional
@@ -59,13 +62,17 @@ class ProductFile(models.Model):
     file = models.FilePathField(path=settings.MEDIA_ROOT / 'products', max_length=255, unique=True)
 
 
-class PurchaseInfo(models.Model):
+class ProductInfo(models.Model):
     # Required for m2m
     file = models.ForeignKey(ProductFile, on_delete=models.SET_NULL, null=True)
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
 
+    # Информация о товаре
+    title = models.CharField(max_length=255)
+
     # Цена на момент покупки
     cost = models.FloatField()
+    count = models.IntegerField(default=1)
     currency = models.CharField(choices=AllowedCurrencies.choices, default=AllowedCurrencies.USD)
 
     # Для ссылок на скачивание
@@ -89,4 +96,16 @@ class PurchaseInfo(models.Model):
 
 
 class PlisioGateway(models.Model):
-    pass
+    # Request
+    invoice_closed = models.BooleanField(default=False)
+    txn_id = models.CharField(max_length=255)
+
+    # Callback
+    amount = models.FloatField(null=True, blank=True)
+    net_profit = models.FloatField(null=True, blank=True)
+    currency = models.CharField(choices=AllowedCurrencies.choices,
+                                null=True, blank=True)
+    confirmations = models.CharField(null=True, blank=True)
+
+    comment = models.CharField(max_length=255, null=True, blank=True)
+    commission = models.FloatField(null=True, blank=True)
