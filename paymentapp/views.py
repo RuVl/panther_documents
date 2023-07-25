@@ -1,16 +1,19 @@
+import hashlib
+import hmac
+import json
 import logging
+from collections import OrderedDict
 
 import plisio
-from django.core.handlers.wsgi import WSGIRequest
 from django.core.mail import send_mail
-from django.http import JsonResponse, HttpResponseNotFound, HttpResponseForbidden, FileResponse
+from django.http import JsonResponse, HttpResponseNotFound, HttpResponseForbidden, FileResponse, HttpRequest, HttpResponseBadRequest, HttpResponse
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, TemplateView
 
 from panther_documents import settings
 from paymentapp.forms import BuyProductForm, SendLinksForm
-from paymentapp.models import Transaction, ProductFile, PurchaseInfo, AllowedCurrencies
+from paymentapp.models import Transaction, ProductFile, ProductInfo, AllowedCurrencies, PlisioGateway
 
 
 class CartView(FormView):
@@ -32,22 +35,18 @@ class CartView(FormView):
         t.save()  # Без сохранения не установить m2m rel
 
         # Привязываем файлы к транзакции и считаем сумму
-        total = 0
         for product in form.cleaned_data['products']:
-            total += product.usd_cost
+            t.total_cost += product.usd_cost
             f, _ = ProductFile.objects.get_or_create(file=product.file.path)
-            PurchaseInfo.objects.create(
+            ProductInfo.objects.create(
                 file=f,
                 transaction=t,
                 cost=product.usd_cost,  # TODO cost according currency
                 currency=AllowedCurrencies.USD,  # TODO currency
             )
+        t.save()  # Посчитали сумму цен всех товаров
 
-        # Меняем итоговую сумму
-        t.total_cost = total
-        t.save()
-
-        # Переадресация в зависимости от выбранного метода оплаты
+        # TODO Переадресация в зависимости от выбранного метода оплаты
         self.success_url = reverse_lazy('payment:plisio', args=(t.id,))
 
         # Send success code and url as json
@@ -70,11 +69,11 @@ class PlisioPaymentView(TemplateView):
     template_name = 'payment/plisio.html'
     plisio_client = plisio.Client(api_key=settings.PLISIO_SECRET_KEY)
 
-    # TODO make more private
-    def get(self, request: WSGIRequest, *args, **kwargs):
+    # TODO make more private url
+    def get(self, request: HttpRequest, *args, **kwargs):
         transaction_id = kwargs.pop('transaction_id', None)
         if transaction_id is None:
-            return HttpResponseNotFound()
+            return HttpResponseBadRequest()
 
         try:
             t = Transaction.objects.get(id=transaction_id)
@@ -82,23 +81,74 @@ class PlisioPaymentView(TemplateView):
             return HttpResponseNotFound()
 
         if t.is_sold:
-            # TODO already paid
+            # TODO already sold
             return super().get(request, *args, **kwargs)
 
         if t.plisio_gateway is None:
-            data = self.plisio_client.invoice(
+            data: dict = self.plisio_client.invoice(
                 order_name=f"Test order",
                 order_number=transaction_id,
-                currency=AllowedCurrencies.USDT,
-                amount=-1,  # Bcs source_amount is passed
+                amount=None,
+                currency=None,
                 source_amount=t.total_cost,
                 source_currency=AllowedCurrencies.USD,
                 email=t.email
             )
-            # PlisioGateway.objects.create()
-            return JsonResponse(data)
 
+            if data.get('success') and data.get('data'):
+                PlisioGateway.objects.create(txn_id=data['data'].get('txn_id'), transaction=t)
+                t.invoice_total_sum = data['data'].get('invoice_total_sum')
+                t.save()
+
+        # TODO invoice created
         return super().get(request, *args, **kwargs)
+
+
+class PlisioStatusView(View):
+    def post(self, request: HttpRequest, *args, **kwargs):
+        data: dict = json.loads(request.body)
+        if not self.verify_hash(data):
+            return HttpResponseBadRequest()
+
+        logging.info(f"{data.get('order_number')}: {data.get('status')}")
+        match data.get('status'):
+            case 'completed' | 'mismatch':
+                p = PlisioGateway.objects.get(txn_id=data.get('txn_id'), transaction__pk=data.get('order_number'))
+                self.save_plisio_data(p, data)
+                SendLinksFormView.send_transaction_links([p.transaction], self.request.META['HTTP_HOST'], p.transaction.email)
+            case 'expired':
+                p = PlisioGateway.objects.get(txn_id=data.get('txn_id'), transaction__pk=data.get('order_number'))
+                if data.get('source_amount') >= p.transaction.invoice_total_sum:
+                    self.save_plisio_data(p, data)
+                    SendLinksFormView.send_transaction_links([p.transaction], self.request.META['HTTP_HOST'], p.transaction.email)
+            case 'cancelled' | 'error':
+                p = PlisioGateway.objects.get(txn_id=data.get('txn_id'), transaction__pk=data.get('order_number'))
+                p.invoice_closed = True
+                p.save()
+
+        return HttpResponse()
+
+    @staticmethod
+    def verify_hash(data: dict) -> bool:
+        temp = OrderedDict(sorted(data.items()))
+        verify_hash = temp.pop('verify_hash')
+        hashed = hmac.new(settings.PLISIO_SECRET_KEY, temp, hashlib.sha1)
+        return hashed.hexdigest() == verify_hash
+
+    @staticmethod
+    def save_plisio_data(plisio: PlisioGateway, data: dict):
+        plisio.amount = float(data.get('amount'))
+        plisio.net_profit = float(data.get('invoice_sum'))
+        plisio.currency = data.get('currency')
+        plisio.commission = float(data.get('invoice_commission'))
+
+        plisio.comment = data.get('plisio_comment')
+        plisio.confirmations = data.get('confirmations')
+
+        plisio.invoice_closed = True
+        plisio.transaction.is_sold = True
+
+        plisio.save()
 
 
 class SendLinksFormView(FormView):
@@ -107,21 +157,26 @@ class SendLinksFormView(FormView):
     success_url = reverse_lazy('main:home')
 
     def form_valid(self, form):
-        domain = self.request.META["HTTP_HOST"]
+        domain = self.request.META['HTTP_HOST']
         email = form.cleaned_data['email']
-        transactions = Transaction.objects.filter(email=email).all()
+        transactions = Transaction.objects.filter(email=email, is_sold=True).all()
 
-        title = f'Купленные товары на сайте {domain}'
-        message = 'Наименование товара - ссылка на скачивание\n'
-
-        for t in transactions:
-            message += f'{t.title} - {domain}{t.get_download_url()}\n'
-
-        if not send_mail(title, message, None, [email], fail_silently=False):
+        if not self.send_transaction_links(transactions, domain, email):
             logging.warning("Can't send email!")
             # TODO page email wasn't sent
 
         return super().form_valid(form)
+
+    @staticmethod
+    def send_transaction_links(transactions: list[Transaction], domain: str, email: str) -> bool:
+        title = f'Купленные товары на сайте {domain}'
+        message = 'Наименование товара - ссылка на скачивание\n'
+
+        for t in transactions:
+            for i, f in enumerate(t.productinfo_set.all()):
+                message += f'{i + 1}) {f.title} - {domain}{f.get_download_url()}\n'
+
+        return send_mail(title, message, None, [email], fail_silently=False)
 
 
 class DownloadLinksView(View):
