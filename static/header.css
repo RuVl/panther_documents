@@ -45,5 +45,12 @@ header {
 }
 
 .header_content a.header_cart {
-  margin-left: 10px;
+  /* margin-left: 10px; */
+}
+
+
+@media (max-width: 767px) {
+  .header_content {
+    /* flex-direction: column; */
+  }
 }

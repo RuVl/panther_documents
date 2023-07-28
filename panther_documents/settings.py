@@ -35,8 +35,17 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1',
+    'http://10.0.0.2',
+    'https://tunnel.xamelllion.ru',
+    'http://192.168.0.151/'
+]
 ALLOWED_HOSTS = [
-    '127.0.0.1'
+    '127.0.0.1',
+    '10.0.0.2',
+    'tunnel.xamelllion.ru',
+    '192.168.0.151'
 ]
 
 # noinspection SpellCheckingInspection
