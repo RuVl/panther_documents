@@ -37,7 +37,9 @@
                 <li class="menu_li"><a href="{% url 'auth:logout' %}">Выход</a></li>
             </ul>
         </div>
-        <div class="menu_content"></div>
+        <div class="menu_content">
+            {% include 'components/office/shop_list.html' %}
+        </div>
     </div>
 {% endblock %}
 
