@@ -115,12 +115,12 @@ class PlisioStatusView(View):
             case 'completed' | 'mismatch':
                 p = PlisioGateway.objects.get(txn_id=data.get('txn_id'), transaction__pk=data.get('order_number'))
                 self.save_plisio_data(p, data)
-                SendLinksFormView.send_transaction_links([p.transaction], self.request.META['HTTP_HOST'], p.transaction.email)
+                SendLinksFormView.send_transaction_links([p.transaction], self.request.get_host(), p.transaction.email)
             case 'expired':
                 p = PlisioGateway.objects.get(txn_id=data.get('txn_id'), transaction__pk=data.get('order_number'))
                 if data.get('source_amount') >= p.transaction.invoice_total_sum:
                     self.save_plisio_data(p, data)
-                    SendLinksFormView.send_transaction_links([p.transaction], self.request.META['HTTP_HOST'], p.transaction.email)
+                    SendLinksFormView.send_transaction_links([p.transaction], self.request.get_host(), p.transaction.email)
             case 'cancelled' | 'error':
                 p = PlisioGateway.objects.get(txn_id=data.get('txn_id'), transaction__pk=data.get('order_number'))
                 p.invoice_closed = True
@@ -157,7 +157,7 @@ class SendLinksFormView(FormView):
     success_url = reverse_lazy('main:home')
 
     def form_valid(self, form):
-        domain = self.request.META['HTTP_HOST']
+        domain = self.request.get_host()
         email = form.cleaned_data['email']
         transactions = Transaction.objects.filter(email=email, is_sold=True).all()
 
