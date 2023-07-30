@@ -8,12 +8,14 @@
     background-color: #C4DFDF;
 }
 .menu_content {
-
+    width: 100%;
+    margin: 10px
 }
 
 .menu_ul {
     list-style-type: none;
     padding-inline-start: 0;
+    margin: 10px 0 0 0;
 }
 .menu_li {
     text-align: left;
@@ -29,4 +31,18 @@
     padding: 15px 50px;
     text-decoration: none;
     color: #000;
+}
+
+
+/* SHOP LIST */
+.shop_list_header {
+    margin: 0;
+}
+.shop_list_content_product {
+    margin: 10px 0;
+    padding: 10px 0 10px 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 80%;
+    border: 1px solid #afd3d3;
 }

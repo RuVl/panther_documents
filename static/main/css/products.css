@@ -27,62 +27,69 @@ main {
 .th1 {
   text-align: left;
 }
-main .products-table {
+.products-table {
   width: 1000px;
   font-size: 17px;
   margin-top: 100px;
   margin-bottom: 50px;
+  /* border: 1px solid rgba(0, 0, 0, 0.7); */
   border-collapse: collapse;
-
+  border-style: none;
 }
-main .products-table tbody {
+.products-table tbody {
   text-align: center;
 }
 
-
-main .products-table tbody .country-tr {
-  text-align: left;
+tbody tr {
   border: 1px solid rgba(0, 0, 0, 0.3);
+}
+.product-buy {
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.products-table tbody .country-tr {
+  text-align: left;
+  /* border: 1px solid rgba(0, 0, 0, 0.3); */
   font-weight: bold;
-  border-radius: 7px;
+  /* border-radius: 7px; */
   transition: 0.3s;
 }
-main .products-table tbody .product-tr  {
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 7px;
+.products-table tbody .product-tr  {
+  /* border: 1px solid rgba(0, 0, 0, 0.3); */
+  /* border-radius: 7px; */
   position: relative;
 }
-main .products-table tbody .country-tr:hover {
+.products-table tbody .country-tr:hover {
   transition: 0.3s;
   background-color: #C4DFDF;
 }
-main .products-table tbody .product-tr:hover {
+.products-table tbody .product-tr:hover {
   transition: 0.3s;
   background-color: #C4DFDF;
 }
 
 
-main .products-table tbody .product-tr > td {
+.products-table tbody .product-tr > td {
   padding: 10px;
 }
-main .products-table tbody .country-tr > td {
+.products-table tbody .country-tr > td {
   /* background-color: #8e9aaf; */
   color: #000;
   padding: 10px;
 }
 
 
-main .products-table tbody .product-title {
+.products-table tbody .product-title {
   width: auto;
   text-align: left;
 }
-main .products-table tbody .product-count {
+.products-table tbody .product-count {
   width: 7%;
 }
-main .products-table tbody .product-cost {
+.products-table tbody .product-cost {
   width: 10%;
 }
-main .products-table tbody .product-buy {
+.products-table tbody .product-buy {
   width: 10%;
 }
 
@@ -122,4 +129,23 @@ main .products-table tbody .product-buy {
   margin: 0;
   text-decoration: none;
   color: blue;
+}
+
+
+@media (max-width: 767px) {
+  .container {
+    /* max-width: none; */
+    padding: 0 7px;
+    margin: 0;
+  }
+  .products-table {
+    width: 100%;
+    font-size: 16px;
+    margin-top: 100px;
+    margin-bottom: 50px;
+    border-collapse: collapse;
+  }
+  .products-table tbody .product-buy {
+    width: 0;
+  }
 }
