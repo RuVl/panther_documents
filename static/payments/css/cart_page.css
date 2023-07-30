@@ -99,4 +99,24 @@
     padding: 0 7px;
     margin: 0;
   }
+  .final_price_div {
+    padding: 10px 0 10px 0px;
+  }
+  .pay_btn_div {
+    padding: 10px 0 10px 0px;
+  }
+  .product_item {
+    width: fit-content;
+  }
+  .name_div, .price_div, .remove_div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* vertical-align: middle;
+    text-align: center; */
+  }
+  .form_content input {
+    font-size: 14px;
+  }
 }
