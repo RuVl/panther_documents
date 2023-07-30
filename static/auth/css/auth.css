@@ -49,3 +49,9 @@ body {
 .g-recaptcha {
   margin: 7px 0;
 }
+
+@media (max-width: 767px) {
+  input {
+    font-size: 14px;
+  }
+}

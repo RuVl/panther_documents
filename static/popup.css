@@ -132,3 +132,9 @@
 .quantity_div input:focus {
   outline: none;
 }
+
+@media (max-width: 767px) {
+  input {
+    font-size: 14px;
+  }
+}
