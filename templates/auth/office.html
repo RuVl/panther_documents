@@ -28,16 +28,26 @@
                         <a href="{% url 'admin:index' %}">Admin panel</a>
                     </li>
                 {% endif %}
-                <li class="menu_li"><a href="">Главная</a></li>
-                <li class="menu_li"><a href="/">Магазин</a></li>
+                <li class="menu_li"><a href="{% url 'main:home' %}">Магазин</a></li>
+                <li class="menu_li"><a href="{% url 'payment:send-links' %}">Покупки</a></li>
                 
-                <li class="menu_li"><a href="">Покупки</a></li>
-                <li class="menu_li"><a href="">Реферальная система</a></li>
-                <li class="menu_li"><a href="">Баланс</a></li>
                 <li class="menu_li"><a href="{% url 'auth:logout' %}">Выход</a></li>
             </ul>
         </div>
-        <div class="menu_content"></div>
+        <div class="menu_content">
+            <!-- {% include 'components/office/shop_list.html' %} -->
+            <p>
+                Добро пожаловать в ваш личный кабинет!<br><br>
+
+                Здесь вы найдете все необходимое для удобного управления вашим аккаунтом.<br><br>
+                
+                В разделе "Покупки" вы сможете получить приобретённые вами товары.<br><br>
+                
+                Если вы зохотите выйти из своего аккаунта, воспользуйтесь кнопкой "Выход".<br><br>
+                
+                Спасибо, что выбрали нас! Мы надеемся, что ваш опыт с нами будет приятным и удобным.
+            </p>
+        </div>
     </div>
 {% endblock %}
 
