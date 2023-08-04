@@ -3,11 +3,10 @@
 
 {% block link_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'auth/css/auth.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/fontawesome.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/duotone.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/solid.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/fontawesome.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/duotone.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/solid.css' %}">
 {% endblock %}
-
 
 {% block header %}
     {% include 'components/header.html' %}
@@ -18,7 +17,6 @@
     {% include 'components/footer.html' %}
 {% endblock %}
 
-
 {% block main %}
     <div class="page_wrap">
         <div class="form_wrap">
@@ -27,17 +25,17 @@
                     {% for field in form %}
                         {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
                     {% endfor %}
-                    {{form.non_field_errors}}
                 </ul>
+                {{form.non_field_errors}}
             </div>
-            
-            <h2>Авторизация</h2>
+
+            <h3>Введите Email для получения файлов.</h2>
             <form method="post" class="form_inside">
                 {% for field in form %}
                     {{field}}
                 {% endfor %}
                 {% csrf_token %}
-                <input type="submit" value="Войти" id="input_submit">
+                <input type="submit" value="Download" id="input_submit">
             </form>
         </div>
     </div>

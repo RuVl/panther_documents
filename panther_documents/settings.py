@@ -35,9 +35,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = [
-    '127.0.0.1'
-]
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
 # noinspection SpellCheckingInspection
 # Application definition
@@ -79,7 +77,7 @@ ROOT_URLCONF = 'panther_documents.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -149,9 +147,9 @@ TIME_ZONE = 'UTC'
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
-# STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_DIRS = [
-    BASE_DIR / 'static'
+    BASE_DIR / 'shared_static'
 ]  # Список нестандартных путей
 
 MEDIA_URL = 'media/'
@@ -166,3 +164,13 @@ RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
 
 # Payments
 PLISIO_SECRET_KEY = env('PLISIO_SECRET_KEY')
+
+# Production
+if not DEBUG:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 3600
+
+    ADMINS = [('ruvl', 'ii13082004@gmail.com')]

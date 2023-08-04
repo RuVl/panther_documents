@@ -30,7 +30,7 @@ class ShopUserRegisterView(CreateView):
 
         # Send email with activation key
         user: ShopUser = self.object
-        domain = self.request.META["HTTP_HOST"]
+        domain = self.request.get_host()
 
         verify_link = reverse('auth:verify', args=[user.email, user.activation_key])
         title = f'Подтверждение учетной записи {user.username}'
