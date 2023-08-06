@@ -71,14 +71,16 @@
   display: none;
 }
 
+/* Disabled counter button */
+.disabled {
+  cursor: default !important;
+  opacity: .5;
+}
+
 .alert ul {
   padding-inline-start: 20px;
 }
 
-/* hide django select form element */
-.form_content select {
-    display: none;
-}
 .form_content input[type=email] {
     margin-top: 40px;
 }

@@ -1,16 +1,21 @@
 from captcha.fields import ReCaptchaField
 from django import forms
 from django.core.exceptions import ValidationError
-from django.utils.translation import gettext as _\
+from django.utils.translation import gettext as _
 
 from paymentapp.models import Transaction
 from mainapp.models import Product
 
 
 class BuyProductForm(forms.Form):
-    email = forms.EmailField()
+    email = forms.EmailField(label=_('Email'))
     products = forms.ModelMultipleChoiceField(
-        Product.objects.filter(count__gt=0)
+        Product.objects.filter(count__gt=0),
+        label=_('Choose products')
+    )
+    gateway = forms.ChoiceField(
+        choices=Transaction.PaymentMethod.choices,
+        label=_('Payment method')
     )
 
     def __init__(self, *, user_email=None, **kwargs):

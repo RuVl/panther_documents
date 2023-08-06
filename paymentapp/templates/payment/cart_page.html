@@ -11,7 +11,8 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'payments/js/cart_page.js' %}"></script>
+    <script src="{% static 'payments/js/cart_list.js' %}"></script>
+    <script src="{% static 'payments/js/cart_buying_popup.js' %}"></script>
     <script src="{% static 'header.js' %}"></script>
 {% endblock %}
 
@@ -53,29 +54,18 @@
                 <i class="fa-duotone fa-xmark fa-xl popup_close"></i>
             </div>
 
-            <form method="dialog" onsubmit="send_pay_form()"
+            <form method="dialog" onsubmit="send_pay_form(this)"
                 action="{% url 'payment:cart' %}" class="popup_form" id="pay_form">
                 <div class="form_content">
-
                     <div class="alert">
                         <ul>
                             <!-- TODO errors -->
                         </ul>
                     </div>
 
-{#                    {% if user.is_authenticated and user.email %}#}
-{#                        <input type="email" name="email" value="{{user.email}}" id="auth_user_email">#}
-{#                        <!-- TODO iterate by form with template tag -->#}
-{#                    {% else %}#}
-                        {% for field in form %}
-                            {{ field }}
-                        {% endfor %}
-{#                        {% for field in form %}#}
-{#                            {{ field }}#}
-{#                        {% endfor %}#}
-{#                    {% endif %}#}
-
                     {% csrf_token %}
+                    {{ form.as_div }}
+
                     <div class="form_content_btns" style="margin-bottom: 10px;">
                         <input type="submit" class="pay_btn" value="Оплатить">
                     </div>

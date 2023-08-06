@@ -40,6 +40,9 @@ class AllowedCurrencies(models.TextChoices):
 
 
 class Transaction(models.Model):
+    class PaymentMethod(models.TextChoices):
+        PLISIO = 'PLISIO', 'plisio'
+
     is_sold = models.BooleanField(default=False)
 
     # Сумма цен всех товаров
@@ -52,6 +55,9 @@ class Transaction(models.Model):
 
     email = models.EmailField()  # Required
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)  # Optional
+
+    # What gateway we will use
+    gateway = models.CharField(choices=PaymentMethod.choices)
 
     # Must be one of gateways
     plisio_gateway = models.OneToOneField('PlisioGateway', on_delete=models.SET_NULL, null=True, blank=True)
