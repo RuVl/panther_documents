@@ -166,16 +166,13 @@ RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
 PLISIO_SECRET_KEY = env('PLISIO_SECRET_KEY')
 
 # Production
-'''
-if not DEBUG:
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
-    SECURE_SSL_REDIRECT = True
-    SECURE_HSTS_SECONDS = 3600
+# SECURE_SSL_REDIRECT = True
+# SECURE_HSTS_SECONDS = 3600  # Send browser auto redirect header
 
-    # ADMINS = [('ruvl', 'ii13082004@gmail.com')]
-'''
+# ADMINS = [('ruvl', 'ii13082004@gmail.com')]
 
 # Logging
 LOGGING = {
@@ -191,7 +188,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'verbose',
-            'filename': BASE_DIR / 'gunicorn.errors',
+            'filename': BASE_DIR / 'gunicorn.log',
             'maxBytes': 1024 * 1024 * 100,  # 100 mb
         }
     },
