@@ -24,4 +24,4 @@ class BookListView(ListView):
 
 # noinspection PyUnusedLocal
 def page_not_found(request, exception):
-    return render(request, 'static/404.html', status=404)
+    return render(request, '404.html', status=404)
