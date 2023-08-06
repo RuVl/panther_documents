@@ -166,6 +166,7 @@ RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
 PLISIO_SECRET_KEY = env('PLISIO_SECRET_KEY')
 
 # Production
+'''
 if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
@@ -173,4 +174,32 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 3600
 
-    ADMINS = [('ruvl', 'ii13082004@gmail.com')]
+    # ADMINS = [('ruvl', 'ii13082004@gmail.com')]
+'''
+
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s %(levelname)s [%(name)s:%(lineno)s] %(module)s %(process)d %(thread)d %(message)s'
+        }
+    },
+    'handlers': {
+        'gunicorn': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'verbose',
+            'filename': BASE_DIR / 'gunicorn.errors',
+            'maxBytes': 1024 * 1024 * 100,  # 100 mb
+        }
+    },
+    'loggers': {
+        'gunicorn.errors': {
+            'level': 'DEBUG',
+            'handlers': ['gunicorn'],
+            'propagate': True,
+        },
+    }
+}
