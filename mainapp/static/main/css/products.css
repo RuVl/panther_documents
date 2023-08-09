@@ -24,6 +24,9 @@ main {
 .table_head th {
   padding: 10px;
 }
+.table_head {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
 .th1 {
   text-align: left;
 }
@@ -43,9 +46,6 @@ main {
 tbody tr {
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
-.product-buy {
-  border-right: 1px solid rgba(0, 0, 0, 0.3);
-}
 
 .products-table tbody .country-tr {
   text-align: left;
@@ -53,15 +53,12 @@ tbody tr {
   font-weight: bold;
   /* border-radius: 7px; */
   transition: 0.3s;
+  background-color: #a5cdcd;
 }
 .products-table tbody .product-tr  {
   /* border: 1px solid rgba(0, 0, 0, 0.3); */
   /* border-radius: 7px; */
   position: relative;
-}
-.products-table tbody .country-tr:hover {
-  transition: 0.3s;
-  background-color: #C4DFDF;
 }
 .products-table tbody .product-tr:hover {
   transition: 0.3s;
