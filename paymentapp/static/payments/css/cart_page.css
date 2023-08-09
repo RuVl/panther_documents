@@ -133,6 +133,16 @@
     font-family: "Font Awesome 6 Pro";
     content: "\f00d";
   }
+
+  .final_price_div {
+    padding: 10px 0 10px 0px;
+  }
+  .pay_btn_div {
+    padding: 10px 0 10px 0px;
+  }
+  .product_item {
+    width: fit-content;
+  }
 }
 
 @media only screen and (max-width: 480px) {
