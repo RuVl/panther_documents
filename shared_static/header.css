@@ -41,6 +41,7 @@ header {
   /* width: 100vw; */
   /* background-color: #fff; */
   /* z-index: 100; */
+  /* min-height: 100px; */
 }
 
 .header_content a.header_cart {
@@ -84,11 +85,35 @@ header {
   cursor: pointer;
 }
 
+.hide_element_mobile {
+  display: flex;
+}
+
+.burger_menu {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #96c0d9;
+  border-radius: 5px;
+  display: none;
+  height: min-content;
+  padding: 7px;
+  margin: 0px 3px;
+  text-decoration: none;
+}
 
 
 
 @media (max-width: 767px) {
   .vertical_menu {
     justify-content: flex-start;
+  }
+  .burger_menu {
+    display: block;
+  }
+  .hide_element_mobile {
+    display: none;
+  }
+  header {
+    min-height: 100px;
   }
 }
