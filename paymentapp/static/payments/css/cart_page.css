@@ -110,6 +110,10 @@
 
 /* only - remove support for legacy browsers */
 @media only screen and (max-width: 767px) {
+  .container {
+    padding: 0 7px;
+    margin: 0;
+  }
   .product_item {
     padding: 5px;
     grid-template-columns: 15fr 2fr 2fr 1fr;
