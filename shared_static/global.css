@@ -8,19 +8,28 @@
   --light-4: #c4dfdf;
   --blue: #7895cb;
 }
+
 body {
   font-family: "Roboto", sans-serif;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
 }
 
-.footer_wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 30px 0;
+header {
+  min-height: 190px;
 }
+
+main {
+  min-height: calc(100vh - 101px - 200px);
+}
+
 footer {
-  border-top: 1px solid #7895cb;
-  height: 100px;
+  max-height: 100px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 25px;
 }
