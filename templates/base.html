@@ -9,6 +9,8 @@
     <link type="text/css" rel="stylesheet" href="{% static 'global.css' %}">
     <link type="text/css" rel="stylesheet" href="{% static 'header.css' %}">
     <link type="text/css" rel="stylesheet" href="{% static 'footer.css' %}">
+
+    <link type="text/css" rel="stylesheet" href="{% static 'components/burger2close.css' %}">
     {% block link_css %}
     {% endblock %}
 </head>
@@ -27,6 +29,8 @@
     {% block footer %}
     {% endblock %}
 </footer>
+    <script src="{% static 'header.js' %}"></script>
+    <script src="{% static 'components/burger2close.js' %}"></script>
     {% block scripts %}
     {% endblock %}
 </body>

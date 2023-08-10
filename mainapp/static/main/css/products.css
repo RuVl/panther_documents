@@ -10,10 +10,6 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-.country_content {
-  border: 1px solid #000;
-}
-
 main {
   display: flex;
   width: 100%;
@@ -47,13 +43,14 @@ tbody tr {
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-.products-table tbody .country-tr {
+.products-table tbody .country-tr,
+.table_head {
   text-align: left;
   /* border: 1px solid rgba(0, 0, 0, 0.3); */
   font-weight: bold;
   /* border-radius: 7px; */
   transition: 0.3s;
-  background-color: #a5cdcd;
+  background-color: rgba(177, 217, 215, 0.35);
 }
 .products-table tbody .product-tr  {
   /* border: 1px solid rgba(0, 0, 0, 0.3); */
@@ -62,7 +59,7 @@ tbody tr {
 }
 .products-table tbody .product-tr:hover {
   transition: 0.3s;
-  background-color: #C4DFDF;
+  background-color: rgba(153, 225, 225, 0.59);
 }
 
 

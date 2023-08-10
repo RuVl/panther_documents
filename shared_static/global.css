@@ -17,14 +17,16 @@ body {
 }
 
 header {
+  box-sizing: border-box;
   min-height: 190px;
 }
 
 main {
-  min-height: calc(100vh - 101px - 200px);
+  min-height: calc(100vh - 100px - 200px);
 }
 
 footer {
+  box-sizing: border-box;
   max-height: 100px;
 }
 

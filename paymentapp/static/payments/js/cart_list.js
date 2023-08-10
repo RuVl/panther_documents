@@ -97,7 +97,7 @@ function delete_product(btn) {
 }
 
 
-const final_price = document.querySelector(".final_price");
+const final_price = document.getElementById("final_price");
 function calcFinalPrice() {
   let total_price = 0;
   for (let product_id in cart_object) {
