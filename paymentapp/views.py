@@ -50,10 +50,7 @@ class CartView(FormView):
         self.success_url = reverse_lazy('payment:plisio', args=(t.id,))
 
         # Send success code and url as json
-        response_data = {
-            'success': True,
-            'success_url': self.get_success_url()
-        }
+        response_data = {'success': True}
         return JsonResponse(response_data, json_dumps_params={'ensure_ascii': False})
 
     def form_invalid(self, form):

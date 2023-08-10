@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% load i18n %}
 
@@ -13,7 +13,6 @@
 {% block scripts %}
     <script src="{% static 'payments/js/cart_list.js' %}"></script>
     <script src="{% static 'payments/js/cart_buying_popup.js' %}"></script>
-    <script src="{% static 'header.js' %}"></script>
 {% endblock %}
 
 
@@ -28,18 +27,20 @@
 
 
 {% block main %}
-    <div class="empty_cart inactive">
-        <h3>Вы не добавили в корзину ни одного товара.</h3>
+    <div class="container">
+        <div class="empty_cart inactive">
+            <h3>Вы не добавили в корзину ни одного товара.</h3>
+        </div>
     </div>
     <div class="container">
         <div class="cart_page_wrap inactive">
             <h3 class="cart_page_header">Корзина</h3>
             <div class="product_list"></div>
             <div class="final_price_div">
-                <p>Итого: <span class="final_price">0</span> руб.</p>
+                <span>Итого: <span id="final_price">0</span> руб.</span>
             </div>
             <div class="pay_btn_div">
-                <input type="button" class="cart_pay_btn" value="Перейти к оплате">
+                <button class="cart_pay_btn">Перейти к оплате</button>
             </div>
         </div>
     </div>

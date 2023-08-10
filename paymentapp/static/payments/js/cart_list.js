@@ -1,68 +1,82 @@
-let product_list_div = document.querySelector(".product_list");
-let cart_counter = document.querySelector(".cart_counter");
-let final_price = document.querySelector(".final_price");
+// Данные о товарах из localStorage
+const cart_object = JSON.parse(localStorage.getItem("cart"));
 
-let empty_cart_div = document.querySelector(".empty_cart");
-let cart_page_wrap_div = document.querySelector(".cart_page_wrap");
+// Элементы корзины
+const empty_cart_div = document.querySelector(".empty_cart");
+const cart_page_wrap_div = document.querySelector(".cart_page_wrap");
 
-let cart_object = JSON.parse(localStorage.getItem("cart"));
-
-function get_item_html(product_id) {
-	let cart = cart_object[product_id];
-	// noinspection HtmlUnknownAttribute
-	return `
-  <div class="product_item" product-id="${product_id}">
-		<div class="name_div">${cart.title}</div>
-		<div class="quantity_div">
-      <div class="counter_ co_mi ${cart.count === 1 ? 'disabled' : ''}" onclick="counter_change(this, 'minus')"><i class="fa-solid fa-minus"></i></div>
-      <div class="quantity">${cart.count}</div>
-      <div class="counter_ co_pl ${cart.count === cart.max_count ? 'disabled' : ''}" onclick="counter_change(this, 'plus')"><i class="fa-solid fa-plus"></i></div>
-    </div>
-    <div class="price_div">${cart.cost}</div>
-    <div class="remove_div">
-        <a href class="remove_div_a" onclick="return delete_product(this)">Удалить</a>
-    </div>
-	</div>`
+function showProducts(products) {
+  const product_list_div = document.querySelector(".product_list");
+  Object.entries(products).forEach(([product_id, product]) => {
+    product_list_div.appendChild(
+      Object.assign(document.createElement('div'), {classList: 'product_item'})
+    ).append(
+      // Наименование
+      Object.assign(document.createElement('div'), {classList: 'name_div'}).appendChild(
+        Object.assign(document.createElement('span'), {textContent: product.title})
+      ).parentElement,
+      // Счётчик
+      Object.assign(document.createElement('div'), {classList: 'quantity_div'}).appendChild(
+        // Уменьшить
+        Object.assign(document.createElement('div'), {classList: 'counter_ co_mi' + (product.count === 1 ? ' disabled' : ''), innerHTML: '<i class="fa-solid fa-minus"></i>'})
+      ).parentElement.appendChild(
+        // Количество
+        Object.assign(document.createElement('div'), {classList: 'quantity', textContent: product.count})
+      ).parentElement.appendChild(
+        // Увеличить
+        Object.assign(document.createElement('div'), {classList: 'counter_ co_pl' + (product.count === product.max_count ? ' disabled' : ''), innerHTML: '<i class="fa-solid fa-plus"></i>'})
+      ).parentElement,
+      // Стоимость 1 шт
+      Object.assign(document.createElement('div'), {classList: 'price_div'}).appendChild(
+        Object.assign(document.createElement('span'), {textContent: product.cost})
+      ).parentElement
+    );
+    // Id продукта
+    product_list_div.lastElementChild.setAttribute('product-id', product_id);
+  });
+  // События счётчика
+  product_list_div.querySelectorAll('.counter_').forEach(el => el.addEventListener('click', counter_change));
+  // Кнопка закрытия
+  product_list_div.childNodes.forEach(el => el.insertAdjacentHTML(
+    'beforeend', '<div class="remove_div"><span onclick="return delete_product(this)">Удалить</span></div>'
+  ));
 }
 
-function counter_change(btn, change) {
-  if (btn.classList.contains("disabled"))
+// Уменьшение количества товаров
+function counter_change(_) {
+  if (this.classList.contains("disabled"))
     return;
 
-  let quantity = btn.parentElement.querySelector('.quantity');
-  let product_id = btn.parentElement.parentElement.getAttribute("product-id");
+  let quantity = this.parentElement.querySelector('.quantity');
+  let product_id = this.parentElement.parentElement.getAttribute("product-id");
 
   let current_count = parseInt(quantity.textContent);
-  switch (change) {
-    case 'minus':
-      if (current_count > 2) {
-        current_count--;
-        btn.nextElementSibling.nextElementSibling.classList.remove("disabled");
-      } else {
-        current_count = 1;
-        btn.classList.add("disabled");
-      }
-      break;
-    case 'plus':
-      if (current_count < cart_object[product_id].max_count - 1) {
-        current_count++;
-        btn.previousElementSibling.previousElementSibling.classList.remove("disabled");
-      } else {
-        current_count = cart_object[product_id].max_count;
-        btn.classList.add("disabled");
-      }
-      break;
-    default:
-      return;
-  }
+  if (this.classList.contains('co_mi')) {
+    if (current_count > 2) {
+      current_count--;
+      this.nextElementSibling.nextElementSibling.classList.remove("disabled");
+    } else {
+      current_count = 1;
+      this.classList.add("disabled");
+    }
+  } else if (this.classList.contains('co_pl')) {
+    if (current_count < cart_object[product_id].max_count - 1) {
+      current_count++;
+      this.previousElementSibling.previousElementSibling.classList.remove("disabled");
+    } else {
+      current_count = cart_object[product_id].max_count;
+      this.classList.add("disabled");
+    }
+  } else return;
   quantity.textContent = current_count.toString();
 
   cart_object[product_id].count = current_count;
   localStorage.setItem("cart", JSON.stringify(cart_object));
 
-  final_price.textContent = evaluatePrice().toString();
+  calcFinalPrice();
 }
 
+const cart_counter = document.querySelector(".cart_counter");
 function delete_product(btn) {
   let product_item = btn.parentElement.parentElement;
   let product_id = product_item.getAttribute("product-id");
@@ -71,9 +85,8 @@ function delete_product(btn) {
   localStorage.setItem("cart", JSON.stringify(cart_object));
   product_item.remove();
 
-  cart_counter.innerText = Object.keys(cart_object).length;
-
-  final_price.textContent = evaluatePrice().toString();
+  cart_counter.textContent = Object.keys(cart_object).length.toString();
+  calcFinalPrice();
 
   if (Object.keys(cart_object).length === 0) {
     cart_page_wrap_div.classList.add("inactive");
@@ -83,22 +96,22 @@ function delete_product(btn) {
   return false; // event.preventDefault
 }
 
-function evaluatePrice() {
+
+const final_price = document.getElementById("final_price");
+function calcFinalPrice() {
   let total_price = 0;
   for (let product_id in cart_object) {
     let cost = parseInt(cart_object[product_id].cost);
     let count = parseInt(cart_object[product_id].count);
     total_price += cost * count;
   }
-  return total_price;
+  final_price.textContent = total_price.toString();
 }
 
-if (cart_object != null && Object.keys(cart_object).length !== 0) {
-  cart_page_wrap_div.classList.remove("inactive");
-  for (let product_id in cart_object)
-    product_list_div.innerHTML += get_item_html(product_id);
-
-  final_price.textContent = evaluatePrice().toString();
-} else {
-  empty_cart_div.classList.remove("inactive");
-}
+window.addEventListener("DOMContentLoaded", () => { // Загружаем корзину как только весь DOM получен
+  if (cart_object != null && Object.keys(cart_object).length !== 0) {
+    cart_page_wrap_div.classList.remove("inactive");
+    showProducts(cart_object);
+    calcFinalPrice();
+  } else empty_cart_div.classList.remove("inactive");
+})

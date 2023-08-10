@@ -32,18 +32,13 @@ function send_pay_form(pay_form) {
       if (!data.success) {
         for (let error in data.errors) {
           console.error(error, data.errors[error]);
-          for (let err of data.errors[error]) {
-            document.querySelector('.alert > ul').innerHTML += `
-              <li>${error} : ${err}</li>
-            `;
-          }
+          document.querySelector('.alert > ul').append(
+            ...data.errors[error].map(err => Object.assign(document.createElement('li'), {textContent: `${error} : ${err}`}))
+          );
         }
       } else {
         localStorage.removeItem("cart");
-        window.location.replace(data['success_url']);
+        window.location.assign(data['success_url']); // replace will clear document history
       }
-    })
-    .catch(reason => {
-      console.error(reason);
-    });
+    }).catch(reason => console.error(reason));
 }

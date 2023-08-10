@@ -1,11 +1,12 @@
-window.onload = (e) => {
-    let cart_counter = document.querySelector('.cart_counter');
-
-    let cart_object = JSON.parse(
-        localStorage.getItem('cart')
-    );
+// Cart counter
+window.addEventListener('DOMContentLoaded', () => {
+    const cart_object = JSON.parse(localStorage.getItem('cart'));
     if (cart_object != null) {
-        let i = Object.keys(cart_object).length;
-        cart_counter.innerText = i;
+        document.querySelectorAll('.cart_counter').forEach(el => el.innerText = Object.keys(cart_object).length);
     }
-};
+
+    const vertical_menu = document.getElementById('header-menu');
+    document.getElementById('menu-control').firstElementChild.onclick = () => {
+        vertical_menu.classList.toggle('hide_element_mobile');
+    };
+});
