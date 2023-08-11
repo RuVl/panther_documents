@@ -30,7 +30,7 @@ class CartView(FormView):
 
     def form_valid(self, form):
         # Создание транзакции для дальнейшей оплаты
-        t = Transaction(email=form.cleaned_data['email'], gateway=form.gateway)
+        t = Transaction(email=form.cleaned_data['email'], gateway=form.cleaned_data['gateway'])
         if self.request.user.is_authenticated:
             t.user_id = self.request.user.id
         t.save()  # Без сохранения не установить m2m rel
