@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 
 from mainapp.models import Country
 
@@ -20,6 +20,10 @@ class BookListView(ListView):
         context['lang'] = 'ru'
         context['title'] = 'PantherDoc'
         return context
+
+
+class SupportView(TemplateView):
+    template_name = 'main/support.html'
 
 
 # noinspection PyUnusedLocal
