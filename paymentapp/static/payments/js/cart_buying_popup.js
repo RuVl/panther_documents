@@ -38,7 +38,7 @@ function send_pay_form(pay_form) {
         }
       } else {
         localStorage.removeItem("cart");
-        window.location.assign(data['success_url']); // replace will clear document history
+        window.location.assign(window.location.origin + data['success_url']); // replace will clear document history
       }
     }).catch(reason => console.error(reason));
 }

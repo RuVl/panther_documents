@@ -1,7 +1,15 @@
+header {
+    min-height: 50px;
+}
+
+main {
+    --min-height: calc(100vh - 200px);
+}
+
 .main_wrap {
     display: flex;
     width: 100%;
-    height: calc(100vh - 101px);
+    height: 100%;
 }
 .left_menu {
     min-width: 200px;

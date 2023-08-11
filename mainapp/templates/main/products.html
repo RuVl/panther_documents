@@ -4,7 +4,7 @@
 
 {% block link_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/products.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'popup.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/popup.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/fontawesome.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/duotone.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/solid.css' %}">
@@ -52,11 +52,6 @@
 {% endblock %}
 
 {% block main %}
-    <div class="container">
-        <div class="note_wrap">
-            <p>Чтобы получить уже купленные товары перейдите по <a href="{% url 'payment:send-links' %}">ссылке</a></p>
-        </div>
-    </div>
     <div class="container">
         <table class="products-table">
             <thead>

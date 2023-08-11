@@ -121,3 +121,6 @@ class PlisioGateway(models.Model):
 
     comment = models.CharField(max_length=255, null=True, blank=True)
     commission = models.FloatField(null=True, blank=True)
+
+    def get_invoice_url(self):
+        return f'https://plisio.net/invoice/{self.txn_id}'

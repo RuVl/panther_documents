@@ -6,7 +6,8 @@ from collections import OrderedDict
 
 import plisio
 from django.core.mail import send_mail
-from django.http import JsonResponse, HttpResponseNotFound, HttpResponseForbidden, FileResponse, HttpRequest, HttpResponseBadRequest, HttpResponse
+from django.http import JsonResponse, HttpResponseNotFound, HttpResponseForbidden, FileResponse, HttpRequest, HttpResponseBadRequest, HttpResponse, \
+    HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, TemplateView
@@ -17,6 +18,7 @@ from paymentapp.forms import BuyProductForm, SendLinksForm
 from paymentapp.models import Transaction, ProductFile, ProductInfo, AllowedCurrencies, PlisioGateway
 
 
+# Вьюшка для отображения корзины и переадресации на оплату
 class CartView(FormView):
     form_class = BuyProductForm
     template_name = 'payment/cart_page.html'
@@ -65,6 +67,7 @@ class CartView(FormView):
         return JsonResponse(response_data, json_dumps_params={'ensure_ascii': False})
 
 
+# Вьюшка для переадресации или вывода ошибки plisio
 class PlisioPaymentView(TemplateView):
     template_name = 'payment/plisio.html'
     plisio_client = plisio.Client(api_key=settings.PLISIO_SECRET_KEY)
@@ -84,6 +87,9 @@ class PlisioPaymentView(TemplateView):
             # TODO already sold
             return super().get(request, *args, **kwargs)
 
+        if t.gateway != t.PaymentMethod.PLISIO:
+            return HttpResponseNotFound()
+
         if t.plisio_gateway is None:
             try:
                 data: dict = self.plisio_client.invoice(
@@ -95,18 +101,24 @@ class PlisioPaymentView(TemplateView):
                     source_currency=AllowedCurrencies.USD,
                     email=t.email
                 )
-                logging.info(f'Created plisio invoice: {data}')
+
                 if data.get('success') and data.get('data'):
                     PlisioGateway.objects.create(txn_id=data['data'].get('txn_id'), transaction=t)
                     t.invoice_total_sum = data['data'].get('invoice_total_sum')
                     t.save()
+                    return HttpResponseRedirect(data.get('invoice_url'))
+
             except PlisioAPIException or PlisioRequestException as e:
                 logging.error(str(e))
 
-        # TODO invoice created
-        return super().get(request, *args, **kwargs)
+            # TODO произошла ошибка платежного шлюза, попробуйте снова
+            return super().get(request, *args, **kwargs)
+
+        # TODO Проверка оплаты по кнопке и ссылка на оплату
+        return super().get(request, *args, **kwargs)  # Пользователь нажал назад на странице оплаты
 
 
+# Вьюшка для получения статуса транзакции plisio
 class PlisioStatusView(View):
     def post(self, request: HttpRequest, *args, **kwargs):
         data: dict = json.loads(request.body)
@@ -154,6 +166,7 @@ class PlisioStatusView(View):
         plisio.save()
 
 
+# Вьюшка для отправки ссылок на скачивание купленных товаров
 class SendLinksFormView(FormView):
     form_class = SendLinksForm
     template_name = 'payment/send_links.html'
@@ -182,6 +195,7 @@ class SendLinksFormView(FormView):
         return send_mail(title, message, None, [email], fail_silently=False)
 
 
+# Вьюшка для скачивания товаров
 class DownloadLinksView(View):
     def get(self, request, *args, **kwargs):
         email = self.kwargs.get('email')

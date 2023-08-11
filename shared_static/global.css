@@ -22,7 +22,9 @@ header {
 }
 
 main {
-  min-height: calc(100vh - 100px - 200px);
+  --min-height: calc(100vh - 100px - 200px);
+
+  min-height: var(--min-height);
 }
 
 footer {

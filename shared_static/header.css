@@ -3,6 +3,9 @@
   display: flex;
   justify-content: space-between;
   height: 100px;
+
+  border-bottom: 1px solid;
+  border-color: #7895cb;
 }
 .header_title {
   display: flex;
@@ -17,6 +20,8 @@
   align-items: center;
   justify-content: flex-end;
   width: 100%;
+  /*noinspection CssInvalidPropertyValue*/
+  text-wrap: nowrap;
 }
 .header_content a {
   background-color: #fff;
@@ -28,11 +33,6 @@
   padding: 7px;
   margin: 0 3px;
   text-decoration: none;
-}
-
-.header_content a.header_cart {
-  /*noinspection CssInvalidPropertyValue*/
-  text-wrap: nowrap;
 }
 
 .hide_element_mobile {
@@ -66,7 +66,6 @@
   margin-bottom: 10px;
   gap: 10px;
 
-  border-top: 1px solid;
   border-bottom: 1px solid;
   border-color: #7895cb;
 
@@ -76,10 +75,10 @@
   transition: opacity .3s ease-in, border-color .3s ease-in;
 }
 
-.header_menu_box {
+.header_menu > a {
   display: flex;
-  width: 60px;
-  height: 60px;
+  min-width: 60px;
+  min-height: 40px;
   border: 1px solid #96c0d9;
   border-radius: 10px;
 
@@ -87,17 +86,23 @@
   align-items: center;
   text-decoration: none;
 
-  background-color: #96c0d9;
+  background-color: #005dff3d;
   color: black;
-  padding: 3px;
+  padding: 6px;
 
   transition: color .3s ease-in, background-color .3s ease-in;
 }
-.header_menu_box:hover {
+.header_menu > a:hover {
   cursor: pointer;
 }
 
 @media only screen and (max-width: 767px) {
+  header {
+    min-height: 100px;
+  }
+  main {
+    --min-height: calc(100vh - 200px);
+  }
   .burger_menu {
     display: block;
   }
@@ -122,7 +127,7 @@
     flex-direction: column;
     gap: 10px;
   }
-  .header_menu > .header_menu_box {
+  .header_menu > a {
     width: 100%;
     box-sizing: border-box;
   }
