@@ -62,6 +62,12 @@ class Transaction(models.Model):
     # Must be one of gateways
     plisio_gateway = models.OneToOneField('PlisioGateway', on_delete=models.SET_NULL, null=True, blank=True)
 
+    # Переадресация в зависимости от метода оплаты
+    def get_gateway_url(self):
+        match self.gateway:
+            case self.PaymentMethod.PLISIO:
+                return reverse_lazy('payment:plisio', args=(self.id,))
+
 
 class ProductFile(models.Model):
     # Might be added info about file (title, country)

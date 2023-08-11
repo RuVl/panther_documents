@@ -30,7 +30,7 @@ class CartView(FormView):
 
     def form_valid(self, form):
         # Создание транзакции для дальнейшей оплаты
-        t = Transaction(email=form.cleaned_data['email'])
+        t = Transaction(email=form.cleaned_data['email'], gateway=form.gateway)
         if self.request.user.is_authenticated:
             t.user_id = self.request.user.id
         t.save()  # Без сохранения не установить m2m rel
@@ -47,8 +47,7 @@ class CartView(FormView):
             )
         t.save()  # Посчитали сумму цен всех товаров
 
-        # TODO Переадресация в зависимости от выбранного метода оплаты
-        self.success_url = reverse_lazy('payment:plisio', args=(t.id,))
+        self.success_url = t.get_gateway_url()
 
         # Send success code and url as json
         response_data = {
@@ -88,7 +87,7 @@ class PlisioPaymentView(TemplateView):
         if t.plisio_gateway is None:
             try:
                 data: dict = self.plisio_client.invoice(
-                    order_name=f"Test order",
+                    order_name=f'Order number {transaction_id}',
                     order_number=transaction_id,
                     amount=None,
                     currency=None,
