@@ -123,6 +123,23 @@ tbody tr {
   color: blue;
 }
 
+/* Some styles for support page */
+.default_a {
+  margin: 0;
+  text-decoration: none;
+  color: blue;
+}
+.s_links a {
+  text-decoration: none;
+  color: #1e3050;
+  margin: 0 5px;
+}
+.s_links {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
 
 @media (max-width: 1024px) {
   .container {

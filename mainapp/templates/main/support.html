@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block link_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/products.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/fontawesome.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/duotone.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/solid.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/brands.css' %}">
+{% endblock %}
+
+
+{% block header %}
+    {% include 'components/header.html' %}
+{% endblock %}
+
+
+{% block footer %}
+    {% include 'components/footer.html' %}
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <p>
+            Написать в поддержку
+            <a class="default_a" href="https://t.me/Panther_Documents">@Panther_Documents</a>
+        </p>
+        <div class="s_links">
+            <a href="#">
+                <i class="fa-brands fa-vk fa-2xl"></i>
+            </a>
+            <a href="#">
+                <i class="fa-brands fa-instagram fa-2xl"></i>
+            </a>
+            <a href="#">
+                <i class="fa-brands fa-twitch fa-2xl"></i>
+            </a>
+        </div>
+    </div>
+{% endblock %}
