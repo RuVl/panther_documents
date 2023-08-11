@@ -192,7 +192,7 @@ if not DEBUG:
                 'level': 'DEBUG',
                 'class': 'logging.handlers.RotatingFileHandler',
                 'formatter': 'verbose',
-                'filename': BASE_DIR / 'gunicorn.log',
+                'filename': BASE_DIR / 'logs' / 'django.log',
                 'maxBytes': 1024 * 1024 * 100,  # 100 mb
             }
         },

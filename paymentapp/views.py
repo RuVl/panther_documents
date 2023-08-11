@@ -10,6 +10,7 @@ from django.http import JsonResponse, HttpResponseNotFound, HttpResponseForbidde
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, TemplateView
+from plisio.exceptions import PlisioAPIException, PlisioRequestException
 
 from panther_documents import settings
 from paymentapp.forms import BuyProductForm, SendLinksForm
@@ -50,7 +51,10 @@ class CartView(FormView):
         self.success_url = reverse_lazy('payment:plisio', args=(t.id,))
 
         # Send success code and url as json
-        response_data = {'success': True}
+        response_data = {
+            'success': True,
+            'success_url': self.success_url
+        }
         return JsonResponse(response_data, json_dumps_params={'ensure_ascii': False})
 
     def form_invalid(self, form):
@@ -82,20 +86,23 @@ class PlisioPaymentView(TemplateView):
             return super().get(request, *args, **kwargs)
 
         if t.plisio_gateway is None:
-            data: dict = self.plisio_client.invoice(
-                order_name=f"Test order",
-                order_number=transaction_id,
-                amount=None,
-                currency=None,
-                source_amount=t.total_cost,
-                source_currency=AllowedCurrencies.USD,
-                email=t.email
-            )
-
-            if data.get('success') and data.get('data'):
-                PlisioGateway.objects.create(txn_id=data['data'].get('txn_id'), transaction=t)
-                t.invoice_total_sum = data['data'].get('invoice_total_sum')
-                t.save()
+            try:
+                data: dict = self.plisio_client.invoice(
+                    order_name=f"Test order",
+                    order_number=transaction_id,
+                    amount=None,
+                    currency=None,
+                    source_amount=t.total_cost,
+                    source_currency=AllowedCurrencies.USD,
+                    email=t.email
+                )
+                logging.info(f'Created plisio invoice: {data}')
+                if data.get('success') and data.get('data'):
+                    PlisioGateway.objects.create(txn_id=data['data'].get('txn_id'), transaction=t)
+                    t.invoice_total_sum = data['data'].get('invoice_total_sum')
+                    t.save()
+            except PlisioAPIException or PlisioRequestException as e:
+                logging.error(str(e))
 
         # TODO invoice created
         return super().get(request, *args, **kwargs)
