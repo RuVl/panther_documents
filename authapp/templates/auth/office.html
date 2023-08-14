@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block link_css %}
+    <link type="text/css" rel="stylesheet" href="{% static 'footer.css' %}">
     <link type="text/css" rel="stylesheet" href="{% static 'auth/css/office.css' %}">
     
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/fontawesome.css' %}">
@@ -9,9 +10,16 @@
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/solid.css' %}">
 {% endblock %}
 
-{#{% block header %}#}
-{#    {% include 'components/header.html' %}#}
-{#{% endblock %}#}
+
+{% block header %}
+	<div class="header_wrap">
+        <div class=""></div>
+        <nav class="top_menu">
+            <a href="{% url 'payment:send-links' %}">Мои покупки</a>
+            <a href="{% url 'main:support' %}">Тех. Поддержка</a>
+        </nav>
+    </div>
+{% endblock %}
 
 
 {% block footer %}
@@ -25,13 +33,13 @@
             <ul class="menu_ul">
                 {% if user.is_staff %}
                     <li class="menu_li">
-                        <a href="{% url 'admin:index' %}">Admin panel</a>
+                        <a href="{% url 'admin:index' %}"><span>Admin panel</span></a>
                     </li>
                 {% endif %}
-                <li class="menu_li"><a href="{% url 'main:home' %}">Магазин</a></li>
-                <li class="menu_li"><a href="{% url 'payment:send-links' %}">Покупки</a></li>
+                <li class="menu_li"><a href="{% url 'main:home' %}"><span>Магазин</span></a></li>
+                <li class="menu_li"><a href="{% url 'payment:send-links' %}"><span>Покупки</span></a></li>
                 
-                <li class="menu_li"><a href="{% url 'auth:logout' %}">Выход</a></li>
+                <li class="menu_li"><a href="{% url 'auth:logout' %}"><span>Выход</span></a></li>
             </ul>
         </div>
         <div class="menu_content">

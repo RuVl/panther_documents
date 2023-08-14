@@ -1,21 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'site_page.html' %}
 {% load static %}
 
-{% block link_css %}
+{% block additional_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'auth/css/auth.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/fontawesome.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/duotone.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/solid.css' %}">
 {% endblock %}
 
-{% block header %}
-    {% include 'components/header.html' %}
-{% endblock %}
-
-
-{% block footer %}
-    {% include 'components/footer.html' %}
-{% endblock %}
 
 {% block main %}
     <div class="page_wrap">
@@ -29,7 +21,7 @@
                 {{form.non_field_errors}}
             </div>
 
-            <h3>Введите Email для получения файлов.</h2>
+            <h3>Введите Email для получения файлов.</h3>
             <form method="post" class="form_inside">
                 {% for field in form %}
                     {{field}}

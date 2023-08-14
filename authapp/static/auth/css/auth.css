@@ -2,7 +2,7 @@ body {
   height: 100vh;
 }
 .page_wrap {
-  height: calc(100vh - 100px - 1px);
+  height: calc(var(--min-height));
 
   display: flex;
   align-items: center;

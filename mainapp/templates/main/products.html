@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'site_page.html' %}
 {% load static %}
 {% load i18n %}
 
-{% block link_css %}
+{% block additional_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/products.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/popup.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/fontawesome.css' %}">
@@ -10,24 +10,17 @@
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/solid.css' %}">
 {% endblock %}
 
-{% block scripts %}
+
+{% block additional_scripts %}
     <script src="{% static 'main/js/cart.js' %}"></script>
 {% endblock %}
 
-{% block header %}
-    {% include 'components/header.html' %}
-{% endblock %}
-
-
-{% block footer %}
-    {% include 'components/footer.html' %}
-{% endblock %}
 
 {% block popup %}
 <div class="popup">
     <div class="popup_content">
         <div class="popup_header">
-            <!-- <h2>Купить товар</h2> -->
+{#            <h2>Купить товар</h2>#}
             <i class="fa-duotone fa-xmark fa-xl popup_close"></i>
         </div>
 
@@ -37,7 +30,7 @@
                     <p class="product_name">Some product name</p>
                 </div>
                 <div class="price_div_popup">
-                    <p class="price"><span class="price_span"></span> рублей.</p>
+                    <p class="price"><span class="price_span">0</span> рублей.</p>
                 </div>
                 
                 <div class="form_content_btns">
@@ -50,6 +43,7 @@
     </div>
 </div>
 {% endblock %}
+
 
 {% block main %}
     <div class="container">

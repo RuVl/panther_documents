@@ -1,21 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'site_page.html' %}
 {% load static %}
 
-{% block link_css %}
+{% block additional_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'auth/css/auth.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/fontawesome.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/duotone.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'libs/fontawesome/css/solid.css' %}">
-{% endblock %}
-
-
-{% block header %}
-    {% include 'components/header.html' %}
-{% endblock %}
-
-
-{% block footer %}
-    {% include 'components/footer.html' %}
 {% endblock %}
 
 
