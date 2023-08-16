@@ -91,7 +91,7 @@ class PlisioPaymentView(TemplateView):
 
         if t.plisio_gateway is None:
             try:
-                data: dict = self.plisio_client.invoice(
+                responce: dict = self.plisio_client.invoice(
                     order_name=f'Order number {transaction_id}',
                     order_number=transaction_id,
                     amount=None,
@@ -101,14 +101,19 @@ class PlisioPaymentView(TemplateView):
                     email=t.email
                 )
 
-                logging.error(f'ДАННЫЕ ПРИШЛИ {data}')
+                logging.error(f'ДАННЫЕ ПРИШЛИ {responce}')
 
-                if data.get('success') and data.get('data'):
-                    p = PlisioGateway(txn_id=data['data'].get('txn_id'))
+                if responce.get('status') == 'success':
+                    data: dict = responce.get('data')
+                    if data is None:
+                        # Неверный ответ от сервера
+                        return HttpResponseBadRequest()
+
+                    p = PlisioGateway(txn_id=data.get('txn_id'))
                     p.save()
 
                     t.plisio_gateway = p
-                    t.invoice_total_sum = data['data'].get('invoice_total_sum')
+                    t.invoice_total_sum = data.get('invoice_total_sum')
                     t.save()
 
                     return HttpResponseRedirect(data.get('invoice_url'))
