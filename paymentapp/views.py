@@ -83,12 +83,11 @@ class PlisioPaymentView(TemplateView):
         except Transaction.DoesNotExist:
             return HttpResponseNotFound()
 
-        if t.is_sold:
-            # TODO already sold
+        if t.is_sold:  # TODO already sold
             return super().get(request, *args, **kwargs)
 
         if t.gateway != t.PaymentMethod.PLISIO:
-            return HttpResponseNotFound()
+            return HttpResponseNotFound()  # Метод оплаты этой транзакции не plisio
 
         if t.plisio_gateway is None:
             try:
@@ -108,13 +107,17 @@ class PlisioPaymentView(TemplateView):
                     t.save()
                     return HttpResponseRedirect(data.get('invoice_url'))
 
-            except PlisioAPIException or PlisioRequestException as e:
+            except (PlisioAPIException, PlisioRequestException) as e:
                 logging.error(str(e))
 
             # TODO произошла ошибка платежного шлюза, попробуйте снова
-            return super().get(request, *args, **kwargs)
+            return HttpResponseBadRequest()
 
         # TODO Проверка оплаты по кнопке и ссылка на оплату
+        self.extra_context = {
+            'action': 'button_redirect',
+            'plisio_gateway': t.plisio_gateway
+        }
         return super().get(request, *args, **kwargs)  # Пользователь нажал назад на странице оплаты
 
 
