@@ -101,10 +101,16 @@ class PlisioPaymentView(TemplateView):
                     email=t.email
                 )
 
+                logging.error(f'ДАННЫЕ ПРИШЛИ {data}')
+
                 if data.get('success') and data.get('data'):
-                    PlisioGateway.objects.create(txn_id=data['data'].get('txn_id'), transaction=t)
+                    p = PlisioGateway(txn_id=data['data'].get('txn_id'))
+                    p.save()
+
+                    t.plisio_gateway = p
                     t.invoice_total_sum = data['data'].get('invoice_total_sum')
                     t.save()
+
                     return HttpResponseRedirect(data.get('invoice_url'))
 
             except (PlisioAPIException, PlisioRequestException) as e:
