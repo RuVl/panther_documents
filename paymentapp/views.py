@@ -133,7 +133,7 @@ class PlisioPaymentView(TemplateView):
 
 
 # Вьюшка для получения статуса транзакции plisio
-class PlisioStatusView(View):
+class PlisioStatus(View):
     def post(self, request: HttpRequest, *args, **kwargs):
         data: dict = json.loads(request.body)
         if not self.verify_hash(data):
