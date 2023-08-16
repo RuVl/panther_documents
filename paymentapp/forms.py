@@ -35,7 +35,7 @@ class SendLinksForm(forms.Form):
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if not Transaction.objects.filter(email=email).exists():
+        if not Transaction.objects.filter(email=email, is_sold=True).exists():
             raise ValidationError(_('Email not found'), code='not found')
 
         return email
