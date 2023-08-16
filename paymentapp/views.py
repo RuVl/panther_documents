@@ -3,6 +3,7 @@ import hmac
 import json
 import logging
 from collections import OrderedDict
+from smtplib import SMTPAuthenticationError
 
 import plisio
 from django.core.mail import send_mail
@@ -206,7 +207,12 @@ class SendLinksFormView(FormView):
             for i, f in enumerate(t.productinfo_set.all()):
                 message += f'{i + 1}) {f.title} - {domain}{f.get_download_url()}\n'
 
-        return send_mail(title, message, None, [email], fail_silently=False)
+        try:
+            return send_mail(title, message, None, [email], fail_silently=False)
+        except SMTPAuthenticationError as e:
+            logging.error(str(e))
+        finally:
+            return False  # Что-то не так с отправкой почтой
 
 
 # Вьюшка для скачивания товаров
