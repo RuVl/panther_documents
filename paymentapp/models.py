@@ -81,6 +81,9 @@ class Transaction(models.Model):
 
         match self.gateway:
             case self.PaymentMethod.PLISIO:
+                if self.plisio_gateway is None:
+                    return False
+
                 try:
                     response = get_transaction_details(self.plisio_gateway.txn_id)
                 except PlisioException:
