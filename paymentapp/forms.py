@@ -3,8 +3,8 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
-from paymentapp.models import Transaction
 from mainapp.models import Product
+from paymentapp.models import Transaction
 
 
 class BuyProductForm(forms.Form):
@@ -33,9 +33,15 @@ class SendLinksForm(forms.Form):
     email = forms.EmailField()
     captcha = ReCaptchaField()
 
+    transactions: list[Transaction]
+
     def clean_email(self):
         email = self.cleaned_data['email']
-        if not Transaction.objects.filter(email=email, is_sold=True).exists():
+        if not Transaction.objects.filter(email=email).exists():
             raise ValidationError(_('Email not found'), code='not found')
+
+        self.transactions = list(t for t in Transaction.objects.filter(email=email).all() if t.check_if_sold())
+        if len(self.transactions) == 0:
+            raise ValidationError(_('Not paid'), code='not paid')
 
         return email

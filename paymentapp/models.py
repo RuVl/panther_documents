@@ -8,10 +8,17 @@ from django.utils.timezone import now
 
 from authapp.models import ShopUser
 from panther_documents import settings
+from paymentapp.plisio import get_transaction_details, PlisioException
 
 
+# Max expire period for download files
 def in_7_days():
     return now() + timedelta(days=7)
+
+
+# Max invoice expire period
+def in_48_hours():
+    return now() + timedelta(days=2)
 
 
 # noinspection SpellCheckingInspection
@@ -68,6 +75,28 @@ class Transaction(models.Model):
             case self.PaymentMethod.PLISIO:
                 return reverse_lazy('payment:plisio', args=(self.id,))
 
+    def check_if_sold(self):
+        if self.is_sold:
+            return True
+
+        match self.gateway:
+            case self.PaymentMethod.PLISIO:
+                try:
+                    response = get_transaction_details(self.plisio_gateway.txn_id)
+                except PlisioException:
+                    return False
+
+                # На всякий
+                if response.get('data') is None:
+                    return False
+
+                if response['data'].get('status') in ['completed', 'mismatch']:
+                    self.is_sold = True
+                    self.save()
+                    return True
+
+        return False
+
 
 class ProductFile(models.Model):
     # Might be added info about file (title, country)
@@ -108,6 +137,8 @@ class ProductInfo(models.Model):
 
 
 class PlisioGateway(models.Model):
+    invoice_expire = models.DateTimeField(default=in_48_hours)
+
     # Request
     invoice_closed = models.BooleanField(default=False)
     txn_id = models.CharField(max_length=255)
@@ -124,3 +155,6 @@ class PlisioGateway(models.Model):
 
     def get_invoice_url(self):
         return f'https://plisio.net/invoice/{self.txn_id}'
+
+    def is_invoice_expired(self):
+        return self.invoice_expire <= now()

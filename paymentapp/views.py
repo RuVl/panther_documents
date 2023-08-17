@@ -1,22 +1,18 @@
-import hashlib
-import hmac
 import json
 import logging
-from collections import OrderedDict
 from smtplib import SMTPAuthenticationError
 
-import plisio
 from django.core.mail import send_mail
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseForbidden, FileResponse, HttpRequest, HttpResponseBadRequest, HttpResponse, \
     HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, TemplateView
-from plisio.exceptions import PlisioAPIException, PlisioRequestException
 
-from panther_documents import settings
+from paymentapp import plisio
 from paymentapp.forms import BuyProductForm, SendLinksForm
 from paymentapp.models import Transaction, ProductFile, ProductInfo, AllowedCurrencies, PlisioGateway
+from paymentapp.plisio import PlisioException, save_plisio_data, verify_hash
 
 
 # Вьюшка для отображения корзины и переадресации на оплату
@@ -71,7 +67,6 @@ class CartView(FormView):
 # Вьюшка для переадресации или вывода ошибки plisio
 class PlisioPaymentView(TemplateView):
     template_name = 'payment/plisio.html'
-    plisio_client = plisio.Client(api_key=settings.PLISIO_SECRET_KEY)
 
     # TODO make more private url
     def get(self, request: HttpRequest, *args, **kwargs):
@@ -92,20 +87,17 @@ class PlisioPaymentView(TemplateView):
 
         if t.plisio_gateway is None:
             try:
-                responce: dict = self.plisio_client.invoice(
+                response: dict = plisio.create_invoice(
                     order_name=f'Order number {transaction_id}',
                     order_number=transaction_id,
-                    amount=None,
-                    currency=None,
                     source_amount=t.total_cost,
                     source_currency=AllowedCurrencies.USD,
                     email=t.email
                 )
 
-                logging.error(f'ДАННЫЕ ПРИШЛИ {responce}')
-
-                if responce.get('status') == 'success':
-                    data: dict = responce.get('data')
+                logging.error(f'ДАННЫЕ ПРИШЛИ {response}')
+                if response.get('status') == 'success':
+                    data: dict = response.get('data')
                     if data is None:
                         # Неверный ответ от сервера
                         return HttpResponseBadRequest()
@@ -118,8 +110,7 @@ class PlisioPaymentView(TemplateView):
                     t.save()
 
                     return HttpResponseRedirect(data.get('invoice_url'))
-
-            except (PlisioAPIException, PlisioRequestException) as e:
+            except PlisioException as e:
                 logging.error(str(e))
 
             # TODO произошла ошибка платежного шлюза, попробуйте снова
@@ -137,48 +128,29 @@ class PlisioPaymentView(TemplateView):
 class PlisioStatus(View):
     def post(self, request: HttpRequest, *args, **kwargs):
         data: dict = json.loads(request.body)
-        if not self.verify_hash(data):
+        if not verify_hash(data):
             return HttpResponseBadRequest()
 
         logging.info(f"{data.get('order_number')}: {data.get('status')}")
         match data.get('status'):
             case 'completed' | 'mismatch':
                 p = PlisioGateway.objects.get(txn_id=data.get('txn_id'), transaction__pk=data.get('order_number'))
-                self.save_plisio_data(p, data)
+                save_plisio_data(p, data)
                 SendLinksFormView.send_transaction_links([p.transaction], self.request.get_host(), p.transaction.email)
             case 'expired':
                 p = PlisioGateway.objects.get(txn_id=data.get('txn_id'), transaction__pk=data.get('order_number'))
                 if data.get('source_amount') >= p.transaction.invoice_total_sum:
-                    self.save_plisio_data(p, data)
+                    save_plisio_data(p, data)
                     SendLinksFormView.send_transaction_links([p.transaction], self.request.get_host(), p.transaction.email)
-            case 'cancelled' | 'error':
+                else:
+                    p.invoice_closed = True
+                    p.save()
+            case 'cancelled':
                 p = PlisioGateway.objects.get(txn_id=data.get('txn_id'), transaction__pk=data.get('order_number'))
                 p.invoice_closed = True
                 p.save()
 
         return HttpResponse()
-
-    @staticmethod
-    def verify_hash(data: dict) -> bool:
-        temp = OrderedDict(sorted(data.items()))
-        verify_hash = temp.pop('verify_hash')
-        hashed = hmac.new(settings.PLISIO_SECRET_KEY, temp, hashlib.sha1)
-        return hashed.hexdigest() == verify_hash
-
-    @staticmethod
-    def save_plisio_data(plisio: PlisioGateway, data: dict):
-        plisio.amount = float(data.get('amount'))
-        plisio.net_profit = float(data.get('invoice_sum'))
-        plisio.currency = data.get('currency')
-        plisio.commission = float(data.get('invoice_commission'))
-
-        plisio.comment = data.get('plisio_comment')
-        plisio.confirmations = data.get('confirmations')
-
-        plisio.invoice_closed = True
-        plisio.transaction.is_sold = True
-
-        plisio.save()
 
 
 # Вьюшка для отправки ссылок на скачивание купленных товаров
@@ -190,11 +162,11 @@ class SendLinksFormView(FormView):
     def form_valid(self, form):
         domain = self.request.get_host()
         email = form.cleaned_data['email']
-        transactions = Transaction.objects.filter(email=email, is_sold=True).all()
 
-        if not self.send_transaction_links(transactions, domain, email):
+        if not self.send_transaction_links(form.transactions, domain, email):
             logging.warning("Can't send email!")
             # TODO page email wasn't sent
+            return self.form_invalid(form)
 
         return super().form_valid(form)
 
