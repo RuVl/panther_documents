@@ -1,4 +1,5 @@
 import hashlib
+import logging
 import random
 from datetime import timedelta
 
@@ -88,6 +89,8 @@ class Transaction(models.Model):
                     response = get_transaction_details(self.plisio_gateway.txn_id)
                 except PlisioException:
                     return False
+
+                logging.error(response)
 
                 # На всякий
                 if response.get('data') is None:
