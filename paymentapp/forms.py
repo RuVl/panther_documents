@@ -1,3 +1,5 @@
+import logging
+
 from captcha.fields import ReCaptchaField
 from django import forms
 from django.core.exceptions import ValidationError
@@ -40,7 +42,14 @@ class SendLinksForm(forms.Form):
         if not Transaction.objects.filter(email=email).exists():
             raise ValidationError(_('Email not found'), code='not found')
 
-        self.transactions = list(t for t in Transaction.objects.filter(email=email).all() if t.check_if_sold())
+        self.transactions = []
+        for t in Transaction.objects.filter(email=email).all():
+            logging.info(f"Check {str(t)}")
+            if t.check_if_sold():
+                self.transactions.append(t)
+
+        logging.info(self.transactions)
+
         if len(self.transactions) == 0:
             raise ValidationError(_('Not paid'), code='not paid')
 

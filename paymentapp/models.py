@@ -100,6 +100,9 @@ class Transaction(models.Model):
 
         return False
 
+    def __str__(self):
+        return f'<Transaction {self.id}, owner {self.email}, is_sold {self.is_sold}>'
+
 
 class ProductFile(models.Model):
     # Might be added info about file (title, country)
