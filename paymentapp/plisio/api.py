@@ -2,7 +2,7 @@ from typing import Union
 
 import requests
 from panther_documents.settings import PLISIO_SECRET_KEY
-from paymentapp.plisio import PlisioAPIException, PlisioRequestException
+from . import PlisioAPIException, PlisioRequestException
 
 session = requests.Session()
 session.headers.update({

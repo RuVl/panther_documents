@@ -3,7 +3,11 @@ import hmac
 from collections import OrderedDict
 
 from panther_documents.settings import PLISIO_SECRET_KEY
-from paymentapp.models import PlisioGateway
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from paymentapp.models import PlisioGateway
 
 
 def verify_hash(data: dict) -> bool:
@@ -13,7 +17,7 @@ def verify_hash(data: dict) -> bool:
     return hashed.hexdigest() == verify_hash
 
 
-def save_plisio_data(plisio: PlisioGateway, data: dict):
+def save_plisio_data(plisio: 'PlisioGateway', data: dict):
     plisio.amount = float(data.get('amount'))
     plisio.net_profit = float(data.get('invoice_sum'))
     plisio.currency = data.get('currency')
