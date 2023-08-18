@@ -183,8 +183,8 @@ class SendLinksFormView(FormView):
             return send_mail(title, message, None, [email], fail_silently=False)
         except SMTPAuthenticationError as e:
             logging.error(str(e))
-        finally:
-            return False  # Что-то не так с отправкой почтой
+
+        return False  # Что-то не так с отправкой почтой
 
 
 # Вьюшка для скачивания товаров
