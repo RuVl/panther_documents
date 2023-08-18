@@ -130,17 +130,16 @@ class PlisioStatus(View):
         if not verify_hash(data):
             return HttpResponseBadRequest()
 
-        logging.info(f"{data.get('order_number')}: {data.get('status')}")
         match data.get('status'):
             case 'completed' | 'mismatch':
                 p = PlisioGateway.objects.get(txn_id=data.get('txn_id'), transaction__pk=data.get('order_number'))
                 save_plisio_data(p, data)
-                SendLinksFormView.send_transaction_links([p.transaction], self.request.get_host(), p.transaction.email)
+                SendLinksFormView.send_transaction_links(p.transaction.email, [p.transaction], self.request.get_host(), self.request.scheme)
             case 'expired':
                 p = PlisioGateway.objects.get(txn_id=data.get('txn_id'), transaction__pk=data.get('order_number'))
                 if data.get('source_amount') >= p.transaction.invoice_total_sum:
                     save_plisio_data(p, data)
-                    SendLinksFormView.send_transaction_links([p.transaction], self.request.get_host(), p.transaction.email)
+                    SendLinksFormView.send_transaction_links(p.transaction.email, [p.transaction], self.request.get_host(), self.request.scheme)
                 else:
                     p.invoice_closed = True
                     p.save()
@@ -163,8 +162,6 @@ class SendLinksFormView(FormView):
         email = form.cleaned_data['email']
 
         if not self.send_transaction_links(email, form.transactions, domain, self.request.scheme):
-            logging.warning("Can't send email!")
-            # TODO page email wasn't sent
             return self.form_invalid(form)
 
         return super().form_valid(form)
