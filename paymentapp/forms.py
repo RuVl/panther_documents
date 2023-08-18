@@ -42,7 +42,7 @@ class SendLinksForm(forms.Form):
         if not Transaction.objects.filter(email=email).exists():
             raise ValidationError(_('Email not found'), code='not found')
 
-        self.transactions = list(t for t in Transaction.objects.values_list(email=email) if t.check_if_sold())
+        self.transactions = list(t for t in Transaction.objects.filter(email=email).all() if t.check_if_sold())
 
         if len(self.transactions) == 0:
             raise ValidationError(_('Not paid'), code='not paid')
