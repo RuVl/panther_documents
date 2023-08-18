@@ -128,7 +128,7 @@ class ProductInfo(models.Model):
 
     # Для ссылок на скачивание
     security_code = models.CharField(max_length=128, blank=True)
-    security_code_expire = models.DateTimeField(default=in_7_days)
+    security_code_expires = models.DateTimeField(default=in_7_days)
 
     def is_security_code_expired(self) -> bool:
         return not self.security_code or self.security_code_expires <= now()
