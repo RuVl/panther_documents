@@ -99,6 +99,10 @@ class Transaction(models.Model):
                 if response['data'].get('status') in ['completed', 'mismatch']:
                     self.is_sold = True
                     self.save()
+
+                    self.plisio_gateway.invoice_closed = True
+                    self.plisio_gateway.save()
+
                     return True
 
         return False
