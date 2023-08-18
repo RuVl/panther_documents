@@ -35,7 +35,7 @@ class ShopUserRegisterView(CreateView):
         verify_link = reverse('auth:verify', args=[user.email, user.activation_key])
         title = f'Подтверждение учетной записи {user.username}'
         message = f'Для подтверждения учетной записи {user.username} на портале ' \
-                  f'{domain} перейдите по ссылке: \n{domain}{verify_link}'
+                  f'{domain} перейдите по ссылке: \n{self.request.scheme}://{domain}{verify_link}'
 
         if not send_mail(title, message, None, [user.email], fail_silently=False):
             user.delete()

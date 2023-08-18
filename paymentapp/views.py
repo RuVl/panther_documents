@@ -12,7 +12,7 @@ from django.views.generic import FormView, TemplateView
 from paymentapp import plisio
 from paymentapp.forms import BuyProductForm, SendLinksForm
 from paymentapp.models import Transaction, ProductFile, ProductInfo, AllowedCurrencies, PlisioGateway
-from paymentapp.plisio import PlisioException, save_plisio_data, verify_hash
+from paymentapp.plisio import PlisioException, save_plisio_data, verify_hash, FiatCurrency
 
 
 # Вьюшка для отображения корзины и переадресации на оплату
@@ -91,11 +91,10 @@ class PlisioPaymentView(TemplateView):
                     order_name=f'Order number {transaction_id}',
                     order_number=transaction_id,
                     source_amount=t.total_cost,
-                    source_currency=AllowedCurrencies.USD,
+                    source_currency=FiatCurrency.USD,
                     email=t.email
                 )
 
-                logging.error(f'ДАННЫЕ ПРИШЛИ {response}')
                 if response.get('status') == 'success':
                     data: dict = response.get('data')
                     if data is None:
@@ -163,7 +162,7 @@ class SendLinksFormView(FormView):
         domain = self.request.get_host()
         email = form.cleaned_data['email']
 
-        if not self.send_transaction_links(form.transactions, domain, email):
+        if not self.send_transaction_links(email, form.transactions, domain, self.request.scheme):
             logging.warning("Can't send email!")
             # TODO page email wasn't sent
             return self.form_invalid(form)
@@ -171,13 +170,13 @@ class SendLinksFormView(FormView):
         return super().form_valid(form)
 
     @staticmethod
-    def send_transaction_links(transactions: list[Transaction], domain: str, email: str) -> bool:
+    def send_transaction_links(email: str, transactions: list[Transaction], domain: str, scheme: str) -> bool:
         title = f'Купленные товары на сайте {domain}'
         message = 'Наименование товара - ссылка на скачивание\n'
 
         for t in transactions:
             for i, f in enumerate(t.productinfo_set.all()):
-                message += f'{i + 1}) {f.title} - {domain}{f.get_download_url()}\n'
+                message += f'{i + 1}) {f.title} - {scheme}://{domain}{f.get_download_url()}\n'
 
         try:
             return send_mail(title, message, None, [email], fail_silently=False)
@@ -193,7 +192,7 @@ class DownloadLinksView(View):
         email = self.kwargs.get('email')
         security_code = self.kwargs.get('security_code')
 
-        if email is None:
+        if email is None or security_code is None:
             return HttpResponseNotFound()
 
         try:
