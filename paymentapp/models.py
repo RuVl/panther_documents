@@ -139,7 +139,7 @@ class ProductInfo(models.Model):
         if self.is_security_code_expired():
             self.security_code_expires = in_7_days()
             salt = hashlib.sha256(str(random.random()).encode('utf8')).hexdigest()
-            self.security_code = hashlib.sha256((self.pk + salt).encode('utf8')).hexdigest()
+            self.security_code = hashlib.sha256((str(self.pk) + salt).encode('utf8')).hexdigest()
             self.save()
 
         return reverse_lazy('payment:download', args=[self.transaction.email, self.security_code])
