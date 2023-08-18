@@ -110,12 +110,12 @@ class Transaction(models.Model):
 
 class ProductFile(models.Model):
     # Might be added info about file (title, country)
-    file = models.FilePathField(path=settings.MEDIA_ROOT / 'products', max_length=255, unique=True)
+    path = models.FilePathField(path=settings.MEDIA_ROOT / 'products', max_length=255, unique=True)
 
 
 class ProductInfo(models.Model):
     # Required for m2m
-    file = models.ForeignKey(ProductFile, on_delete=models.SET_NULL, null=True)
+    product_file = models.ForeignKey(ProductFile, on_delete=models.SET_NULL, null=True)
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
 
     # Информация о товаре

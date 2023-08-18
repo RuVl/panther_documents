@@ -37,9 +37,9 @@ class CartView(FormView):
         # Привязываем файлы к транзакции и считаем сумму
         for product in form.cleaned_data['products']:
             t.total_cost += product.usd_cost
-            f, _ = ProductFile.objects.get_or_create(file=product.file.path)
+            f, _ = ProductFile.objects.get_or_create(path=product.file.path)
             ProductInfo.objects.create(
-                file=f,
+                product_file=f,
                 transaction=t,
                 cost=product.usd_cost,  # TODO cost according currency
                 currency=AllowedCurrencies.USD,  # TODO currency
@@ -197,8 +197,8 @@ class DownloadLinksView(View):
             return HttpResponseNotFound()
 
         try:
-            transaction = Transaction.objects.get(email=email, security_code=security_code)
-        except Transaction.DoesNotExist:
+            product_info = ProductInfo.objects.get(transaction__email=email, security_code=security_code)
+        except ProductInfo.DoesNotExist:
             return HttpResponseForbidden()
 
-        return FileResponse(open(transaction.file, 'rb'))
+        return FileResponse(open(product_info.product_file.path, 'rb'))
