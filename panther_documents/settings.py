@@ -14,7 +14,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import environ
 import os
 from pathlib import Path
-# from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 env = environ.Env(
     DEBUG=(bool, False)  # set casting, default value
@@ -68,7 +68,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -139,10 +139,11 @@ EMAIL_USE_SSL = EMAIL_CONFIG.get('EMAIL_USE_SSL', False)
 # Internationalization
 USE_I18N = True
 LANGUAGE_CODE = 'ru'
-# LANGUAGES = (
-#     ('en-us', _('English')),
-#     ('ru', _('Russian')),
-# )
+LOCALE_PATHS = (BASE_DIR / 'locale', )
+LANGUAGES = (
+    ('en-us', _('English')),
+    ('ru', _('Russian')),
+)
 
 # Time settings
 USE_TZ = True

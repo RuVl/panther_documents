@@ -1,5 +1,6 @@
 {% extends 'site_page.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block additional_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'auth/css/auth.css' %}">
@@ -21,13 +22,13 @@
                 {{form.non_field_errors}}
             </div>
             
-            <h2>Регистрация</h2>
+            <h2>{% trans 'Registration' %}</h2>
             <form method="post" class="form_inside">
                 {% for field in form %}
                     {{field}}
                 {% endfor %}
                 {% csrf_token %}
-                <input type="submit" value="Регистрация" id="input_submit">
+                <button type="submit" id="input_submit">{% trans 'Create account' %}</button>
             </form>
         </div>
     </div>

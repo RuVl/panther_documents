@@ -1,5 +1,6 @@
 {% extends 'site_page.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block additional_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'auth/css/auth.css' %}">
@@ -21,13 +22,13 @@
                 </ul>
             </div>
             
-            <h2>Авторизация</h2>
+            <h2>{% trans 'Authorization' %}</h2>
             <form method="post" class="form_inside">
                 {% for field in form %}
                     {{field}}
                 {% endfor %}
                 {% csrf_token %}
-                <input type="submit" value="Войти" id="input_submit">
+                <button type="submit" id="input_submit">{% trans 'Log in' %}</button>
             </form>
         </div>
     </div>

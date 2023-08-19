@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.templatetags.static import static
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.views.generic import RedirectView
 
 # noinspection SpellCheckingInspection
@@ -26,5 +26,7 @@ urlpatterns = [
     path('', include('paymentapp.urls', namespace='payment')),
     path('office/', include('authapp.urls', namespace='auth')),
 
-    path('favicon.ico', RedirectView.as_view(url=static("favicon.ico")))
+    path('favicon.ico', RedirectView.as_view(url=static("favicon.ico"))),
+
+    re_path(r'^i18n/', include('django.conf.urls.i18n')),
 ]

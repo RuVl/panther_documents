@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<div class="lang-select">
+    {% get_current_language as LANG_CODE %}
+    {% get_language_info for LANG_CODE as CURRENT_LANG %}
+
+    {% get_available_languages as LANGS %}
+    {% get_language_info_list for LANGS as langs %}
+
+    <form action="{% url 'set_language' %}" method="post">
+        {% csrf_token %}
+        <input id="lang-picker" name="language" type="hidden" value="{{ LANG_CODE }}">
+    </form>
+
+    <div class="lang-selected">{{ CURRENT_LANG.name_local  }}</div>
+    <div class="options-container">
+        {% for lang in langs %}
+            <div class="option">
+                <input type="hidden" value="{{ lang.code }}" id="lang_{{ lang.code }}">
+                <label for="lang_{{ lang.code }}">{{ lang.name_local  }}</label>
+            </div>
+        {% endfor %}
+    </div>
+</div>

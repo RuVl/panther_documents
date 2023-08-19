@@ -1,0 +1,76 @@
+.lang-select {
+  --width: 200px;
+  --height: 40px;
+
+  width: var(--width);
+  height: var(--height);
+}
+
+.lang-select > .options-container {
+  background: #2f3640;
+  color: #f5f6fa;
+  max-height: 0;
+  width: 100%;
+  opacity: 0;
+  transition: all 0.4s;
+  border-radius: 8px;
+  overflow: hidden;
+
+  order: 1;
+}
+
+.lang-selected {
+  background: #2f3640;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #f5f6fa;
+  position: relative;
+
+  order: 0;
+}
+
+.lang-selected::after {
+  content: "";
+  background-size: contain;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23f5f6fa' d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z'/%3E%3Cpath fill='none' d='M0 0h24v24H0V0z'/%3E%3C/svg%3E") no-repeat;
+
+  position: absolute;
+  height: 100%;
+  width: 32px;
+  right: 10px;
+  top: 5px;
+
+  transition: all 0.4s;
+}
+
+.lang-select > .options-container.active {
+  max-height: 100px;
+  opacity: 1;
+}
+
+.lang-select > .options-container.active + .lang-selected::after {
+  transform: rotateX(180deg);
+  top: -6px;
+}
+
+.lang-select .option,
+.lang-selected {
+  padding: 12px 24px;
+  cursor: pointer;
+}
+
+.lang-selected > form {
+  display: none;
+}
+
+.lang-select .option:hover {
+  background: #414b57;
+}
+
+.lang-select label {
+  cursor: pointer;
+}
+
+.lang-select .option > input[type=radio] {
+  display: none;
+}

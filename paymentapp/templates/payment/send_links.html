@@ -1,5 +1,6 @@
 {% extends 'site_page.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block additional_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'auth/css/auth.css' %}">
@@ -21,13 +22,13 @@
                 {{form.non_field_errors}}
             </div>
 
-            <h3>Введите Email для получения файлов.</h3>
+            <h3>{% trans 'Enter the email address to receive the files.' %}</h3>
             <form method="post" class="form_inside">
                 {% for field in form %}
                     {{field}}
                 {% endfor %}
                 {% csrf_token %}
-                <input type="submit" value="Download" id="input_submit">
+                <button type="submit" id="input_submit">{% trans 'Send links' %}</button>
             </form>
         </div>
     </div>

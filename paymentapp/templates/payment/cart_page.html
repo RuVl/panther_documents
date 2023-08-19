@@ -20,18 +20,18 @@
 {% block main %}
     <div class="container">
         <div class="empty_cart inactive">
-            <h3>Вы не добавили в корзину ни одного товара.</h3>
+            <h3>{% trans 'You have not added any products to the cart' %}</h3>
         </div>
     </div>
     <div class="container">
         <div class="cart_page_wrap inactive">
-            <h3 class="cart_page_header">Корзина</h3>
+            <h3 class="cart_page_header">{% trans 'Cart' %}</h3>
             <div class="product_list"></div>
             <div class="final_price_div">
-                <span>Итого: <span id="final_price">0</span> руб.</span>
+                <span>{% trans 'Total' %}: <span id="final_price">0</span> руб.</span>
             </div>
             <div class="pay_btn_div">
-                <button class="cart_pay_btn">Перейти к оплате</button>
+                <button class="cart_pay_btn">{% trans 'Select payment method' %}</button>
             </div>
         </div>
     </div>
@@ -42,7 +42,7 @@
     <div class="popup">
         <div class="popup_content">
             <div class="popup_header" style="justify-content: space-between;">
-                <h3>Введите email</h3>
+                <h3>{% trans 'Enter email' %}</h3>
                 <i class="fa-duotone fa-xmark fa-xl popup_close"></i>
             </div>
 
@@ -59,7 +59,7 @@
                     {{ form.as_div }}
 
                     <div class="form_content_btns" style="margin-bottom: 10px;">
-                        <input type="submit" class="pay_btn" value="Оплатить">
+                        <button type="submit" class="pay_btn">{% trans 'Pay' %}</button>
                     </div>
                 </div>
             </form>

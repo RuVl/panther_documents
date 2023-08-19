@@ -20,7 +20,6 @@
 <div class="popup">
     <div class="popup_content">
         <div class="popup_header">
-{#            <h2>Купить товар</h2>#}
             <i class="fa-duotone fa-xmark fa-xl popup_close"></i>
         </div>
 
@@ -34,9 +33,9 @@
                 </div>
                 
                 <div class="form_content_btns">
-                    <input type="button" class="cart_add_btn" value="Добавить в корзину">
-                    <p class="or">или</p>
-                    <input type="button" class="pay_btn" value="Оплатить">
+                    <button type="button" class="cart_add_btn">{% trans 'Add to cart' %}</button>
+                    <p class="or">{% trans 'or' %}</p>
+                    <button type="button" class="pay_btn">{% trans 'Buy' %}</button>
                 </div>
            </div>
         </form>
@@ -51,8 +50,8 @@
             <thead>
             <tr class="table_head">
                 <th class="th1">{% trans "Product" %}</th>
-                <th>Кол-во</th>
-                <th>За 1 шт.</th>
+                <th>{% trans 'Count' %}</th>
+                <th>{% trans 'Unit price' %}</th>
                 <th></th>
             </tr>
             </thead>
@@ -72,7 +71,7 @@
                         <td class="product-buy">
                             <a href="#" class="product-buy-a popup_open">
                                 <i class="fa-duotone fa-cart-shopping"></i>
-                                Купить
+                                {% trans 'Buy' %}
                             </a>
                         </td>
                         <td class="tooltip_content">
