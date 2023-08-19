@@ -24,9 +24,10 @@ class BuyProductForm(forms.Form):
         field = self.fields['products']
         field.widget = field.hidden_widget()
 
+        self.fields['email'].widget.attrs.update({'autocomplete': 'on'})
+
         if user_email is not None:
-            self.fields['email'].widget.attrs.update({'value': user_email})
-            self.fields['email'].widget.attrs.update({'readonly': 'true'})
+            self.fields['email'].widget.attrs.update({'value': user_email, 'readonly': 'true', 'autocomplete': 'off'})
 
 
 class SendLinksForm(forms.Form):

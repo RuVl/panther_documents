@@ -145,6 +145,7 @@ LANGUAGES = (
     ('ru', _('Russian')),
 )
 
+
 # Time settings
 USE_TZ = True
 TIME_ZONE = 'UTC'

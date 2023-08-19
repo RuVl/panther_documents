@@ -12,6 +12,8 @@
 
 
 {% block additional_scripts %}
+    <!-- Translation in js -->
+    <script src="{% url 'javascript-catalog' %}"></script>
     <script src="{% static 'payments/js/cart_list.js' %}"></script>
     <script src="{% static 'payments/js/cart_buying_popup.js' %}"></script>
 {% endblock %}

@@ -11,7 +11,10 @@ def in_24_hours():
 
 
 class Product(models.Model):
+    # title_en = models.CharField(max_length=255)
+    # title_ru = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
+
     count = models.IntegerField()
 
     rub_cost = models.FloatField()

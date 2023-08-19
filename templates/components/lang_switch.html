@@ -1,23 +1,23 @@
 {% load i18n %}
 
 <div class="lang-select">
-    {% get_current_language as LANG_CODE %}
-    {% get_language_info for LANG_CODE as CURRENT_LANG %}
+    {% get_current_language as LANGUAGE_CODE %}
+    {% get_language_info for LANGUAGE_CODE as cur_lang %}
 
-    {% get_available_languages as LANGS %}
-    {% get_language_info_list for LANGS as langs %}
+    {% get_available_languages as LANGUAGES %}
+    {% get_language_info_list for LANGUAGES as languages %}
 
     <form action="{% url 'set_language' %}" method="post">
         {% csrf_token %}
         <input id="lang-picker" name="language" type="hidden" value="{{ LANG_CODE }}">
     </form>
 
-    <div class="lang-selected">{{ CURRENT_LANG.name_local  }}</div>
+    <div class="lang-selected">{{ cur_lang.name_local }}</div>
     <div class="options-container">
-        {% for lang in langs %}
+        {% for lang in languages %}
             <div class="option">
-                <input type="hidden" value="{{ lang.code }}" id="lang_{{ lang.code }}">
-                <label for="lang_{{ lang.code }}">{{ lang.name_local  }}</label>
+                <label for="lang_{{ lang.code }}">{{ lang.name_local }}</label>
+                <input type="radio" id="lang_{{ lang.code }}" value="{{ lang.code }}">
             </div>
         {% endfor %}
     </div>

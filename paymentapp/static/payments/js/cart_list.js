@@ -5,41 +5,33 @@ const cart_object = JSON.parse(localStorage.getItem("cart"));
 const empty_cart_div = document.querySelector(".empty_cart");
 const cart_page_wrap_div = document.querySelector(".cart_page_wrap");
 
+const escapeHTML = str => str.toString().replace(/[&<>'"]/g, tag => ({
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  "'": '&#39;',
+  '"': '&quot;'
+}[tag] || tag));
+
 function showProducts(products) {
   const product_list_div = document.querySelector(".product_list");
   Object.entries(products).forEach(([product_id, product]) => {
-    product_list_div.appendChild(
-      Object.assign(document.createElement('div'), {classList: 'product_item'})
-    ).append(
-      // Наименование
-      Object.assign(document.createElement('div'), {classList: 'name_div'}).appendChild(
-        Object.assign(document.createElement('span'), {textContent: product.title})
-      ).parentElement,
-      // Счётчик
-      Object.assign(document.createElement('div'), {classList: 'quantity_div'}).appendChild(
-        // Уменьшить
-        Object.assign(document.createElement('div'), {classList: 'counter_ co_mi' + (product.count === 1 ? ' disabled' : ''), innerHTML: '<i class="fa-solid fa-minus"></i>'})
-      ).parentElement.appendChild(
-        // Количество
-        Object.assign(document.createElement('div'), {classList: 'quantity', textContent: product.count})
-      ).parentElement.appendChild(
-        // Увеличить
-        Object.assign(document.createElement('div'), {classList: 'counter_ co_pl' + (product.count === product.max_count ? ' disabled' : ''), innerHTML: '<i class="fa-solid fa-plus"></i>'})
-      ).parentElement,
-      // Стоимость 1 шт
-      Object.assign(document.createElement('div'), {classList: 'price_div'}).appendChild(
-        Object.assign(document.createElement('span'), {textContent: product.cost})
-      ).parentElement
-    );
-    // Id продукта
-    product_list_div.lastElementChild.setAttribute('product-id', product_id);
+    // noinspection HtmlUnknownAttribute
+    product_list_div.innerHTML = `
+    <div class="product_item" product-id="${escapeHTML(product_id)}">
+        <div class="name_div"><span>${escapeHTML(product.title)}</span></div>
+        <div class="quantity_div">
+            <div class="counter_ co_mi ${product.count === 1 ? 'disabled' : ''}"><i class="fa-solid fa-minus"></i></div>
+            <div class="quantity">${escapeHTML(product.count)}</div>
+            <div class="counter_ co_pl ${product.count === product.max_count ? 'disabled' : ''}"><i class="fa-solid fa-plus"></i></div>
+        </div>
+        <div class="price_div"><span>${escapeHTML(product.cost)}</span></div>
+        <div class="remove_div"><span onclick="return delete_product(this)">${gettext('Delete')}</span></div>
+    </div>
+    `
   });
   // События счётчика
   product_list_div.querySelectorAll('.counter_').forEach(el => el.addEventListener('click', counter_change));
-  // Кнопка закрытия
-  product_list_div.childNodes.forEach(el => el.insertAdjacentHTML(
-    'beforeend', '<div class="remove_div"><span onclick="return delete_product(this)">Удалить</span></div>'
-  ));
 }
 
 // Уменьшение количества товаров

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-18 18:15+0300\n"
+"POT-Creation-Date: 2023-08-19 22:53+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,12 +30,12 @@ msgstr "Войти"
 
 #: .\authapp\templates\auth\office.html:19
 #: .\authapp\templates\auth\office.html:41
-#: .\templates\components\header.html:34
+#: .\templates\components\header.html:35
 msgid "My purchases"
 msgstr "Мои покупки"
 
 #: .\authapp\templates\auth\office.html:20
-#: .\templates\components\header.html:35
+#: .\templates\components\header.html:36
 msgid "Support"
 msgstr "Тех. Поддержка"
 
@@ -47,7 +47,7 @@ msgstr "Админ панель"
 msgid "Shop"
 msgstr "Магазин"
 
-#: .\authapp\templates\auth\office.html:43
+#: .\authapp\templates\auth\office.html:43 .\templates\admin\base_site.html:52
 msgid "Log out"
 msgstr "Выйти"
 
@@ -73,7 +73,7 @@ msgstr "Успех"
 
 #: .\authapp\templates\auth\verification.html:25
 #: .\authapp\templates\auth\verification.html:30
-#: .\templates\components\header.html:13 .\templates\components\header.html:31
+#: .\templates\components\header.html:14 .\templates\components\header.html:32
 msgid "Office"
 msgstr "Личный кабинет"
 
@@ -131,35 +131,35 @@ msgstr "Выберите товары"
 msgid "Payment method"
 msgstr "Метод оплаты"
 
-#: .\paymentapp\forms.py:41
+#: .\paymentapp\forms.py:42
 msgid "Email not found"
 msgstr "Почта не найдена"
 
-#: .\paymentapp\forms.py:46
+#: .\paymentapp\forms.py:47
 msgid "Not paid"
 msgstr "Не оплачено"
 
-#: .\paymentapp\templates\payment\cart_page.html:23
+#: .\paymentapp\templates\payment\cart_page.html:25
 msgid "You have not added any products to the cart"
 msgstr "Вы не добавили товары в корзину"
 
-#: .\paymentapp\templates\payment\cart_page.html:28
+#: .\paymentapp\templates\payment\cart_page.html:30
 msgid "Cart"
 msgstr "Корзина"
 
-#: .\paymentapp\templates\payment\cart_page.html:31
+#: .\paymentapp\templates\payment\cart_page.html:33
 msgid "Total"
 msgstr "Итого"
 
-#: .\paymentapp\templates\payment\cart_page.html:34
+#: .\paymentapp\templates\payment\cart_page.html:36
 msgid "Select payment method"
 msgstr "Выберите способ оплаты"
 
-#: .\paymentapp\templates\payment\cart_page.html:45
+#: .\paymentapp\templates\payment\cart_page.html:47
 msgid "Enter email"
 msgstr "Введите email"
 
-#: .\paymentapp\templates\payment\cart_page.html:62
+#: .\paymentapp\templates\payment\cart_page.html:64
 #: .\paymentapp\templates\payment\plisio.html:4
 msgid "Pay"
 msgstr "Оплатить"
@@ -176,11 +176,25 @@ msgstr "Отправить ссылки"
 msgid "Page not found!"
 msgstr "Страница не найдена!"
 
-#: .\templates\components\header.html:10 .\templates\components\header.html:28
+#: .\templates\admin\base_site.html:39
+msgid "View site"
+msgstr "Просмотр сайта"
+
+#: .\templates\admin\base_site.html:44
+#, fuzzy
+#| msgid "Django Documentation"
+msgid "Documentation"
+msgstr "Документация"
+
+#: .\templates\admin\base_site.html:48
+msgid "Change password"
+msgstr "Сменить пароль"
+
+#: .\templates\components\header.html:11 .\templates\components\header.html:29
 msgid "Sign in"
 msgstr "Вход"
 
-#: .\templates\components\header.html:11 .\templates\components\header.html:29
+#: .\templates\components\header.html:12 .\templates\components\header.html:30
 msgid "Sign up"
 msgstr "Регистрация"
 
@@ -719,7 +733,8 @@ msgstr "The submitted file is empty."
 msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
 msgid_plural ""
 "Ensure this filename has at most %(max)d characters (it has %(length)d)."
-msgstr[0] "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgstr[0] ""
+"Ensure this filename has at most %(max)d character (it has %(length)d)."
 msgstr[1] ""
 "Ensure this filename has at most %(max)d characters (it has %(length)d)."
 
@@ -832,7 +847,9 @@ msgstr "The inline value did not match the parent instance."
 
 #: .\venv\Lib\site-packages\django\forms\models.py:1429
 msgid "Select a valid choice. That choice is not one of the available choices."
-msgstr "Select a valid choice. That choice is not one of the available choices."
+msgstr ""
+"Выберите правильный вариант. Этот выбор не является одним из доступных "
+"вариантов."
 
 #: .\venv\Lib\site-packages\django\forms\models.py:1568
 #, python-format
@@ -1279,10 +1296,10 @@ msgid ""
 "required for security reasons, to ensure that your browser is not being "
 "hijacked by third parties."
 msgstr ""
-"Вы видите это сообщение, потому что для этого HTTPS сайта требуется отправка “Referer "
-"заголовка” вашим веб-браузером, но ничего не было отправлено. Этот заголовок "
-"требуется по соображениям безопасности, чтобы гарантировать, что ваш браузер не будет "
-"перехвачен третьими лицами."
+"Вы видите это сообщение, потому что для этого HTTPS сайта требуется отправка "
+"“Referer заголовка” вашим веб-браузером, но ничего не было отправлено. Этот "
+"заголовок требуется по соображениям безопасности, чтобы гарантировать, что "
+"ваш браузер не будет перехвачен третьими лицами."
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:122
 msgid ""
@@ -1290,9 +1307,9 @@ msgid ""
 "enable them, at least for this site, or for HTTPS connections, or for “same-"
 "origin” requests."
 msgstr ""
-"Если вы настроили свой браузер на отключение заголовков “Referer”, пожалуйста, повторно "
-"включите их, по крайней мере, для этого сайта, или для HTTPS-подключений, или для “same-"
-"origin” запросов."
+"Если вы настроили свой браузер на отключение заголовков “Referer”, "
+"пожалуйста, повторно включите их, по крайней мере, для этого сайта, или для "
+"HTTPS-подключений, или для “same-origin” запросов."
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:127
 msgid ""
@@ -1303,10 +1320,10 @@ msgid ""
 "\" …> for links to third-party sites."
 msgstr ""
 "Если вы используете тег <meta name=\"referrer\" content=\"no-referrer\"> или "
-"заголовок “Referrer-Policy: no-referrer”, пожалуйста, удалите их. "
-"Защита CSRF требует, чтобы заголовок “Referer” выполнял строгую проверку referer"
-"Если вы беспокоитесь о конфиденциальности, используйте альтернативы, такие как <a rel=\"noreferrer"
-"\" ...> для ссылок на сторонние сайты."
+"заголовок “Referrer-Policy: no-referrer”, пожалуйста, удалите их. Защита "
+"CSRF требует, чтобы заголовок “Referer” выполнял строгую проверку "
+"refererЕсли вы беспокоитесь о конфиденциальности, используйте альтернативы, "
+"такие как <a rel=\"noreferrer\" ...> для ссылок на сторонние сайты."
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:136
 msgid ""
@@ -1314,17 +1331,18 @@ msgid ""
 "submitting forms. This cookie is required for security reasons, to ensure "
 "that your browser is not being hijacked by third parties."
 msgstr ""
-"Вы видите это сообщение, потому что на этом сайте требуется файл CSRF cookie при "
-"отправке форм. Этот файл cookie необходим по соображениям безопасности, чтобы обеспечить "
-"защиту от взлома третьими лицами."
+"Вы видите это сообщение, потому что на этом сайте требуется файл CSRF cookie "
+"при отправке форм. Этот файл cookie необходим по соображениям безопасности, "
+"чтобы обеспечить защиту от взлома третьими лицами."
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:142
 msgid ""
 "If you have configured your browser to disable cookies, please re-enable "
 "them, at least for this site, or for “same-origin” requests."
 msgstr ""
-"Если вы настроили свой браузер на отключение файлов cookie, пожалуйста, повторно включите "
-"их, по крайней мере, для этого сайта или для “same-origin” запросов."
+"Если вы настроили свой браузер на отключение файлов cookie, пожалуйста, "
+"повторно включите их, по крайней мере, для этого сайта или для “same-origin” "
+"запросов."
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:148
 msgid "More information is available with DEBUG=True."
@@ -1427,10 +1445,10 @@ msgid ""
 "\">DEBUG=True</a> is in your settings file and you have not configured any "
 "URLs."
 msgstr ""
-"Вы видите эту страницу, потому что <a href=\"https://docs.djangoproject.com/en/"
-"%(version)s/ref/settings/#debug\" target=\"_blank\" rel=\"noopener"
-"\">DEBUG=True</a> находится в вашем файле настроек, и вы не настроили никаких "
-"URLs."
+"Вы видите эту страницу, потому что <a href=\"https://docs.djangoproject.com/"
+"en/%(version)s/ref/settings/#debug\" target=\"_blank\" rel=\"noopener"
+"\">DEBUG=True</a> находится в вашем файле настроек, и вы не настроили "
+"никаких URLs."
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:229
 msgid "Django Documentation"
