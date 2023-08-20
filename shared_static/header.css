@@ -69,7 +69,7 @@
   border-bottom: 1px solid;
   border-color: #7895cb;
 
-  padding: 10px 0;
+  padding: 15px 0;
   overflow-x: auto;
 
   transition: opacity .3s ease-in, border-color .3s ease-in;
@@ -78,15 +78,16 @@
 .header_menu > a {
   display: flex;
   min-width: 60px;
-  min-height: 40px;
+  min-height: 35px;
+  /* border: 1px solid rgba(0, 0, 0, 0.3); */
   border: 1px solid #96c0d9;
-  border-radius: 10px;
+  border-radius: 5px;
 
   justify-content: center;
   align-items: center;
   text-decoration: none;
 
-  background-color: #005dff3d;
+  /* background-color: #e4f2f1; */
   color: black;
   padding: 6px;
 
