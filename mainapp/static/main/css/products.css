@@ -19,6 +19,9 @@ main {
 .table_head {
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
+.th4 {
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
 .th1 {
   text-align: left;
 }
@@ -38,7 +41,9 @@ main {
 tbody tr {
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
-
+.product-buy {
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
 .products-table tbody .country-tr,
 .table_head {
   text-align: left;
