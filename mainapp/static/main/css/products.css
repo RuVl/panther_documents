@@ -13,8 +13,11 @@ main {
   flex-direction: column;
   align-items: center;
 }
-.table_head th {
+.table_head th:first-child {
   padding: 10px;
+}
+.table_head th:not(:first-child) {
+  text-align: center;
 }
 .table_head {
   border: 1px solid rgba(0, 0, 0, 0.3);
