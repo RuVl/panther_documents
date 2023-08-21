@@ -11,9 +11,9 @@ CreateView - создание записи с помощью формы
 
 
 class BookListView(ListView):
-    queryset = Country.objects.exclude(product__count=0)
+    queryset = Country.objects.exclude(product__count=0).prefetch_related('product_set').all()
     template_name = 'main/products.html'
-    context_object_name = 'country_list'  # Переменная в шаблоне для модели
+    context_object_name = 'countries'  # Переменная в шаблоне для модели
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)

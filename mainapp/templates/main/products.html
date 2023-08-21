@@ -1,6 +1,6 @@
 {% extends 'site_page.html' %}
-{% load static %}
-{% load i18n %}
+{% load static i18n %}
+
 
 {% block additional_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/products.css' %}">
@@ -29,7 +29,7 @@
                     <p class="product_name">Some product name</p>
                 </div>
                 <div class="price_div_popup">
-                    <p class="price"><span class="price_span">0</span> рублей.</p>
+                    <p class="price"><span class="price_span">0</span></p>
                 </div>
                 
                 <div class="form_content_btns">
@@ -49,25 +49,25 @@
         <table class="products-table">
             <thead>
             <tr class="table_head">
-                <th class="th1">{% trans "Product" %}</th>
+                <th>{% trans "Product" %}</th>
                 <th>{% trans 'Count' %}</th>
                 <th>{% trans 'Unit price' %}</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            {% for country in country_list %}
+            {% for country in countries %}
                 <tr class="country-tr">
-                    <td colspan="10">{{ country.title }}</td>
+                    <td colspan="10">{{ country.get_title }}</td>
                 </tr>
-                {% for product in country.product_set.values %}
-                    <tr class="product-tr" >
+                {% for product in country.product_set.all %}
+                    <tr class="product-tr">
                         <td class="product-id" style="display: none;">
                             {{ product.id }}
                         </td>
-                        <td class="product-title">{{ product.title }}</td>
+                        <td class="product-title">{{ product.get_title }}</td>
                         <td class="product-count">{{ product.count }}</td>
-                        <td class="product-cost">{{ product.rub_cost }}</td>
+                        <td class="product-cost">{{ product.cost }}</td>
                         <td class="product-buy">
                             <a href="#" class="product-buy-a popup_open">
                                 <i class="fa-duotone fa-cart-shopping"></i>
