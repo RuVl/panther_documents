@@ -12,6 +12,7 @@
 }
 
 .lang-select > .options-container {
+  position: relative;
   background: var(--bg-color);
   color: var(--text-color);
   max-height: 0;
@@ -20,8 +21,7 @@
   transition: all 0.4s;
   border-radius: 8px;
   overflow: hidden;
-
-  order: 1;
+  z-index: 10;
 }
 
 .lang-selected {
@@ -30,8 +30,6 @@
   color: var(--text-color);
   position: relative;
   border: var(--border);
-
-  order: 0;
 }
 
 .lang-selected::after {
@@ -63,11 +61,13 @@
   display: flex;
   align-items: center;
   height: var(--height);
+  cursor: pointer;
 }
 
 .lang-selected > span,
 .options-container label {
   padding-left: 12px;
+  cursor: inherit;
 }
 
 .lang-selected > form {
