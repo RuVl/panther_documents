@@ -1,17 +1,19 @@
 .lang-select {
-  --width: 150px;
-  --height: 30px;
+  --width: 120px;
+  --height: 35px;
+
+  --bg-color: #2f3640;
+  --bg-hover-color: #414b57;
+  --border: none;
+  --text-color: #f5f6fa;
 
   width: var(--width);
   height: var(--height);
-  margin-left: 10px;
-  margin-top: -10px;
-  z-index: 1000;
 }
 
 .lang-select > .options-container {
-  background: #2f3640;
-  color: #f5f6fa;
+  background: var(--bg-color);
+  color: var(--text-color);
   max-height: 0;
   width: 100%;
   opacity: 0;
@@ -23,11 +25,11 @@
 }
 
 .lang-selected {
-  background: #2f3640;
+  background: var(--bg-color);
   border-radius: 8px;
-  margin-bottom: 8px;
-  color: #f5f6fa;
+  color: var(--text-color);
   position: relative;
+  border: var(--border);
 
   order: 0;
 }
@@ -35,31 +37,37 @@
 .lang-selected::after {
   content: "";
   background-size: contain;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23f5f6fa' d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z'/%3E%3Cpath fill='none' d='M0 0h24v24H0V0z'/%3E%3C/svg%3E") no-repeat;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23f5f6fa' d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z'/%3E%3Cpath fill='none' d='M0 0h24v24H0V0z'/%3E%3C/svg%3E") no-repeat center center;
 
   position: absolute;
   height: 100%;
   width: 32px;
-  right: 10px;
-  top: 5px;
+  right: 0;
+  top: 0;
 
   transition: all 0.4s;
 }
 
-.lang-select > .options-container.active {
+.lang-select.active > .options-container {
   max-height: 100px;
   opacity: 1;
+  border: var(--border);
 }
 
-.lang-select > .options-container.active + .lang-selected::after {
+.lang-select.active > .lang-selected::after {
   transform: rotateX(180deg);
-  top: -6px;
 }
 
-.lang-select .option,
-.lang-selected {
-  padding: 12px 24px;
-  cursor: pointer;
+.lang-selected,
+.options-container > .option {
+  display: flex;
+  align-items: center;
+  height: var(--height);
+}
+
+.lang-selected > span,
+.options-container label {
+  padding-left: 12px;
 }
 
 .lang-selected > form {
@@ -67,7 +75,7 @@
 }
 
 .lang-select .option:hover {
-  background: #414b57;
+  background: var(--bg-hover-color);
 }
 
 .lang-select label {

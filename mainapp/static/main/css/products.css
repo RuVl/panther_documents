@@ -22,12 +22,6 @@ main {
 .table_head {
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
-.th4 {
-  border-right: 1px solid rgba(0, 0, 0, 0.3);
-}
-.th1 {
-  text-align: left;
-}
 .products-table {
   width: 1000px;
   font-size: 17px;
@@ -43,9 +37,6 @@ main {
 
 tbody tr {
   border: 1px solid rgba(0, 0, 0, 0.3);
-}
-.product-buy {
-  border-right: 1px solid rgba(0, 0, 0, 0.3);
 }
 .products-table tbody .country-tr,
 .table_head {
@@ -113,7 +104,7 @@ tbody tr {
 }
 .product-tr:hover .tooltip_content {
   display: flex;
-  transition: 0.3s;
+  transition: all .3s;
 }
 
 .note_wrap {

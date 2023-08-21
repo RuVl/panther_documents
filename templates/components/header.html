@@ -4,7 +4,6 @@
     <nav class="menu">
         <div class="header_title">
             <a href="{% url 'main:home' %}"><h2>PantherDoc</h2></a>
-            {% include 'components/lang_switch.html' %}
         </div>
         <div class="header_content">
             {% if not user.is_authenticated %}
@@ -35,4 +34,12 @@
         <a href="{% url 'payment:send-links' %}">{% trans 'My purchases' %}</a>
         <a href="{% url 'main:support' %}">{% trans 'Support' %}</a>
     </nav>
+    <div class="pickers">
+        <div class="currency-picker">
+            {% include 'components/currency_switch.html' %}
+        </div>
+        <div class="lang-picker">
+            {% include 'components/lang_switch.html' %}
+        </div>
+    </div>
 </div>

@@ -12,7 +12,7 @@
         <input id="lang-picker" name="language" type="hidden" value="{{ LANG_CODE }}">
     </form>
 
-    <div class="lang-selected">{{ cur_lang.name_local }}</div>
+    <div class="lang-selected"><span>{{ cur_lang.name_local }}</span></div>
     <div class="options-container">
         {% for lang in languages %}
             <div class="option">

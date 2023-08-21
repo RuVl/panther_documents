@@ -52,7 +52,8 @@
                 <th>{% trans "Product" %}</th>
                 <th>{% trans 'Count' %}</th>
                 <th>{% trans 'Unit price' %}</th>
-                <th class="th4"></th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -75,7 +76,7 @@
                             </a>
                         </td>
                         <td class="tooltip_content">
-                            <p>{{ product.title }}</p>
+                            <p>{{ product.get_title }}</p>
                         </td>
                     </tr>
                 {% endfor %}

@@ -18,11 +18,11 @@ body {
 
 header {
   box-sizing: border-box;
-  min-height: 190px;
+  min-height: 230px;
 }
 
 main {
-  --min-height: calc(100vh - 100px - 200px);
+  --min-height: calc(100vh - 100px - 230px);
 
   min-height: var(--min-height);
 }
