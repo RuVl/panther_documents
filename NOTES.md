@@ -35,5 +35,11 @@ How to add reCAPTCHA
 > Create site on [reCAPTCHA](https://www.google.com/recaptcha/admin/create). \
 > Install django-recaptcha and add 'captcha' to INSTALLED_APPS settings. \
 > Add to .env private and public keys. \
-> Use field or widget in forms. \
+> Use field or widget in forms.
+---
+How to add currency switch
+---
+> Install lib:
+> https://pypi.org/project/django-currencies/ \
+> Add SHOP_CURRENCIES and SHOP_DEFAULT_CURRENCY settings. 
 ---

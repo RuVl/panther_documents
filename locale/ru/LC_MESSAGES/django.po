@@ -96,8 +96,8 @@ msgid "Buy"
 msgstr "Купить"
 
 #: .\mainapp\templates\main\products.html:52
-msgid "Product"
-msgstr "Товар"
+msgid "Passport"
+msgstr "Паспорт"
 
 #: .\mainapp\templates\main\products.html:53
 msgid "Count"

@@ -107,7 +107,17 @@
   display: flex;
   flex-direction: row;
   justify-content: right;
-  gap: 2em;
+  gap: 1em;
+}
+.curr-select {
+  --bg-color: #444d60;
+  --bg-hover-color: #3b4254;
+  --text-color: #f5f6fa;
+}
+.lang-select {
+  --bg-color: #444d60;
+  --bg-hover-color: #3b4254;
+  --text-color: #f5f6fa;
 }
 
 @media only screen and (max-width: 767px) {

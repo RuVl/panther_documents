@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import django
 # noinspection PyPackageRequirements
 import environ
 import os
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'currencies',
     'captcha.apps.CaptchaConfig',
 
     'authapp.apps.AuthConfig',
@@ -88,6 +89,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request'
             ],
         },
     },
@@ -169,6 +171,11 @@ RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
 
 # Payments
 PLISIO_SECRET_KEY = env('PLISIO_SECRET_KEY')
+
+# Currency
+SHOP_DEFAULT_CURRENCY = 'USD'
+SHOP_CURRENCIES = ('USD', 'RUB')
+OPENEXCHANGERATES_APP_ID = env('OPENEXCHANGERATES_APP_ID')
 
 # Production
 if not DEBUG:

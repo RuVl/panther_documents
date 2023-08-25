@@ -33,4 +33,6 @@ urlpatterns = [
 
     path('i18n/', include('django.conf.urls.i18n')),
     path('jsi18n/', cache_page(86400, key_prefix="jsi18n-%s" % get_version())(JavaScriptCatalog.as_view()), name="javascript-catalog"),
+
+    path('currencies/', include('currencies.urls'))
 ]

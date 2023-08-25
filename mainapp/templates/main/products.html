@@ -1,5 +1,5 @@
 {% extends 'site_page.html' %}
-{% load static i18n %}
+{% load static i18n currency %}
 
 
 {% block additional_css %}
@@ -49,7 +49,7 @@
         <table class="products-table">
             <thead>
             <tr class="table_head">
-                <th>{% trans "Product" %}</th>
+                <th>{% trans 'Passport' %}</th>
                 <th>{% trans 'Count' %}</th>
                 <th>{% trans 'Unit price' %}</th>
                 <th></th>
@@ -57,18 +57,17 @@
             </tr>
             </thead>
             <tbody>
+            {% currency_context %}
             {% for country in countries %}
                 <tr class="country-tr">
                     <td colspan="10">{{ country.get_title }}</td>
                 </tr>
                 {% for product in country.product_set.all %}
                     <tr class="product-tr">
-                        <td class="product-id" style="display: none;">
-                            {{ product.id }}
-                        </td>
+                        <td class="product-id" style="display: none;">{{ product.id }}</td>
                         <td class="product-title">{{ product.get_title }}</td>
                         <td class="product-count">{{ product.count }}</td>
-                        <td class="product-cost">{{ product.cost }}</td>
+                        <td class="product-cost">{{ product.cost|currency:CURRENCY_CODE|floatformat:0 }}{{ CURRENCY.symbol }}</td>
                         <td class="product-buy">
                             <a href="#" class="product-buy-a popup_open">
                                 <i class="fa-duotone fa-cart-shopping"></i>
