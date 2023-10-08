@@ -55,8 +55,10 @@ function counter_change(_) {
     }
   } else return;
 
+	const total = Math.ceil(product.price * product.count * 100) / 100;
+
   quantity.textContent = product.count.toString();
-	popup.querySelector('.price').textContent = (product.price * product.count).toString();
+	popup.querySelector('.price').textContent = total.toString();
 }
 
 const popup = document.querySelector('.popup_form > .form_content');
