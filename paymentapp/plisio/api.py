@@ -10,7 +10,7 @@ session.headers.update({
 })
 
 
-def validate_response(response: requests.Response):
+def validate_response(response: requests.Response) -> dict:
 	if not 200 <= response.status_code < 300:
 		raise PlisioAPIException(response)
 
@@ -37,7 +37,7 @@ def create_invoice(
 		email=None,
 		language='en_US',
 		redirect_to_invoice=None,
-		expire_min=None):
+		expire_min=None) -> dict:
 	""" https://plisio.net/documentation/endpoints/create-an-invoice """
 	data = {
 		'order_name': order_name,
@@ -62,6 +62,6 @@ def create_invoice(
 	return validate_response(response)
 
 
-def get_transaction_details(txn_id: str):
+def get_transaction_details(txn_id: str) -> dict:
 	response = session.get(f'https://plisio.net/api/v1/operations/{txn_id}', params={'api_key': PLISIO_SECRET_KEY})
 	return validate_response(response)

@@ -239,7 +239,7 @@ class PlisioGateway(Gateway):
 
         return self.transaction.sell()
 
-    def update_fields(self, data: dict) -> bool:
+    def update_fields(self, data: dict):
         self.status = data.get('status', self.status)
         self.invoice_total_sum = data.get('invoice_total_sum', self.invoice_total_sum)
 

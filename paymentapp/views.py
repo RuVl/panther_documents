@@ -6,6 +6,7 @@ from currencies.utils import convert
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect, HttpResponseBadRequest, HttpRequest, HttpResponse, \
 	HttpResponseForbidden, FileResponse
 from django.urls import reverse_lazy
+from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import FormView, TemplateView
@@ -131,14 +132,21 @@ class PlisioPaymentView(View):
 		if t.check_if_sold():
 			return HttpResponseRedirect(reverse_lazy('payment:success-payment'))
 
-		if self.create_invoice(t):
-			return HttpResponseRedirect(t.plisio.get_invoice_url())
+		p = self.create_invoice(t)
+		if p is None:
+			# Произошла ошибка платежного шлюза, попробуйте снова
+			return HttpResponseBadRequest()
 
-		# TODO произошла ошибка платежного шлюза, попробуйте снова
-		return HttpResponseBadRequest()
+		t.plisio = p
+		t.save()
+
+		return HttpResponseRedirect(p.get_invoice_url())
 
 	@staticmethod
-	def create_invoice(transaction: Transaction) -> bool:
+	def create_invoice(transaction: Transaction) -> PlisioGateway | None:
+		if transaction.plisio is not None:
+			return transaction.plisio
+
 		try:
 			response = plisio.create_invoice(
 				order_name=f'Transaction id {transaction.id}',
@@ -149,20 +157,25 @@ class PlisioPaymentView(View):
 				success_callback_url=reverse_lazy('payment:plisio-callback'),
 				fail_callback_url=reverse_lazy('payment:plisio-callback'),
 				email=transaction.email,
-				expire_min=in_2_hours
+				expire_min=in_2_hours() - now()
 			)
 		except plisio.PlisioException as e:
 			logger.error(str(e))
-			return False
+			return None
 
 		if response.get('status') == 'success':
 			if (data := response.get('data')) is None:
-				return False
+				return None
 
-			transaction.plisio.update_fields(data)
-			return True
+			if data.get('txn_id') is None or data.get('invoice_url') is None:
+				return None
 
-		return False
+			p = PlisioGateway(txn_id=data.get('txn_id'))
+			p.update_fields(data)
+
+			return p
+
+		return None
 
 
 # Вьюшка для получения статуса транзакции plisio
