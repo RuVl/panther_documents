@@ -21,7 +21,6 @@ class PassportListView(ListView):
     context_object_name = 'countries'  # Переменная в шаблоне для модели
 
     def get(self, request, *args, **kwargs):
-        print(self.queryset)
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):

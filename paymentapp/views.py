@@ -17,6 +17,9 @@ from paymentapp.models import Transaction, ProductFile, in_2_hours, PlisioGatewa
 from paymentapp.utils import send_transaction_links
 
 
+logger = logging.getLogger('gunicorn')
+
+
 # Get -> cart page, post -> JsonResponse
 class CartView(FormView):
 	form_class = BuyProductForm
@@ -92,7 +95,7 @@ class CartView(FormView):
 
 				t.invoice_price += convert(product.price, product.currency, t.invoice_currency)
 		except Exception as e:
-			logging.error(str(e))
+			logger.error(str(e))
 			for product, count in reserved:
 				product.cancel_reserve(count)
 
@@ -142,7 +145,7 @@ class PlisioPaymentView(View):
 				expire_min=in_2_hours
 			)
 		except plisio.PlisioException as e:
-			logging.error(str(e))
+			logger.error(str(e))
 			return False
 
 		if response.get('status') == 'success':

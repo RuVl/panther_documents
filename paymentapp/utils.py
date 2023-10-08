@@ -9,6 +9,9 @@ if TYPE_CHECKING:
     from paymentapp.models import Transaction
 
 
+logger = logging.getLogger('gunicorn')
+
+
 # noinspection SpellCheckingInspection
 class AllowedCurrencies(models.TextChoices):
     """ All possible currencies for purchase """
@@ -48,6 +51,6 @@ def send_transaction_links(email: str, transactions: list['Transaction'], domain
     try:
         return send_mail(title, message, None, [email], fail_silently=False)
     except SMTPAuthenticationError as e:
-        logging.error(str(e))
+        logger.error(str(e))
 
     return False  # Что-то не так с отправкой почтой

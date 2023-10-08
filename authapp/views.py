@@ -13,6 +13,9 @@ from authapp.forms import ShopUserRegisterForm, ShopUserLoginForm
 from authapp.models import ShopUser
 
 
+logger = logging.getLogger('gunicorn')
+
+
 class ShopUserRegisterView(CreateView):
     form_class = ShopUserRegisterForm
     template_name = 'auth/register.html'
@@ -39,7 +42,7 @@ class ShopUserRegisterView(CreateView):
 
         if not send_mail(title, message, None, [user.email], fail_silently=False):
             user.delete()
-            logging.warning("Can't send email!")
+            logger.warning("Can't send email!")
             # TODO page something went wrong
 
         return response

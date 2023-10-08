@@ -44,7 +44,11 @@ function send_pay_form(pay_form) {
         for (let field in data.errors) {
           console.error(field, data.errors[field]);
           document.querySelector('.alert > ul').append(
-            ...data.errors[field].map(err => `<li>${escapeHTML(field)}: ${escapeHTML(err)}</li>`)
+            ...data.errors[field].map(err => {
+              const li = document.createElement('li');
+              li.textContent = `${escapeHTML(field)}: ${escapeHTML(err)}`;
+              return li;
+            })
           );
         }
       } else window.location.assign(window.location.origin + data['success_url']); // replace will clear document history
