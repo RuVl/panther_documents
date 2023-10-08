@@ -100,12 +100,8 @@
   text-align: center;
   margin: 5px 0;
 }
-.price span {
-  color: #e56b7d;
-  font-weight: bold;
-}
-.price {
-  margin: 0;
+.popup .price {
+  padding-right: 3px;
 }
 .price_div_popup {
   margin-top: 15px;
@@ -123,14 +119,22 @@
   align-items: center;
   justify-content: center;
 }
-.quantity_div input {
-  height: 20px;
-  width: 40px;
-  padding: 0 3px;
-  margin-left: 5px;
+
+.popup .quantity_div {
+  margin-top: 15px;
 }
-.quantity_div input:focus {
-  outline: none;
+
+.quantity_div > div {
+  padding: 3px;
+}
+
+.quantity_div .counter_ {
+  cursor: pointer;
+}
+
+.quantity_div .counter_.disabled {
+  cursor: default !important;
+  opacity: .5;
 }
 
 @media (max-width: 767px) {

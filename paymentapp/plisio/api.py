@@ -1,6 +1,5 @@
-from typing import Union
-
 import requests
+
 from panther_documents.settings import PLISIO_SECRET_KEY
 from . import PlisioAPIException, PlisioRequestException
 
@@ -63,6 +62,6 @@ def create_invoice(
 	return validate_response(response)
 
 
-def get_transaction_details(txn_id: Union[str, int]):
+def get_transaction_details(txn_id: str):
 	response = session.get(f'https://plisio.net/api/v1/operations/{txn_id}', params={'api_key': PLISIO_SECRET_KEY})
 	return validate_response(response)

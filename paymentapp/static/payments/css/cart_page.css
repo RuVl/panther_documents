@@ -6,8 +6,10 @@
 }
 .product_item {
   width: 100%;
-  display: grid;
-  grid-template-columns: 7fr 1fr 1fr 1fr;
+  display: flex;
+  justify-content: right;
+  flex-direction: row;
+  align-items: center;
   border: 1px solid #96c0d9;
   border-radius: 5px;
   padding: 10px;
@@ -21,7 +23,6 @@
   height: 50px;
 }
 .final_price_div > span {
-  float: right;
   font-size: 17px;
   margin-right: 7px;
 }
@@ -75,31 +76,22 @@
 }
 
 .form_content input[type=email] {
-    margin-top: 40px;
-}
-
-.quantity_div {
-  display: flex;
-}
-.quantity_div > div {
-  padding: 3px;
-}
-
-.counter_ {
-  cursor: pointer;
-}
-/* Disabled counter button */
-.counter_.disabled {
-  cursor: default !important;
-  opacity: .5;
+  margin-top: 40px;
 }
 
 .name_div {
+  flex: 10;
   margin: auto 0;
 }
 
-.quantity_div, .price_div, .remove_div {
-  margin: auto;
+.quantity_div, .price_div {
+  text-align: center;
+  flex: 2;
+}
+
+.remove_div {
+  text-align: center;
+  flex: 1;
 }
 
 .remove_div > span {
@@ -113,10 +105,14 @@
     padding: 0 7px;
     margin: 0;
   }
+  .product_list {
+    margin: 0 10px;
+  }
   .product_item {
     padding: 5px;
     grid-template-columns: 15fr 2fr 2fr 1fr;
     gap: 7px;
+    width: 100%;
   }
 
   .form_content input {
@@ -134,13 +130,10 @@
   }
 
   .final_price_div {
-    padding: 10px 0 10px 0px;
+    padding: 10px 0 10px 0;
   }
   .pay_btn_div {
-    padding: 10px 0 10px 0px;
-  }
-  .product_item {
-    width: fit-content;
+    padding: 10px 0 10px 0;
   }
 }
 

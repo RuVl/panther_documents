@@ -11,31 +11,43 @@ document.querySelector(".popup_close").onclick = () => {
 }
 
 function send_pay_form(pay_form) {
-  let cart = JSON.parse(localStorage.getItem("cart"));
+  let cart_object = JSON.parse(localStorage.getItem("cart"));
+
   let formData = new FormData(pay_form);
 
   // Hidden products field widget
-  for (let product_id in cart)
-    formData.append('products', product_id);
+  let products_data = [];
+  for (const p_type in cart_object)
+    for (const p of cart_object[p_type])
+      products_data.push({
+        type: p.type,
+        id: p.id,
+        count: p.count
+      });
+
+  formData.set('products', JSON.stringify(products_data));
 
   fetch(pay_form.action, {
     body: formData,
     method: 'POST'
-  })
-    .then(resp => resp.json())
-    .then(data => {
+  }).then(resp => resp.json())
+    .then(async data => {
       console.log(data);
       document.querySelector('.alert > ul').innerHTML = '';
-      if (!data.success) {
-        for (let error in data.errors) {
-          console.error(error, data.errors[error]);
+      if (data['clear_cart'])
+        localStorage.removeItem("cart");
+
+      if (data['reload_cart'])
+        await update_products();
+
+      if (!data['success']) {
+        for (let field in data.errors) {
+          console.error(field, data.errors[field]);
           document.querySelector('.alert > ul').append(
-            ...data.errors[error].map(err => Object.assign(document.createElement('li'), {textContent: `${error} : ${err}`}))
+            ...data.errors[field].map(err => `<li>${escapeHTML(field)}: ${escapeHTML(err)}</li>`)
           );
         }
-      } else {
-        localStorage.removeItem("cart");
-        window.location.assign(window.location.origin + data['success_url']); // replace will clear document history
-      }
+      } else window.location.assign(window.location.origin + data['success_url']); // replace will clear document history
+
     }).catch(reason => console.error(reason));
 }

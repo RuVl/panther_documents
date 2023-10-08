@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from mainapp.models import Product, Country
+from mainapp.models import Passport, Country
 
 
-@admin.register(Product)
+@admin.register(Passport)
 class ProductAdmin(admin.ModelAdmin):
     pass
 

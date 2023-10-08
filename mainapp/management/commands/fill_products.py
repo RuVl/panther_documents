@@ -1,25 +1,33 @@
+from django.core.files import File
 from django.core.management.base import BaseCommand
 
+from mainapp.models import Passport, Country, PassportFile
 from ._utils import load_from_json
-from mainapp.models import Product, Country
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
         data = load_from_json('passports.json')
-        Product.objects.all().delete()
+        Passport.objects.all().delete()
         Country.objects.all().delete()
 
         for country_title, passports in data.items():
-            country = Country(title=country_title)
-            country.save()
+            c = Country.objects.create(
+                title_en=country_title,
+                title_ru=country_title
+            )
+
             for passport in passports:
-                p = Product(
+                p = Passport.objects.create(
+                    type=Passport.ProductTypes.PASSPORT,
                     title_en=passport['title'],
                     title_ru=passport['title'],
-                    count=int(passport['count']),
-                    cost=float(passport['usd_cost']),
-                    country=country
+                    price=float(passport['usd_cost']),
+                    currency='USD',
+                    country=c
                 )
-                p.file.name = 'products/test.zip'
-                p.save()
+
+                for _ in range(int(passport['count'])):
+                    f = PassportFile(passport=p)
+                    f.file.name = 'test.txt'
+                    f.save()
