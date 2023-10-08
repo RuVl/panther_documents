@@ -85,7 +85,7 @@ class CartView(FormView):
 		try:
 			for product in products:
 				p: BaseProduct = BaseProduct.get_subclass(product['type']).objects.get(pk=product['id'])
-				if p.reserve(product['count']):  # Резервация товаров
+				if not p.reserve(product['count']):  # Резервация товаров
 					raise ValueError("Can not reserve")  # Резервация не удалась
 
 				reserved.append((p, product['count']))
@@ -99,7 +99,8 @@ class CartView(FormView):
 		except Exception as e:
 			logger.error(str(e))
 			for product, count in reserved:
-				product.cancel_reserve(count)
+				if not product.cancel_reserve(count):
+					logger.warning(f'Failed to cancel reserve for product: {product.type} - {product.id}')
 
 			return None
 
