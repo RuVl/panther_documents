@@ -39,7 +39,7 @@ class GetProducts(forms.Form):
 				raise ValidationError('Data error, please clear localStorage')
 
 			p_dict = p.to_dict()
-			if p_dict.get('max_count') > 0:
+			if p_dict:
 				result.append(p_dict | {
 					'count': max(1, min(prod.get('count'), p_dict.get('max_count')))
 				})
