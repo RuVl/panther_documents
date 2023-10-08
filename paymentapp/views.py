@@ -89,13 +89,6 @@ class CartView(FormView):
 					raise ValueError("Can not reserve")  # Резервация не удалась
 
 				reserved.append((p, product['count']))
-
-			for product, count in reserved:
-				# Раз нам пофиг кому какие достанутся - будем продавать любые зарезервированные
-				for _ in range(count):
-					ProductFile.create_from_base(product, t)
-
-				t.invoice_price += convert(product.price, product.currency, t.invoice_currency)
 		except Exception as e:
 			logger.error(str(e))
 			for product, count in reserved:
@@ -104,7 +97,18 @@ class CartView(FormView):
 
 			return None
 
+		t.save()  # Иначе нельзя ProductFile.create_from_base
+
+		for product, count in reserved:
+			# Раз нам пофиг кому какие достанутся - будем продавать любые зарезервированные
+			for _ in range(count):
+				ProductFile.create_from_base(product, t)
+
+			# Считаем итоговую стоимость
+			t.invoice_price += convert(product.price, product.currency, t.invoice_currency)
+
 		t.save()
+
 		return t
 
 
