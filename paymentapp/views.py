@@ -84,7 +84,7 @@ class CartView(FormView):
 
 		try:
 			for product in products:
-				p: BaseProduct = BaseProduct.get_subclass(product['type']).objects.filter(pk=product['id']).first()
+				p: BaseProduct = BaseProduct.get_subclass(product['type']).objects.get(pk=product['id'])
 				if p.reserve(product['count']):  # Резервация товаров
 					raise ValueError("Can not reserve")  # Резервация не удалась
 

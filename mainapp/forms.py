@@ -20,10 +20,9 @@ class GetProducts(forms.Form):
 		id_list = []
 		for product in products:
 			_id = product.get('id')
-			count = product.get('count')
-			if _id is None or count is None:
-				continue
-				# raise ValidationError('No id or count provided!')
+			if _id is None or product.get('count') is None:
+				continue  # Skip non-valid data
+
 			id_list.append(_id)
 
 		products_qs = model.objects.filter(id__in=id_list).all()
@@ -40,8 +39,9 @@ class GetProducts(forms.Form):
 				raise ValidationError('Data error, please clear localStorage')
 
 			p_dict = p.to_dict()
-			result.append(p_dict | {
-				'count': max(1, min(prod.get('count'), p_dict.get('max_count')))
-			})
+			if p_dict.get('max_count') > 0:
+				result.append(p_dict | {
+					'count': max(1, min(prod.get('count'), p_dict.get('max_count')))
+				})
 
 		return result
