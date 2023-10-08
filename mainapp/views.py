@@ -36,10 +36,10 @@ class SupportView(TemplateView):
 
 def get_products(request: HttpRequest):
     if request.method != 'POST':
-        return HttpResponseBadRequest()
+        return HttpResponseBadRequest('Only post request!')
 
     form = GetProducts(request.POST)
-    return JsonResponse(form.response) if form.is_valid() else HttpResponseBadRequest()
+    return JsonResponse(form.response) if form.is_valid() else HttpResponseBadRequest(form.errors)
 
 
 # noinspection PyUnusedLocal

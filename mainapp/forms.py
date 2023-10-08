@@ -19,12 +19,29 @@ class GetProducts(forms.Form):
 	def _get_data_from_db(model: BaseProduct, products: list[dict]) -> list[dict]:
 		id_list = []
 		for product in products:
-			if (_id := product.get('id')) is None:
-				raise ValidationError('No product.id provided!')
+			_id = product.get('id')
+			count = product.get('count')
+			if _id is None or count is None:
+				continue
+				# raise ValidationError('No id or count provided!')
 			id_list.append(_id)
 
-		queryset = model.objects.filter(id__in=id_list).all()
+		products_qs = model.objects.filter(id__in=id_list).all()
 
-		result = list(p.to_dict() | {'count': product.get('count')} for p in queryset)
+		result = []
+		for p in products_qs:
+			prod = None
+			for product in products:
+				if p.id == product.get('id'):
+					prod = product
+					break
+
+			if prod is None:
+				raise ValidationError('Data error, please clear localStorage')
+
+			p_dict = p.to_dict()
+			result.append(p_dict | {
+				'count': max(1, min(prod.get('count'), p_dict.get('max_count')))
+			})
 
 		return result
