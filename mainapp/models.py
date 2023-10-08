@@ -72,6 +72,8 @@ class Passport(BaseProduct):
     country = models.ForeignKey('Country', on_delete=models.PROTECT)
 
     def reserve(self, count: int) -> bool:
+        """ Reserve any products """
+
         base_qs = self.passportfile_set.filter(is_reserved=False, is_sold=False)[:count]
         if base_qs.count() < count:
             return False
@@ -80,6 +82,8 @@ class Passport(BaseProduct):
         return True
 
     def cancel_reserve(self, count: int = 1) -> bool:
+        """ Cancel reserve products """
+
         base_qs = self.passportfile_set.filter(is_reserved=True, is_sold=False)[:count]
         if base_qs.count() < count:
             return False
@@ -88,6 +92,8 @@ class Passport(BaseProduct):
         return True
 
     def sell(self) -> bool:
+        """ Sell reserved product """
+
         f: PassportFile = self.passportfile_set.filter(is_reserved=True, is_sold=False).first()
         if f is None:
             return False
@@ -97,12 +103,16 @@ class Passport(BaseProduct):
         f.save()
 
     def get_path(self) -> str:
-        passport_file: 'PassportFile' = self.passportfile_set.filter(is_sold=False, is_reserved=False).first()
+        """ Get path of reserved product """
+
+        passport_file: PassportFile = self.passportfile_set.filter(is_reserved=True, is_sold=False).first()
         if passport_file is None:
             raise Exception('No available files!')
         return passport_file.file.path
 
     def get_count(self) -> int:
+        """ Count unreserved products """
+
         return self.passportfile_set.filter(is_sold=False, is_reserved=False).count()
 
     def get_title(self):
