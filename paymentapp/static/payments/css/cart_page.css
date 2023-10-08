@@ -76,7 +76,8 @@
 }
 
 .form_content input[type=email] {
-  margin-top: 40px;
+  margin-top: 20px;
+  margin-bottom: 15px;
 }
 
 .name_div {

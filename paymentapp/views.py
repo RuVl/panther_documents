@@ -74,6 +74,8 @@ class CartView(FormView):
 			form.cleaned_data['products']
 		)
 
+		logger.info(f'Creating transaction for {email} with {gateway} and products: {products}')
+
 		t = Transaction(email=email, gateway=gateway)
 		if user.is_authenticated:
 			t.user_id = user.id

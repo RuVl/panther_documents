@@ -202,6 +202,7 @@ window.addEventListener("DOMContentLoaded", async () => { // Загружаем 
   if (cart_object != null && Object.keys(cart_object).length !== 0) {
     cart_page_wrap_div.classList.remove("inactive");
     await update_products();
+    updateCartCounter(cart_object);
     showProducts();
     updateFinalPrice();
   } else empty_cart_div.classList.remove("inactive");

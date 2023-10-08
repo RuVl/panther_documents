@@ -176,18 +176,8 @@ SHOP_DEFAULT_CURRENCY = 'USD'
 SHOP_CURRENCIES = ('USD', 'RUB')
 OPENEXCHANGERATES_APP_ID = env('OPENEXCHANGERATES_APP_ID')
 
-# Production
-if not DEBUG:
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
-
-    SECURE_SSL_REDIRECT = True
-    SECURE_HSTS_SECONDS = 3600  # Send browser auto redirect header
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-
-    # Logging
-    LOGGING = {
+# Logging
+LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
         'formatters': {
@@ -212,3 +202,14 @@ if not DEBUG:
             },
         }
     }
+
+
+# Production
+if not DEBUG:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 3600  # Send browser auto redirect header
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
