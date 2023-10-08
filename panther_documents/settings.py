@@ -205,7 +205,7 @@ if not DEBUG:
             }
         },
         'loggers': {
-            'gunicorn.errors': {
+            'gunicorn': {
                 'level': 'DEBUG',
                 'handlers': ['gunicorn'],
                 'propagate': True,

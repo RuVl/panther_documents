@@ -42,7 +42,7 @@ class CartView(FormView):
 				'success': False,
 				'clean_cart': False,
 				'reload_cart': True,
-				'errors': {'cart': [_("Can't create transaction")]},
+				'errors': {'cart': [_("Can not create transaction. Try again or write to support.")]},
 				'url': self.request.path
 			}
 			return JsonResponse(response, json_dumps_params=self.json_params)
@@ -84,7 +84,7 @@ class CartView(FormView):
 			for product in products:
 				p: BaseProduct = BaseProduct.get_subclass(product['type']).objects.filter(pk=product['id']).first()
 				if p.reserve(product['count']):  # Резервация товаров
-					raise ValueError("Can't reserve")  # Резервация не удалась
+					raise ValueError("Can not reserve")  # Резервация не удалась
 
 				reserved.append((p, product['count']))
 
