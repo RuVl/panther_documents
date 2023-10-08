@@ -51,7 +51,10 @@ function send_pay_form(pay_form) {
             })
           );
         }
-      } else window.location.assign(window.location.origin + data['success_url']); // replace will clear document history
+      } else {
+        console.log(`Go to ${window.location.origin + data['success_url']}`);
+        // window.location.assign(window.location.origin + data['success_url']); // replace will clear document history
+      }
 
     }).catch(reason => console.error(reason));
 }
