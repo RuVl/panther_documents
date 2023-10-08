@@ -78,7 +78,7 @@ class Passport(BaseProduct):
         if base_qs.count() < count:
             return False
 
-        self.passportfile_set.filter(pk__in=base_qs).update(is_reserved=True)
+        self.passportfile_set.filter(pk__in=base_qs).update(is_reserved=True, path_was_given=False)
         return True
 
     def cancel_reserve(self, count: int = 1) -> bool:
@@ -88,7 +88,7 @@ class Passport(BaseProduct):
         if base_qs.count() < count:
             return False
 
-        self.passportfile_set.filter(pk__in=base_qs).update(is_reserved=False)
+        self.passportfile_set.filter(pk__in=base_qs).update(is_reserved=False, path_was_given=False)
         return True
 
     def sell(self) -> bool:
@@ -105,9 +105,13 @@ class Passport(BaseProduct):
     def get_path(self) -> str:
         """ Get path of reserved product """
 
-        passport_file: PassportFile = self.passportfile_set.filter(is_reserved=True, is_sold=False).first()
+        passport_file: PassportFile = self.passportfile_set.filter(path_was_given=False, is_reserved=True, is_sold=False).first()
         if passport_file is None:
             raise Exception('No available files!')
+
+        passport_file.path_was_given = True
+        passport_file.save()
+
         return passport_file.file.path
 
     def get_count(self) -> int:
@@ -149,6 +153,8 @@ class Passport(BaseProduct):
 
 
 class PassportFile(BaseProductItem):
+    path_was_given = models.BooleanField(default=False, blank=True)
+
     is_reserved = models.BooleanField(default=False, blank=True)
     is_sold = models.BooleanField(default=False, blank=True)
 
