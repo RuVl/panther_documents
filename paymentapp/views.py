@@ -76,7 +76,7 @@ class CartView(FormView):
 
 		logger.info(f'Creating transaction for {email} with {gateway} and products: {products}')
 
-		t = Transaction(email=email, gateway=gateway)
+		t = Transaction(email=email, gateway=gateway, invoice_price=0)  # invoice_price - for t.save()
 		if user.is_authenticated:
 			t.user_id = user.id
 
