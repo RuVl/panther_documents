@@ -1,4 +1,4 @@
-from django.core.files import File
+from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
 
 from mainapp.models import Passport, Country, PassportFile
@@ -27,7 +27,7 @@ class Command(BaseCommand):
                     country=c
                 )
 
-                for _ in range(int(passport['count'])):
+                for i in range(int(passport['count'])):
                     f = PassportFile(passport=p)
-                    f.file.name = 'test.txt'
+                    f.file.save(f'test/{p.id}_{i}.txt', ContentFile(f"TEST FILE {i}"))
                     f.save()

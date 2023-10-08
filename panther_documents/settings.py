@@ -213,3 +213,15 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 3600  # Send browser auto redirect header
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+
+
+# Dirs that must exist
+must_exists: list[Path] = [
+    BASE_DIR / 'logs',
+    MEDIA_ROOT,
+    BASE_DIR / 'media' / 'passports',
+]
+
+for p in must_exists:
+    if not p.exists():
+        p.mkdir()

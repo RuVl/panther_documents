@@ -153,7 +153,7 @@ class PassportFile(BaseProductItem):
     is_sold = models.BooleanField(default=False, blank=True)
 
     passport = models.ForeignKey(Passport, on_delete=models.CASCADE, null=True)
-    file = models.FileField(upload_to='passports/')
+    file = models.FileField(upload_to='passports/', unique=True)
 
 
 class Country(models.Model):
