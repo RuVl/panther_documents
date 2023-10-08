@@ -21,17 +21,16 @@ class PlisioAPIException(PlisioException):
             response (Response): Response.
         """
         self.code = 0
-        self.name = ""
 
         try:
             json_res = response.json()
         except JSONDecodeError:
             self.message = f"Invalid JSON error message from Plisio: {response.text}"
         else:
-            data = json_res["data"]
-            self.code = data["code"]
-            self.message = data["message"]
-            self.name = data["name"]
+            data = json_res.get("data")
+            if data is not None:
+                self.code = data.get("code")
+                self.message = data.get("message")
 
         self.response = response
         self.status_code = response.status_code
@@ -45,7 +44,7 @@ class PlisioAPIException(PlisioException):
             str: String representation.
         """
 
-        return f"APIError(code={self.code}, name={self.name}): {self.message}"
+        return f"APIError(code={self.code}, status={self.status_code}): {self.message}"
 
 
 class PlisioRequestException(PlisioException):
